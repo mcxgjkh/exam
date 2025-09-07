@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>业余无线电操作技术能力模拟考试系统</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>业余无线电操作技术能力模拟考试系统</h1>
+        </header>
+
+        <div id="start-screen" class="start-screen">
+            <h2>请选择考试类别</h2>
+            <div class="class-select">
+                <button class="class-btn" onclick="startExam('A')">A类考试 (40题/40分钟)</button>
+                <button class="class-btn" onclick="startExam('B')">B类考试 (60题/60分钟)</button>
+                <button class="class-btn" onclick="startExam('C')">C类考试 (90题/90分钟)</button>
+            </div>
+            <div class="exam-standards">
+                <h3>合格标准:</h3>
+                <ul>
+                    <li>A类: 答对30题及以上（共40题）</li>
+                    <li>B类: 答对45题及以上（共60题）</li>
+                    <li>C类: 答对70题及以上（共90题）</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="exam-screen" class="screen-hidden">
+            <div class="exam-info">
+                <div class="exam-type">当前考试：<span id="current-exam-type">A类</span></div>
+                <div class="timer">剩余时间: <span id="time">40:00</span></div>
+                <div class="progress">进度: <span id="progress">1</span>/<span id="total-questions">40</span></div>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+
+            <div class="question-container">
+                <div class="question-number">题目 <span id="q-number">1</span> <span class="question-id" id="q-id"></span></div>
+                <div class="question-type" id="q-type">单选题</div>
+                <div class="question-text" id="q-text"></div>
+                <div class="options" id="options-container"></div>
+            </div>
+
+            <div class="navigation">
+                <button class="nav-btn prev-btn" id="prev-btn">上一题</button>
+                <button class="nav-btn next-btn" id="next-btn">下一题</button>
+                <button class="nav-btn submit-btn" id="submit-btn">提交答案</button>
+            </div>
+        </div>
+
+        <div id="result-screen" class="screen-hidden">
+            <h2>考试结果</h2>
+            <div class="score-container">
+                <div class="score" id="score">0</div>
+                <div class="score-text">总分</div>
+                <div class="pass-fail" id="pass-fail"></div>
+            </div>
+            
+            <div class="result-details">
+                <p>考试类别: <span id="result-type"></span></p>
+                <p>答对题数: <span id="correct-answers">0</span>/<span id="total-answers">0</span></p>
+                <p>用时: <span id="time-used">00:00</span></p>
+            </div>
+
+            <div class="wrong-questions" id="wrong-questions-container">
+                <h3>错题解析</h3>
+                <div id="wrong-questions-list"></div>
+            </div>
+
+            <button class="restart-btn" onclick="location.reload()">重新开始</button>
+        </div>
+
+        <footer>
+            <p>© 2025 业余无线电操作技术能力模拟考试系统&emsp;By BH6RKW&emsp;|&emsp;designed for better learning experience</p>
+        </footer>
+    </div>
+
+    <script src="data_A.js"></script>
+    <script src="data_B.js"></script>
+    <script src="data_C.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
