@@ -3,42 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>业余无线电操作技术能力模拟考试系统</title>
+    <title>业余无线电考试刷题模拟系统</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>业余无线电操作技术能力模拟考试系统</h1>
+            <h1>业余无线电考试刷题模拟系统</h1>
         </header>
 
+        <!-- 加载提示浮层 -->
+        <div id="loading-overlay" class="loading-overlay hidden">
+            <div class="loading-spinner"></div>
+            <div id="loading-message">正在加载题库，请稍候...</div>
+        </div>
+
+        <!-- 主启动界面 (默认显示) -->
         <div id="start-screen" class="start-screen">
-            <h2>请选择考试类别</h2>
-            <div class="class-select">
-                <button class="class-btn" onclick="startExam('A')">A类考试 (40题/40分钟)</button>
-                <button class="class-btn" onclick="startExam('B')">B类考试 (60题/60分钟)</button>
-                <button class="class-btn" onclick="startExam('C')">C类考试 (90题/90分钟)</button>
+            <!-- 模拟考试卡片 -->
+            <div class="mode-card">
+                <h2>模拟考试</h2>
+                <p class="mode-desc">
+                    合格标准：<br>
+                    A类: 答对30题及以上（共40题）<br>
+                    B类: 答对45题及以上（共60题）<br>
+                    C类: 答对70题及以上（共90题）
+                </p>
+                <div class="class-select">
+                    <button class="class-btn exam-btn" data-type="A">A类考试 (40题/40分钟)</button>
+                    <button class="class-btn exam-btn" data-type="B">B类考试 (60题/60分钟)</button>
+                    <button class="class-btn exam-btn" data-type="C">C类考试 (90题/90分钟)</button>
+                </div>
             </div>
-            <div class="exam-standards">
-                <h3>合格标准:</h3>
-                <ul>
-                    <li>A类: 答对30题及以上（共40题）</li>
-                    <li>B类: 答对45题及以上（共60题）</li>
-                    <li>C类: 答对70题及以上（共90题）</li>
-                </ul>
+
+            <!-- 刷题练习卡片 -->
+            <div class="mode-card">
+                <h2>题目学习</h2>
+                <p class="mode-desc">按顺序/倒序/乱序学习题目</p>
+                <div class="practice-grid">
+                    <div class="practice-row">
+                        <span class="practice-label">A类：</span>
+                        <button class="practice-btn" data-type="A" data-order="asc">顺序</button>
+                        <button class="practice-btn" data-type="A" data-order="desc">倒序</button>
+                        <button class="practice-btn" data-type="A" data-order="random">乱序</button>
+                    </div>
+                    <div class="practice-row">
+                        <span class="practice-label">B类：</span>
+                        <button class="practice-btn" data-type="B" data-order="asc">顺序</button>
+                        <button class="practice-btn" data-type="B" data-order="desc">倒序</button>
+                        <button class="practice-btn" data-type="B" data-order="random">乱序</button>
+                    </div>
+                    <div class="practice-row">
+                        <span class="practice-label">C类：</span>
+                        <button class="practice-btn" data-type="C" data-order="asc">顺序</button>
+                        <button class="practice-btn" data-type="C" data-order="desc">倒序</button>
+                        <button class="practice-btn" data-type="C" data-order="random">乱序</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 题目查询卡片 -->
+            <div class="mode-card">
+                <h2>题目查询</h2>
+                <p class="mode-desc">输入题目ID或关键词，快速查看题目详情</p>
+                <div class="query-input-row">
+                    <input type="text" id="query-input" placeholder="例如: MC2-0001 或 0001 或 无线电" class="query-input">
+                    <button class="query-btn" id="query-btn">查询</button>
+                </div>
+                <div id="query-results" class="query-results"></div>
+            </div>
+
+            <!-- 错题练习卡片 -->
+            <div class="mode-card">
+                <h2>错题巩固</h2>
+                <p class="mode-desc">针对各类型错题反复练习</p>
+                <div class="wrong-practice-row">
+                    <button class="wrong-practice-btn" data-type="A">A类错题</button>
+                    <button class="wrong-practice-btn" data-type="B">B类错题</button>
+                    <button class="wrong-practice-btn" data-type="C">C类错题</button>
+                </div>
+                <!-- 错题统计 居中且与按钮对齐 -->
+                <div class="wrong-stats">
+                    <span>A: <span id="wrong-count-A">0</span></span>
+                    <span>B: <span id="wrong-count-B">0</span></span>
+                    <span>C: <span id="wrong-count-C">0</span></span>
+                </div>
             </div>
         </div>
 
+        <!-- 考试/刷题通用答题屏幕 (初始隐藏) -->
         <div id="exam-screen" class="screen-hidden">
-            <div class="exam-info">
-                <div class="exam-type">当前考试：<span id="current-exam-type">A类</span></div>
-                <div class="timer">剩余时间: <span id="time">40:00</span></div>
-                <div class="progress">进度: <span id="progress">1</span>/<span id="total-questions">40</span></div>
+            <div class="exam-header">
+                <div class="mode-badge" id="mode-badge">模拟考试</div>
+                <div class="exam-info">
+                    <div class="exam-type">当前：<span id="current-exam-type">A类</span></div>
+                    <div class="timer" id="timer-container">剩余时间: <span id="time">40:00</span></div>
+                    <div class="progress-text">进度: <span id="progress">1</span>/<span id="total-questions">40</span></div>
+                </div>
+                <button class="icon-btn exit-btn" id="exit-practice-btn" title="返回主页">← 退出</button>
             </div>
 
             <div class="progress-bar">
                 <div class="progress-fill" id="progress-fill"></div>
             </div>
+
+            <div id="practice-feedback" class="practice-feedback hidden"></div>
 
             <div class="question-container">
                 <div class="question-number">题目 <span id="q-number">1</span> <span class="question-id" id="q-id"></span></div>
@@ -51,6 +120,7 @@
                 <button class="nav-btn prev-btn" id="prev-btn">上一题</button>
                 <button class="nav-btn next-btn" id="next-btn">下一题</button>
                 <button class="nav-btn submit-btn" id="submit-btn">提交答案</button>
+                <button class="nav-btn reset-wrong-btn hidden" id="reset-wrong-btn">移出错题</button>
             </div>
         </div>
 
@@ -68,7 +138,11 @@
                 <p>用时: <span id="time-used">00:00</span></p>
             </div>
 
-            <div class="wrong-questions" id="wrong-questions-container">
+            <!-- 查看错题按钮 -->
+            <button class="toggle-wrong-btn" id="toggle-wrong-btn">查看错题</button>
+
+            <!-- 错题解析容器（默认隐藏） -->
+            <div class="wrong-questions hidden" id="wrong-questions-container">
                 <h3>错题解析</h3>
                 <div id="wrong-questions-list"></div>
             </div>
@@ -77,13 +151,10 @@
         </div>
 
         <footer>
-            <p>© 2025 业余无线电操作技术能力模拟考试系统&emsp;By BH6RKW&emsp;|&emsp;designed for better learning experience</p>
+            <p>© 2025-2026 业余无线电考试刷题模拟系统 | By BH6RKW</p>
         </footer>
     </div>
 
-    <script src="data_A.js"></script>
-    <script src="data_B.js"></script>
-    <script src="data_C.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
