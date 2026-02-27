@@ -177,7 +177,7 @@
             const wrongIds = getWrongIds(type);
             baseQuestions = bank.filter(q => wrongIds.includes(q.id));
             if (baseQuestions.length === 0) {
-                alert('当前没有错题，先去练习全题库吧！');
+                alert('当前没有错题，先去学习题目或模拟考试吧！');
                 return;
             }
         }
@@ -336,10 +336,10 @@
         const fb = document.getElementById('practice-feedback');
         fb.classList.remove('correct', 'incorrect');
         if (isCorrect) {
-            fb.textContent = '✓ 回答正确';
+            fb.textContent = '回答正确';
             fb.classList.add('correct');
         } else {
-            fb.textContent = '✗ 回答错误，已记入错题本';
+            fb.textContent = '回答错误，已记入错题本';
             fb.classList.add('incorrect');
         }
     }
@@ -362,6 +362,15 @@
             }
         }
         updateOptionSelection(qIndex);
+
+        // 如果是练习模式，立即显示反馈
+        if (currentMode === 'practice') {
+            const question = currentQuestions[qIndex];
+            const userAns = userAnswers[qIndex];
+            const isCorrect = checkAnswerSingle(question, userAns);
+            showPracticeFeedback(isCorrect);
+            updateWrongStorage(question.id, isCorrect, currentExamType);
+        }
     }
 
     function updateOptionSelection(qIndex) {

@@ -272,6 +272,7 @@ h1 {
     gap: 12px;
 }
 
+/* 选项容器：flex 保证整体垂直居中 */
 .option {
     position: relative;
     border: 1.5px solid #d0e1ef;
@@ -282,32 +283,23 @@ h1 {
     min-height: 52px;
     display: flex;
     align-items: center;
+    margin: 10px 0;
 }
 
-.option:hover {
-    border-color: #77b5e3;
-    background: #f4fafe;
-    transform: scale(1.01);
-    box-shadow: 0 4px 12px rgba(50,130,200,0.1);
+/* 点击涟漪效果（瞬间阴影） */
+.option:active {
+    box-shadow: 0 0 0 4px rgba(43, 127, 194, 0.3);
 }
 
-.option.selected {
-    background: #e1f0fe;
-    border-color: #2b7fc2;
-    border-width: 2px;
-}
-
+/* 隐藏原始 input */
 .option input {
     position: absolute;
     opacity: 0;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
-    z-index: 5;
-    left: 0;
-    top: 0;
+    width: 0;
+    height: 0;
 }
 
+/* 标签样式：flex 保证内部文字垂直居中，预留圆圈位置 */
 .option label {
     display: flex;
     align-items: center;
@@ -317,10 +309,12 @@ h1 {
     line-height: 1.5;
     cursor: pointer;
     word-break: break-word;
-    pointer-events: none;
     position: relative;
+    min-height: 100%;
+    box-sizing: border-box;
 }
 
+/* 自定义标记（绝对定位，永远垂直居中） */
 .option label:before {
     content: "";
     position: absolute;
@@ -331,40 +325,35 @@ h1 {
     height: 20px;
     border: 2px solid #b2cde0;
     background: white;
-    border-radius: 50%;
     transition: 0.1s;
-    pointer-events: none;
+    box-sizing: border-box;
 }
 
+/* 单选按钮：圆形 */
+.option input[type="radio"] + label:before {
+    border-radius: 50%;
+}
+
+/* 多选按钮：方形（带轻微圆角） */
 .option input[type="checkbox"] + label:before {
     border-radius: 6px;
 }
 
-.option input:checked + label:before {
+/* 选中状态：蓝色环/框（边框加粗，背景白） */
+.option input[type="radio"]:checked + label:before,
+.option input[type="checkbox"]:checked + label:before {
     border-color: #2b7fc2;
-    background: #2b7fc2;
+    background: white;
+    border-width: 6px;
 }
 
-.option input[type="checkbox"]:checked + label:after {
-    content: "✓";
-    position: absolute;
-    left: 20px;
+/* 移除所有可能干扰居中的多行特殊定位 */
+.option.multiline label {
+    align-items: center;
+}
+.option.multiline label:before {
     top: 50%;
     transform: translateY(-50%);
-    color: white;
-    font-size: 14px;
-    font-weight: bold;
-    pointer-events: none;
-}
-
-.option.multiline label:before {
-    top: 20px;
-    transform: none;
-}
-
-.option.multiline input[type="checkbox"]:checked + label:after {
-    top: 20px;
-    transform: none;
 }
 
 /* 练习反馈 */
