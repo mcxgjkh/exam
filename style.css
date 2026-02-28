@@ -753,3 +753,116 @@ footer {
 .modal-confirm:hover {
     background: #123a57;
 }
+
+/* 收藏练习卡片 */
+.favorite-practice-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin: 15px 0;
+}
+.favorite-practice-row button {
+    flex: 1;
+    max-width: 200px;
+    text-align: center;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-weight: 500;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    background: white;
+    color: #2b4d6a;
+    border: 1.5px solid #c7ddec;
+}
+.favorite-practice-row button:hover {
+    background: #1f4f73;
+    color: white;
+    border-color: #1f4f73;
+}
+.favorite-stats {
+    margin-top: 12px;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+.favorite-stats span {
+    flex: 1;
+    max-width: 200px;
+    text-align: center;
+    background: #d9e9f5;
+    padding: 6px 0;
+    border-radius: 40px;
+    font-size: 0.9rem;
+    color: #1e3f58;
+}
+
+/* 收藏按钮样式 */
+.favorite-btn {
+    background: white;
+    color: #f1c40f;
+    border-color: #f1c40f;
+}
+.favorite-btn.favorited {
+    background: #f1c40f;
+    color: white;
+    border-color: #f1c40f;
+}
+.favorite-btn:hover {
+    background: #f39c12;
+    color: white;
+    border-color: #f39c12;
+}
+
+/* 跳转模态框 */
+.goto-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+.goto-modal-content {
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+    width: 300px;
+    text-align: center;
+}
+.goto-modal-content h3 {
+    margin-bottom: 15px;
+}
+.goto-modal-content input {
+    width: 100%;
+    padding: 10px;
+    border: 1.5px solid #c7ddec;
+    border-radius: 10px;
+    font-size: 1rem;
+    margin-bottom: 15px;
+}
+.goto-modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+.goto-modal-actions button {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 600;
+}
+.goto-confirm {
+    background: #1f4f73;
+    color: white;
+}
+.goto-cancel {
+    background: #e0e0e0;
+    color: #333;
+}

@@ -111,6 +111,22 @@
                     <span>C: <span id="wrong-count-C">0</span></span>
                 </div>
             </div>
+
+            <!-- 收藏练习卡片 -->
+            <div class="mode-card">
+                <h2>收藏题目</h2>
+                <p class="mode-desc">针对各类型收藏题反复练习</p>
+                <div class="favorite-practice-row">
+                    <button class="favorite-practice-btn" data-type="A">A类收藏</button>
+                    <button class="favorite-practice-btn" data-type="B">B类收藏</button>
+                    <button class="favorite-practice-btn" data-type="C">C类收藏</button>
+                </div>
+                <div class="favorite-stats">
+                    <span>A: <span id="favorite-count-A">0</span></span>
+                    <span>B: <span id="favorite-count-B">0</span></span>
+                    <span>C: <span id="favorite-count-C">0</span></span>
+                </div>
+            </div>
         </div>
 
         <!-- 考试/刷题通用答题屏幕 (初始隐藏) -->
@@ -141,6 +157,8 @@
             <div class="navigation">
                 <button class="nav-btn prev-btn" id="prev-btn">上一题</button>
                 <button class="nav-btn next-btn" id="next-btn">下一题</button>
+                <button class="nav-btn favorite-btn" id="favorite-btn">☆ 收藏</button>
+                <button class="nav-btn goto-btn" id="goto-btn">跳转到</button>
                 <button class="nav-btn submit-btn" id="submit-btn">提交答案</button>
                 <button class="nav-btn reset-wrong-btn hidden" id="reset-wrong-btn">移出错题</button>
             </div>

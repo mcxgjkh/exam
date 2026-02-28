@@ -25,6 +25,8 @@
 
     // 错题本存储 key
     const WRONG_KEYS = { A: 'ham_wrong_A', B: 'ham_wrong_B', C: 'ham_wrong_C' };
+    //收藏
+    const FAVORITE_KEYS = { A: 'ham_favorite_A', B: 'ham_favorite_B', C: 'ham_favorite_C' };
 
     // ----- 初始化 & 事件绑定 -----
     document.addEventListener('DOMContentLoaded', function() {
@@ -59,6 +61,23 @@
             container.classList.toggle('hidden');
             this.textContent = container.classList.contains('hidden') ? '查看错题' : '隐藏错题';
         });
+
+        // 收藏练习按钮
+        document.querySelectorAll('.favorite-practice-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const type = e.target.dataset.type;
+                startFavoritePractice(type);
+            });
+        });
+
+        // 收藏按钮
+        document.getElementById('favorite-btn').addEventListener('click', toggleFavorite);
+
+        // 跳转按钮
+        document.getElementById('goto-btn').addEventListener('click', showGotoModal);
+
+        // 初始化收藏统计
+        updateFavoriteStatsAll();
 
         // 刷题按钮
         document.querySelectorAll('.practice-btn').forEach(btn => {
@@ -139,13 +158,77 @@
         }
     }
 
+    async function startFavoritePractice(type) {
+        try {
+            const bank = await loadQuestionBank(type);
+            const favIds = getFavoriteIds(type);
+            const questions = bank.filter(q => favIds.includes(q.id));
+            if (questions.length === 0) {
+                alert('当前没有收藏的题目，先去学习题目界面收藏吧！');
+                return;
+            }
+            startPractice(type, bank, 'asc', false, questions); // 以原序练习收藏题
+        } catch (e) {
+            alert('题库加载失败');
+        }
+    }
+
     async function startPracticeWithLoad(type, order, wrongMode = false) {
         try {
             const bank = await loadQuestionBank(type);
-            startPractice(type, bank, order, wrongMode);
+            startPractice(type, bank, order, wrongMode); // 不传 customQuestions，保持原逻辑
         } catch (e) {
-            alert('题库加载失败，请刷新重试\n' + e.message);
+            alert('题库加载失败');
         }
+    }
+
+    function toggleFavorite() {
+        if (currentMode !== 'practice') return;
+        const q = currentQuestions[currentQuestionIndex];
+        const type = currentExamType;
+        let favs = getFavoriteIds(type);
+        const id = q.id;
+        if (favs.includes(id)) {
+            favs = favs.filter(f => f !== id);
+        } else {
+            favs.push(id);
+        }
+        saveFavoriteIds(type, favs);
+        updateFavoriteButtonState();
+    }
+
+    function updateFavoriteButtonState() {
+        if (currentMode !== 'practice') return;
+        const q = currentQuestions[currentQuestionIndex];
+        const type = currentExamType;
+        const favs = getFavoriteIds(type);
+        const btn = document.getElementById('favorite-btn');
+        if (favs.includes(q.id)) {
+            btn.classList.add('favorited');
+            btn.textContent = '★ 已收藏';
+        } else {
+            btn.classList.remove('favorited');
+            btn.textContent = '☆ 收藏';
+        }
+    }
+
+    function getFavoriteIds(type) {
+        const key = FAVORITE_KEYS[type];
+        const stored = localStorage.getItem(key);
+        return stored ? JSON.parse(stored) : [];
+    }
+
+    function saveFavoriteIds(type, ids) {
+        localStorage.setItem(FAVORITE_KEYS[type], JSON.stringify(ids));
+        updateFavoriteStatsAll();
+    }
+
+    function updateFavoriteStatsAll() {
+        ['A','B','C'].forEach(t => {
+            const ids = getFavoriteIds(t);
+            const el = document.getElementById(`favorite-count-${t}`);
+            if (el) el.textContent = ids.length;
+        });
     }
 
     function startExam(type, bank) {
@@ -163,7 +246,8 @@
         document.getElementById('submit-btn').classList.remove('hidden');
         document.getElementById('reset-wrong-btn').classList.add('hidden');
         document.getElementById('practice-feedback').classList.add('hidden');
-
+        document.getElementById('favorite-btn').classList.add('hidden');
+        document.getElementById('goto-btn').classList.add('hidden');
         document.getElementById('current-exam-type').textContent = type + '类';
         document.getElementById('total-questions').textContent = currentQuestions.length;
 
@@ -177,17 +261,17 @@
         showQuestion(0);
     }
 
-    function startPractice(type, bank, order, wrongMode) {
+    function startPractice(type, bank, order, wrongMode, customQuestions = null) {
         currentMode = 'practice';
         currentExamType = type;
         isWrongPractice = wrongMode;
 
-        let baseQuestions = [...bank];
-        if (wrongMode) {
+        let baseQuestions = customQuestions ? [...customQuestions] : [...bank];
+        if (!customQuestions && wrongMode) {
             const wrongIds = getWrongIds(type);
             baseQuestions = bank.filter(q => wrongIds.includes(q.id));
             if (baseQuestions.length === 0) {
-                alert('当前没有错题，先去学习题目或模拟考试吧！');
+                alert('当前没有错题，先去学习题目吧！');
                 return;
             }
         }
@@ -210,12 +294,14 @@
         document.getElementById('mode-badge').textContent = wrongMode ? '错题练习' : '刷题练习';
         document.getElementById('timer-container').style.display = 'none';
         document.getElementById('submit-btn').classList.add('hidden');
+        // 显示收藏和跳转按钮
+        document.getElementById('favorite-btn').classList.remove('hidden');
+        document.getElementById('goto-btn').classList.remove('hidden');
         if (wrongMode) {
             document.getElementById('reset-wrong-btn').classList.remove('hidden');
         } else {
             document.getElementById('reset-wrong-btn').classList.add('hidden');
         }
-        
         document.getElementById('practice-feedback').classList.remove('hidden');
         document.getElementById('practice-feedback').innerHTML = '';
 
@@ -287,6 +373,47 @@
                 showPracticeFeedback(isCorrect);
             }
         }
+        updateFavoriteButtonState();
+    }
+
+    function showGotoModal() {
+        let modal = document.getElementById('goto-modal');
+        if (modal) modal.remove();
+        modal = document.createElement('div');
+        modal.id = 'goto-modal';
+        modal.className = 'goto-modal';
+        modal.innerHTML = `
+            <div class="goto-modal-content">
+                <h3>跳转到第几题？</h3>
+                <input type="number" id="goto-input" min="1" max="${currentQuestions.length}" value="${currentQuestionIndex + 1}">
+                <div class="goto-modal-actions">
+                    <button class="goto-confirm">确定</button>
+                    <button class="goto-cancel">取消</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        const input = modal.querySelector('#goto-input');
+        const confirmBtn = modal.querySelector('.goto-confirm');
+        const cancelBtn = modal.querySelector('.goto-cancel');
+
+        const close = () => modal.remove();
+
+        confirmBtn.addEventListener('click', () => {
+            const num = parseInt(input.value);
+            if (isNaN(num) || num < 1 || num > currentQuestions.length) {
+                alert(`请输入1-${currentQuestions.length}之间的数字`);
+                return;
+            }
+            showQuestion(num - 1);
+            close();
+        });
+
+        cancelBtn.addEventListener('click', close);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) close();
+        });
     }
 
     function checkAnswerSingle(question, userAnswer) {
