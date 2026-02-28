@@ -12,6 +12,10 @@
     let optionMappings = [];
     let currentMode = 'exam';
     let isWrongPractice = false;
+    let isNormalPractice = false;      // 当前是否为普通刷题模式
+    let currentOrder = 'asc';          // 当前刷题的排序方式
+
+    const PENDING_KEY = 'ham_pending'; // 待做会话存储
 
     // 题库缓存
     const questionBanks = { A: null, B: null, C: null };
@@ -35,6 +39,16 @@
         document.getElementById('exam-screen').classList.add('screen-hidden');
         document.getElementById('result-screen').classList.add('screen-hidden');
         document.getElementById('loading-overlay').classList.add('hidden');
+        // 待做练习按钮
+        document.querySelectorAll('.pending-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const type = e.target.dataset.type;
+                loadPendingSession(type);
+            });
+        });
+
+        // 初始化待做状态显示
+        updatePendingStatusAll();
 
         updateWrongStatsAll();
 
@@ -186,7 +200,7 @@
     async function startPracticeWithLoad(type, order, wrongMode = false) {
         try {
             const bank = await loadQuestionBank(type);
-            startPractice(type, bank, order, wrongMode); // 不传 customQuestions，保持原逻辑
+            startPractice(type, bank, order, wrongMode);
         } catch (e) {
             alert('题库加载失败');
         }
@@ -275,13 +289,21 @@
         currentMode = 'practice';
         currentExamType = type;
         isWrongPractice = wrongMode;
+        // 判断是否为普通刷题（非错题、非收藏）
+        isNormalPractice = !wrongMode && !customQuestions;
+        currentOrder = order; // 记录排序方式
+
+        // 如果是普通刷题，先清除该类型的待做会话（因为要开始新的）
+        if (isNormalPractice) {
+            clearPendingSession(type);
+        }
 
         let baseQuestions = customQuestions ? [...customQuestions] : [...bank];
         if (!customQuestions && wrongMode) {
             const wrongIds = getWrongIds(type);
             baseQuestions = bank.filter(q => wrongIds.includes(q.id));
             if (baseQuestions.length === 0) {
-                alert('当前没有错题，先去学习题目吧！');
+                alert('当前没有错题，先去练习全题库吧！');
                 return;
             }
         }
@@ -298,13 +320,26 @@
 
         prepareQuestions();
 
+        // 如果是普通刷题，立即保存待做会话
+        if (isNormalPractice) {
+            const session = {
+                type: type,
+                order: order,
+                questions: currentQuestions.map(q => q.id),
+                userAnswers: userAnswers.map(ans => ans),
+                currentIndex: 0,
+                total: currentQuestions.length,
+                optionOrders: optionOrders
+            };
+            savePendingSession(type, session);
+        }
+
         document.getElementById('start-screen').classList.add('screen-hidden');
         document.getElementById('exam-screen').classList.remove('screen-hidden');
         document.getElementById('result-screen').classList.add('screen-hidden');
         document.getElementById('mode-badge').textContent = wrongMode ? '错题练习' : '刷题练习';
         document.getElementById('timer-container').style.display = 'none';
         document.getElementById('submit-btn').classList.add('hidden');
-        // 显示收藏和跳转按钮
         document.getElementById('favorite-btn').classList.remove('hidden');
         document.getElementById('goto-btn').classList.remove('hidden');
         if (wrongMode) {
@@ -322,6 +357,21 @@
         randomizeOptionsForAll();
 
         showQuestion(0);
+    }
+
+    function updatePendingSession() {
+        if (!isNormalPractice) return;
+        const type = currentExamType;
+        const session = {
+            type: type,
+            order: currentOrder,
+            questions: currentQuestions.map(q => q.id),
+            userAnswers: userAnswers.map(ans => ans),
+            currentIndex: currentQuestionIndex,
+            total: currentQuestions.length,
+            optionOrders: optionOrders
+        };
+        savePendingSession(type, session);
     }
 
     function prepareQuestions() {
@@ -384,6 +434,70 @@
             }
         }
         updateFavoriteButtonState();
+
+        if (currentMode === 'practice' && isNormalPractice) {
+            updatePendingSession();
+        }
+    }
+
+    async function loadPendingSession(type) {
+        const sessions = getPendingSessions();
+        const session = sessions[type];
+        if (!session) {
+            alert(`没有${type}类的待做练习`);
+            return;
+        }
+        try {
+            const bank = await loadQuestionBank(type);
+            // 根据存储的题目ID重建题目列表
+            const questionMap = {};
+            bank.forEach(q => questionMap[q.id] = q);
+            const questions = session.questions.map(id => questionMap[id]).filter(q => q);
+            if (questions.length !== session.questions.length) {
+                alert('题库已变化，无法恢复待做练习');
+                return;
+            }
+
+            // 恢复全局变量
+            currentQuestions = questions;
+            currentExamType = type;
+            currentMode = 'practice';
+            isWrongPractice = false;
+            isNormalPractice = true;
+            currentOrder = session.order || 'asc';
+            userAnswers = session.userAnswers;
+            currentQuestionIndex = session.currentIndex;
+            optionOrders = session.optionOrders;
+
+            // 重新生成 optionMappings
+            optionMappings = currentQuestions.map((q, idx) => {
+                let map = {};
+                optionOrders[idx].forEach((optIndex, displayIdx) => {
+                    map[q.options[optIndex].value] = String.fromCharCode(65 + displayIdx);
+                });
+                return map;
+            });
+
+            // 显示考试屏幕
+            document.getElementById('start-screen').classList.add('screen-hidden');
+            document.getElementById('exam-screen').classList.remove('screen-hidden');
+            document.getElementById('result-screen').classList.add('screen-hidden');
+            document.getElementById('mode-badge').textContent = '刷题练习';
+            document.getElementById('timer-container').style.display = 'none';
+            document.getElementById('submit-btn').classList.add('hidden');
+            document.getElementById('favorite-btn').classList.remove('hidden');
+            document.getElementById('goto-btn').classList.remove('hidden');
+            document.getElementById('reset-wrong-btn').classList.add('hidden');
+            document.getElementById('practice-feedback').classList.remove('hidden');
+            document.getElementById('practice-feedback').innerHTML = '';
+
+            document.getElementById('current-exam-type').textContent = type + '类';
+            document.getElementById('total-questions').textContent = currentQuestions.length;
+
+            showQuestion(currentQuestionIndex);
+        } catch (e) {
+            alert('恢复待做失败');
+        }
     }
 
     function showGotoModal() {
@@ -511,6 +625,10 @@
         }
         updateOptionSelection(qIndex);
 
+        if (currentMode === 'practice' && isNormalPractice) {
+            updatePendingSession();
+        }
+
         // 如果是练习模式，立即显示反馈
         if (currentMode === 'practice') {
             const question = currentQuestions[qIndex];
@@ -526,6 +644,40 @@
             const inp = opt.querySelector('input');
             if (inp.checked) opt.classList.add('selected');
             else opt.classList.remove('selected');
+        });
+    }
+
+    function getPendingSessions() {
+        const stored = localStorage.getItem(PENDING_KEY);
+        return stored ? JSON.parse(stored) : {};
+    }
+
+    function savePendingSession(type, session) {
+        const sessions = getPendingSessions();
+        sessions[type] = session;
+        localStorage.setItem(PENDING_KEY, JSON.stringify(sessions));
+        updatePendingStatusAll();
+    }
+
+    function clearPendingSession(type) {
+        const sessions = getPendingSessions();
+        if (sessions[type]) delete sessions[type];
+        localStorage.setItem(PENDING_KEY, JSON.stringify(sessions));
+        updatePendingStatusAll();
+    }
+
+    function updatePendingStatusAll() {
+        const sessions = getPendingSessions();
+        ['A','B','C'].forEach(t => {
+            const el = document.getElementById(`pending-status-${t}`);
+            if (el) {
+                const session = sessions[t];
+                if (session && session.currentIndex < session.total - 1) {
+                    el.textContent = `第${session.currentIndex+1}/${session.total}题`;
+                } else {
+                    el.textContent = '无';
+                }
+            }
         });
     }
 

@@ -866,3 +866,47 @@ footer {
     background: #e0e0e0;
     color: #333;
 }
+
+/* 待做卡片 */
+.pending-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin: 15px 0;
+}
+.pending-row button {
+    flex: 1;
+    max-width: 180px;
+    text-align: center;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-weight: 500;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    background: white;
+    color: #2b4d6a;
+    border: 1.5px solid #c7ddec;
+}
+.pending-row button:hover {
+    background: #1f4f73;
+    color: white;
+    border-color: #1f4f73;
+}
+.pending-stats {
+    margin-top: 12px;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+.pending-stats span {
+    flex: 1;
+    max-width: 180px;
+    text-align: center;
+    background: #d9e9f5;
+    padding: 6px 0;
+    border-radius: 40px;
+    font-size: 0.9rem;
+    color: #1e3f58;
+}
