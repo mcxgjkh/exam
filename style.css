@@ -871,42 +871,31 @@ footer {
 .pending-row {
     display: flex;
     gap: 12px;
-    justify-content: center;
+    align-items: center;
     margin: 15px 0;
 }
-.pending-row button {
+.pending-type {
+    min-width: 40px;
+    font-weight: 600;
+    color: #1e3f58;
+}
+.pending-btn {
     flex: 1;
-    max-width: 180px;
+    max-width: 120px;
     text-align: center;
     border: none;
-    padding: 12px 24px;
+    padding: 8px 12px;
     border-radius: 50px;
     font-weight: 500;
-    font-size: 1rem;
+    font-size: 0.9rem;
     cursor: pointer;
     transition: all 0.15s;
     background: white;
     color: #2b4d6a;
     border: 1.5px solid #c7ddec;
 }
-.pending-row button:hover {
+.pending-btn:hover {
     background: #1f4f73;
     color: white;
     border-color: #1f4f73;
-}
-.pending-stats {
-    margin-top: 12px;
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-}
-.pending-stats span {
-    flex: 1;
-    max-width: 180px;
-    text-align: center;
-    background: #d9e9f5;
-    padding: 6px 0;
-    border-radius: 40px;
-    font-size: 0.9rem;
-    color: #1e3f58;
 }

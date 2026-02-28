@@ -98,15 +98,24 @@
             <!-- 待做卡片 -->
             <div class="mode-card">
                 <h2>待做练习</h2>
+                <p class="mode-desc">继续未完成的题目</p>
                 <div class="pending-row">
-                    <button class="pending-btn" data-type="A">A类待做</button>
-                    <button class="pending-btn" data-type="B">B类待做</button>
-                    <button class="pending-btn" data-type="C">C类待做</button>
+                    <span class="pending-type">A类</span>
+                    <button class="pending-btn" data-type="A" data-order="asc">顺序(0)</button>
+                    <button class="pending-btn" data-type="A" data-order="desc">倒序(0)</button>
+                    <button class="pending-btn" data-type="A" data-order="random">乱序(0)</button>
                 </div>
-                <div class="pending-stats">
-                    <span>A: <span id="pending-status-A">无</span></span>
-                    <span>B: <span id="pending-status-B">无</span></span>
-                    <span>C: <span id="pending-status-C">无</span></span>
+                <div class="pending-row">
+                    <span class="pending-type">B类</span>
+                    <button class="pending-btn" data-type="B" data-order="asc">顺序(0)</button>
+                    <button class="pending-btn" data-type="B" data-order="desc">倒序(0)</button>
+                    <button class="pending-btn" data-type="B" data-order="random">乱序(0)</button>
+                </div>
+                <div class="pending-row">
+                    <span class="pending-type">C类</span>
+                    <button class="pending-btn" data-type="C" data-order="asc">顺序(0)</button>
+                    <button class="pending-btn" data-type="C" data-order="desc">倒序(0)</button>
+                    <button class="pending-btn" data-type="C" data-order="random">乱序(0)</button>
                 </div>
             </div>
 

@@ -1,4 +1,4 @@
-// script.js - 增强版，支持刷题/错题/懒加载/图片，修复题库加载
+// script.js - 增强版，支持刷题/错题/收藏/待做/懒加载/图片
 (function() {
     // ----- 全局变量 -----
     let currentQuestions = [];
@@ -15,7 +15,16 @@
     let isNormalPractice = false;      // 当前是否为普通刷题模式
     let currentOrder = 'asc';          // 当前刷题的排序方式
 
-    const PENDING_KEY = 'ham_pending'; // 待做会话存储
+    // 待做练习专用变量
+    let pendingOriginalSession = null;  // 原始会话副本
+    let pendingOriginalType = null;
+    let pendingOriginalOrder = null;
+    let pendingIndexMap = [];           // 当前题目索引到原始会话索引的映射
+
+    // 存储键常量
+    const WRONG_KEYS = { A: 'ham_wrong_A', B: 'ham_wrong_B', C: 'ham_wrong_C' };
+    const FAVORITE_KEYS = { A: 'ham_favorite_A', B: 'ham_favorite_B', C: 'ham_favorite_C' };
+    const PENDING_KEY_PREFIX = 'ham_pending_';  // 待做会话存储前缀，后跟类型_顺序
 
     // 题库缓存
     const questionBanks = { A: null, B: null, C: null };
@@ -27,104 +36,18 @@
         'C': { total: 90, time: 90, pass: 70 }
     };
 
-    // 错题本存储 key
-    const WRONG_KEYS = { A: 'ham_wrong_A', B: 'ham_wrong_B', C: 'ham_wrong_C' };
-    //收藏
-    const FAVORITE_KEYS = { A: 'ham_favorite_A', B: 'ham_favorite_B', C: 'ham_favorite_C' };
-
-    // ----- 初始化 & 事件绑定 -----
-    document.addEventListener('DOMContentLoaded', function() {
-        // 确保启动界面显示，其他隐藏
-        document.getElementById('start-screen').classList.remove('hidden', 'screen-hidden');
-        document.getElementById('exam-screen').classList.add('screen-hidden');
-        document.getElementById('result-screen').classList.add('screen-hidden');
-        document.getElementById('loading-overlay').classList.add('hidden');
-        // 待做练习按钮
-        document.querySelectorAll('.pending-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const type = e.target.dataset.type;
-                loadPendingSession(type);
-            });
-        });
-
-        // 初始化待做状态显示
-        updatePendingStatusAll();
-
-        updateWrongStatsAll();
-
-        // 弹窗关闭功能
-        const modal = document.getElementById('startup-modal');
-        if (modal) {
-            const closeBtn = modal.querySelector('.modal-close');
-            const confirmBtn = modal.querySelector('.modal-confirm');
-            const closeModal = () => modal.style.display = 'none';
-            closeBtn.addEventListener('click', closeModal);
-            confirmBtn.addEventListener('click', closeModal);
+    // ----- 工具函数 -----
+    function shuffleArray(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
         }
+        return arr;
+    }
 
-        // 模拟考试按钮
-        document.querySelectorAll('.exam-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const type = e.target.dataset.type;
-                startExamWithLoad(type);
-            });
-        });
-
-        document.getElementById('toggle-wrong-btn').addEventListener('click', function() {
-            const container = document.getElementById('wrong-questions-container');
-            container.classList.toggle('hidden');
-            this.textContent = container.classList.contains('hidden') ? '查看错题' : '隐藏错题';
-        });
-
-        // 收藏练习按钮
-        document.querySelectorAll('.favorite-practice-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const type = e.target.dataset.type;
-                startFavoritePractice(type);
-            });
-        });
-
-        // 收藏按钮
-        document.getElementById('favorite-btn').addEventListener('click', toggleFavorite);
-
-        // 跳转按钮
-        document.getElementById('goto-btn').addEventListener('click', showGotoModal);
-
-        // 初始化收藏统计
-        updateFavoriteStatsAll();
-
-        // 刷题按钮
-        document.querySelectorAll('.practice-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const type = e.target.dataset.type;
-                const order = e.target.dataset.order;
-                startPracticeWithLoad(type, order, false);
-            });
-        });
-
-        // 错题练习按钮
-        document.querySelectorAll('.wrong-practice-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const type = e.target.dataset.type;
-                startPracticeWithLoad(type, 'asc', true);
-            });
-        });
-
-        // 退出按钮
-        document.getElementById('exit-practice-btn').addEventListener('click', () => {
-            clearInterval(timerInterval);
-            document.getElementById('exam-screen').classList.add('screen-hidden');
-            document.getElementById('start-screen').classList.remove('screen-hidden');
-        });
-
-        // 导航按钮
-        document.getElementById('prev-btn').addEventListener('click', prevQuestion);
-        document.getElementById('next-btn').addEventListener('click', nextQuestion);
-        document.getElementById('submit-btn').addEventListener('click', () => {
-            if (confirm('确定提交答案吗？')) submitExam();
-        });
-        document.getElementById('reset-wrong-btn').addEventListener('click', removeCurrentFromWrong);
-    });
+    function generateOptionOrder(count) {
+        return shuffleArray([...Array(count).keys()]);
+    }
 
     function escapeHTML(str) {
         return str.replace(/[&<>"]/g, function(match) {
@@ -136,106 +59,52 @@
         });
     }
 
-    // ----- 懒加载题库 -----
-    function loadQuestionBank(type) {
-        return new Promise((resolve, reject) => {
-            if (questionBanks[type]) {
-                resolve(questionBanks[type]);
-                return;
+    // ----- 本地存储管理 -----
+    // 错题
+    function getWrongIds(type) {
+        const key = WRONG_KEYS[type];
+        const stored = localStorage.getItem(key);
+        return stored ? JSON.parse(stored) : [];
+    }
+
+    function saveWrongIds(type, ids) {
+        localStorage.setItem(WRONG_KEYS[type], JSON.stringify(ids));
+        updateWrongStatsAll();
+    }
+
+    function updateWrongStorage(questionId, isCorrect, type) {
+        let wrongs = getWrongIds(type);
+        if (!isCorrect) {
+            if (!wrongs.includes(questionId)) {
+                wrongs.push(questionId);
+                saveWrongIds(type, wrongs);
             }
-            showLoading(true, `加载${type}类题库...`);
-            const script = document.createElement('script');
-            script.src = `data_${type}.js`;
-            script.onload = () => {
-                try {
-                    // 使用 eval 获取全局变量 (题库文件用 const 声明，无法通过 window 访问)
-                    const bank = eval('questions_' + type);
-                    if (bank && Array.isArray(bank)) {
-                        questionBanks[type] = bank;
-                        showLoading(false);
-                        resolve(bank);
-                    } else {
-                        reject(new Error('题库变量不存在或格式错误'));
-                    }
-                } catch (e) {
-                    reject(e);
-                }
-            };
-            script.onerror = () => reject(new Error('题库文件加载失败'));
-            document.head.appendChild(script);
+        } else {
+            const index = wrongs.indexOf(questionId);
+            if (index !== -1) {
+                wrongs.splice(index, 1);
+                saveWrongIds(type, wrongs);
+            }
+        }
+    }
+
+    function addWrongItem(questionId, type) {
+        let wrongs = getWrongIds(type);
+        if (!wrongs.includes(questionId)) {
+            wrongs.push(questionId);
+            saveWrongIds(type, wrongs);
+        }
+    }
+
+    function updateWrongStatsAll() {
+        ['A','B','C'].forEach(t => {
+            const ids = getWrongIds(t);
+            const el = document.getElementById(`wrong-count-${t}`);
+            if (el) el.textContent = ids.length;
         });
     }
 
-    function showLoading(show, msg = '加载中...') {
-        const overlay = document.getElementById('loading-overlay');
-        document.getElementById('loading-message').textContent = msg;
-        if (show) overlay.classList.remove('hidden');
-        else overlay.classList.add('hidden');
-    }
-
-    async function startExamWithLoad(type) {
-        try {
-            const bank = await loadQuestionBank(type);
-            startExam(type, bank);
-        } catch (e) {
-            alert('题库加载失败，请刷新重试\n' + e.message);
-        }
-    }
-
-    async function startFavoritePractice(type) {
-        try {
-            const bank = await loadQuestionBank(type);
-            const favIds = getFavoriteIds(type);
-            const questions = bank.filter(q => favIds.includes(q.id));
-            if (questions.length === 0) {
-                alert('当前没有收藏的题目，先去学习题目界面收藏吧！');
-                return;
-            }
-            startPractice(type, bank, 'asc', false, questions); // 以原序练习收藏题
-        } catch (e) {
-            alert('题库加载失败');
-        }
-    }
-
-    async function startPracticeWithLoad(type, order, wrongMode = false) {
-        try {
-            const bank = await loadQuestionBank(type);
-            startPractice(type, bank, order, wrongMode);
-        } catch (e) {
-            alert('题库加载失败');
-        }
-    }
-
-    function toggleFavorite() {
-        if (currentMode !== 'practice') return;
-        const q = currentQuestions[currentQuestionIndex];
-        const type = currentExamType;
-        let favs = getFavoriteIds(type);
-        const id = q.id;
-        if (favs.includes(id)) {
-            favs = favs.filter(f => f !== id);
-        } else {
-            favs.push(id);
-        }
-        saveFavoriteIds(type, favs);
-        updateFavoriteButtonState();
-    }
-
-    function updateFavoriteButtonState() {
-        if (currentMode !== 'practice') return;
-        const q = currentQuestions[currentQuestionIndex];
-        const type = currentExamType;
-        const favs = getFavoriteIds(type);
-        const btn = document.getElementById('favorite-btn');
-        if (favs.includes(q.id)) {
-            btn.classList.add('favorited');
-            btn.textContent = '★ 已收藏';
-        } else {
-            btn.classList.remove('favorited');
-            btn.textContent = '☆ 收藏';
-        }
-    }
-
+    // 收藏
     function getFavoriteIds(type) {
         const key = FAVORITE_KEYS[type];
         const stored = localStorage.getItem(key);
@@ -255,125 +124,114 @@
         });
     }
 
-    function startExam(type, bank) {
-        currentMode = 'exam';
-        currentExamType = type;
-        const config = examConfig[type];
-        let shuffled = shuffleArray([...bank]);
-        currentQuestions = shuffled.slice(0, config.total);
-        prepareQuestions();
-        document.getElementById('start-screen').classList.add('screen-hidden');
-        document.getElementById('exam-screen').classList.remove('screen-hidden');
-        document.getElementById('result-screen').classList.add('screen-hidden');
-        document.getElementById('mode-badge').textContent = '模拟考试';
-        document.getElementById('timer-container').style.display = 'block';
-        document.getElementById('submit-btn').classList.remove('hidden');
-        document.getElementById('reset-wrong-btn').classList.add('hidden');
-        document.getElementById('practice-feedback').classList.add('hidden');
-        document.getElementById('favorite-btn').classList.add('hidden');
-        document.getElementById('goto-btn').classList.add('hidden');
-        document.getElementById('current-exam-type').textContent = type + '类';
-        document.getElementById('total-questions').textContent = currentQuestions.length;
-
-        userAnswers = new Array(currentQuestions.length).fill(null);
-        randomizeOptionsForAll();
-
-        timeLeft = config.time * 60;
-        startTime = new Date();
-        startTimer();
-
-        showQuestion(0);
+    // 待做会话
+    function getPendingSessionKey(type, order) {
+        return `${PENDING_KEY_PREFIX}${type}_${order}`;
     }
 
-    function startPractice(type, bank, order, wrongMode, customQuestions = null) {
-        currentMode = 'practice';
-        currentExamType = type;
-        isWrongPractice = wrongMode;
-        // 判断是否为普通刷题（非错题、非收藏）
-        isNormalPractice = !wrongMode && !customQuestions;
-        currentOrder = order; // 记录排序方式
+    function getPendingSession(type, order) {
+        const key = getPendingSessionKey(type, order);
+        const stored = localStorage.getItem(key);
+        return stored ? JSON.parse(stored) : null;
+    }
 
-        // 如果是普通刷题，先清除该类型的待做会话（因为要开始新的）
-        if (isNormalPractice) {
-            clearPendingSession(type);
-        }
+    function savePendingSession(type, order, session) {
+        const key = getPendingSessionKey(type, order);
+        localStorage.setItem(key, JSON.stringify(session));
+        updatePendingStatusAll();
+    }
 
-        let baseQuestions = customQuestions ? [...customQuestions] : [...bank];
-        if (!customQuestions && wrongMode) {
-            const wrongIds = getWrongIds(type);
-            baseQuestions = bank.filter(q => wrongIds.includes(q.id));
-            if (baseQuestions.length === 0) {
-                alert('当前没有错题，先去练习全题库吧！');
+    function clearPendingSession(type, order) {
+        const key = getPendingSessionKey(type, order);
+        localStorage.removeItem(key);
+        updatePendingStatusAll();
+    }
+
+    function updatePendingStatusAll() {
+        document.querySelectorAll('.pending-btn').forEach(btn => {
+            const type = btn.dataset.type;
+            const order = btn.dataset.order;
+            const session = getPendingSession(type, order);
+            let unanswered = 0;
+            let total = 0;
+            if (session) {
+                // 统计未答题数
+                unanswered = session.userAnswers.filter(ans => ans === null || (Array.isArray(ans) && ans.length === 0)).length;
+                total = session.total;
+            } else {
+                const bank = questionBanks[type];
+                if (bank) {
+                    total = bank.length;
+                    unanswered = total; // 无会话时所有题都是未答
+                } else {
+                    btn.textContent = `${order === 'asc' ? '顺序' : order === 'desc' ? '倒序' : '乱序'}(?)`;
+                    return;
+                }
+            }
+            const orderText = order === 'asc' ? '顺序' : order === 'desc' ? '倒序' : '乱序';
+            btn.textContent = `${orderText}(${unanswered})`;
+        });
+    }
+
+    // ----- 题库懒加载 -----
+    function loadQuestionBank(type) {
+        return new Promise((resolve, reject) => {
+            if (questionBanks[type]) {
+                resolve(questionBanks[type]);
                 return;
             }
-        }
-
-        if (order === 'asc') {
-            currentQuestions = baseQuestions;
-        } else if (order === 'desc') {
-            currentQuestions = [...baseQuestions].reverse();
-        } else {
-            currentQuestions = shuffleArray([...baseQuestions]);
-        }
-
-        if (currentQuestions.length === 0) return;
-
-        prepareQuestions();
-
-        // 如果是普通刷题，立即保存待做会话
-        if (isNormalPractice) {
-            const session = {
-                type: type,
-                order: order,
-                questions: currentQuestions.map(q => q.id),
-                userAnswers: userAnswers.map(ans => ans),
-                currentIndex: 0,
-                total: currentQuestions.length,
-                optionOrders: optionOrders
+            showLoading(true, `加载${type}类题库...`);
+            const script = document.createElement('script');
+            script.src = `data_${type}.js`;
+            script.onload = () => {
+                try {
+                    const bank = eval('questions_' + type);
+                    if (bank && Array.isArray(bank)) {
+                        questionBanks[type] = bank;
+                        showLoading(false);
+                        resolve(bank);
+                    } else {
+                        reject(new Error(`题库变量 questions_${type} 不存在或格式错误`));
+                    }
+                } catch (e) {
+                    reject(e);
+                }
             };
-            savePendingSession(type, session);
-        }
+            script.onerror = () => reject(new Error(`题库文件 data_${type}.js 加载失败`));
+            document.head.appendChild(script);
+        });
+    }
 
+    function showLoading(show, msg = '加载中...') {
+        const overlay = document.getElementById('loading-overlay');
+        document.getElementById('loading-message').textContent = msg;
+        if (show) overlay.classList.remove('hidden');
+        else overlay.classList.add('hidden');
+    }
+
+    // ----- 界面显示与隐藏 -----
+    function hideAllScreens() {
         document.getElementById('start-screen').classList.add('screen-hidden');
-        document.getElementById('exam-screen').classList.remove('screen-hidden');
+        document.getElementById('exam-screen').classList.add('screen-hidden');
         document.getElementById('result-screen').classList.add('screen-hidden');
-        document.getElementById('mode-badge').textContent = wrongMode ? '错题练习' : '刷题练习';
-        document.getElementById('timer-container').style.display = 'none';
-        document.getElementById('submit-btn').classList.add('hidden');
-        document.getElementById('favorite-btn').classList.remove('hidden');
-        document.getElementById('goto-btn').classList.remove('hidden');
-        if (wrongMode) {
-            document.getElementById('reset-wrong-btn').classList.remove('hidden');
-        } else {
-            document.getElementById('reset-wrong-btn').classList.add('hidden');
-        }
-        document.getElementById('practice-feedback').classList.remove('hidden');
-        document.getElementById('practice-feedback').innerHTML = '';
-
-        document.getElementById('current-exam-type').textContent = type + '类';
-        document.getElementById('total-questions').textContent = currentQuestions.length;
-
-        userAnswers = new Array(currentQuestions.length).fill(null);
-        randomizeOptionsForAll();
-
-        showQuestion(0);
     }
 
-    function updatePendingSession() {
-        if (!isNormalPractice) return;
-        const type = currentExamType;
-        const session = {
-            type: type,
-            order: currentOrder,
-            questions: currentQuestions.map(q => q.id),
-            userAnswers: userAnswers.map(ans => ans),
-            currentIndex: currentQuestionIndex,
-            total: currentQuestions.length,
-            optionOrders: optionOrders
-        };
-        savePendingSession(type, session);
+    function showStartScreen() {
+        hideAllScreens();
+        document.getElementById('start-screen').classList.remove('screen-hidden');
     }
 
+    function showExamScreen() {
+        hideAllScreens();
+        document.getElementById('exam-screen').classList.remove('screen-hidden');
+    }
+
+    function showResultScreen() {
+        hideAllScreens();
+        document.getElementById('result-screen').classList.remove('screen-hidden');
+    }
+
+    // ----- 题目准备与显示 -----
     function prepareQuestions() {
         currentQuestionIndex = 0;
         optionOrders = currentQuestions.map(q => generateOptionOrder(q.options.length));
@@ -394,150 +252,6 @@
                 map[q.options[optIndex].value] = String.fromCharCode(65 + displayIdx);
             });
             return map;
-        });
-    }
-
-    function generateOptionOrder(count) {
-        return shuffleArray([...Array(count).keys()]);
-    }
-
-    function showQuestion(index) {
-        if (!currentQuestions.length) return;
-        currentQuestionIndex = index;
-        const q = currentQuestions[index];
-
-        document.getElementById('progress').textContent = index + 1;
-        document.getElementById('progress-fill').style.width = `${((index + 1) / currentQuestions.length) * 100}%`;
-        document.getElementById('q-number').textContent = index + 1;
-        document.getElementById('q-id').textContent = q.id;
-        const isMulti = q.answer.length > 1;
-        document.getElementById('q-type').textContent = isMulti ? '多选题' : '单选题';
-        document.getElementById('q-type').style.color = isMulti ? '#c44536' : '#2b6f9e';
-        // 处理题目中的图片标记 [image: 文件名]
-        let questionHtml = q.question.replace(/\[image:\s*([^\]]+)\]/g, '<img src="imageswebp/$1" loading="lazy" class="question-image" alt="题目配图">');
-        document.getElementById('q-text').innerHTML = questionHtml;
-
-        displayOptions(q, index);
-
-        document.getElementById('prev-btn').disabled = index === 0;
-        document.getElementById('next-btn').disabled = index === currentQuestions.length - 1;
-
-        // 练习模式下的反馈处理：每次切换题目都先清空反馈内容和样式类
-        if (currentMode === 'practice') {
-            const feedback = document.getElementById('practice-feedback');
-            feedback.innerHTML = '';
-            feedback.classList.remove('correct', 'incorrect');
-            const userAns = userAnswers[index];
-            if (userAns !== undefined && userAns !== null) {
-                const isCorrect = checkAnswerSingle(q, userAns);
-                showPracticeFeedback(isCorrect);
-            }
-        }
-        updateFavoriteButtonState();
-
-        if (currentMode === 'practice' && isNormalPractice) {
-            updatePendingSession();
-        }
-    }
-
-    async function loadPendingSession(type) {
-        const sessions = getPendingSessions();
-        const session = sessions[type];
-        if (!session) {
-            alert(`没有${type}类的待做练习`);
-            return;
-        }
-        try {
-            const bank = await loadQuestionBank(type);
-            // 根据存储的题目ID重建题目列表
-            const questionMap = {};
-            bank.forEach(q => questionMap[q.id] = q);
-            const questions = session.questions.map(id => questionMap[id]).filter(q => q);
-            if (questions.length !== session.questions.length) {
-                alert('题库已变化，无法恢复待做练习');
-                return;
-            }
-
-            // 恢复全局变量
-            currentQuestions = questions;
-            currentExamType = type;
-            currentMode = 'practice';
-            isWrongPractice = false;
-            isNormalPractice = true;
-            currentOrder = session.order || 'asc';
-            userAnswers = session.userAnswers;
-            currentQuestionIndex = session.currentIndex;
-            optionOrders = session.optionOrders;
-
-            // 重新生成 optionMappings
-            optionMappings = currentQuestions.map((q, idx) => {
-                let map = {};
-                optionOrders[idx].forEach((optIndex, displayIdx) => {
-                    map[q.options[optIndex].value] = String.fromCharCode(65 + displayIdx);
-                });
-                return map;
-            });
-
-            // 显示考试屏幕
-            document.getElementById('start-screen').classList.add('screen-hidden');
-            document.getElementById('exam-screen').classList.remove('screen-hidden');
-            document.getElementById('result-screen').classList.add('screen-hidden');
-            document.getElementById('mode-badge').textContent = '刷题练习';
-            document.getElementById('timer-container').style.display = 'none';
-            document.getElementById('submit-btn').classList.add('hidden');
-            document.getElementById('favorite-btn').classList.remove('hidden');
-            document.getElementById('goto-btn').classList.remove('hidden');
-            document.getElementById('reset-wrong-btn').classList.add('hidden');
-            document.getElementById('practice-feedback').classList.remove('hidden');
-            document.getElementById('practice-feedback').innerHTML = '';
-
-            document.getElementById('current-exam-type').textContent = type + '类';
-            document.getElementById('total-questions').textContent = currentQuestions.length;
-
-            showQuestion(currentQuestionIndex);
-        } catch (e) {
-            alert('恢复待做失败');
-        }
-    }
-
-    function showGotoModal() {
-        let modal = document.getElementById('goto-modal');
-        if (modal) modal.remove();
-        modal = document.createElement('div');
-        modal.id = 'goto-modal';
-        modal.className = 'goto-modal';
-        modal.innerHTML = `
-            <div class="goto-modal-content">
-                <h3>跳转到第几题？</h3>
-                <input type="number" id="goto-input" min="1" max="${currentQuestions.length}" value="${currentQuestionIndex + 1}">
-                <div class="goto-modal-actions">
-                    <button class="goto-confirm">确定</button>
-                    <button class="goto-cancel">取消</button>
-                </div>
-            </div>
-        `;
-        document.body.appendChild(modal);
-
-        const input = modal.querySelector('#goto-input');
-        const confirmBtn = modal.querySelector('.goto-confirm');
-        const cancelBtn = modal.querySelector('.goto-cancel');
-
-        const close = () => modal.remove();
-
-        confirmBtn.addEventListener('click', () => {
-            const num = parseInt(input.value, 10);
-            // 检查是否为有效数字且处于有效范围内
-            if (isNaN(num) || num < 1 || num > currentQuestions.length) {
-                alert(`请输入1-${currentQuestions.length}之间的数字`);
-                return;
-            }
-            showQuestion(num - 1);
-            close();
-        });
-
-        cancelBtn.addEventListener('click', close);
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) close();
         });
     }
 
@@ -625,11 +339,29 @@
         }
         updateOptionSelection(qIndex);
 
+        // 如果是普通刷题，更新待做会话
         if (currentMode === 'practice' && isNormalPractice) {
             updatePendingSession();
         }
 
-        // 如果是练习模式，立即显示反馈
+        // 如果是待做练习（有原始会话），更新原始会话
+        if (pendingIndexMap.length > 0 && pendingOriginalSession) {
+            // 找到当前题目在原始会话中的索引
+            const originalIdx = pendingIndexMap[qIndex];
+            // 复制原始会话
+            let updatedSession = {
+                ...pendingOriginalSession,
+                userAnswers: [...pendingOriginalSession.userAnswers]
+            };
+            // 更新答案
+            updatedSession.userAnswers[originalIdx] = userAnswers[qIndex];
+            // 保存
+            savePendingSession(pendingOriginalType, pendingOriginalOrder, updatedSession);
+            // 更新 pendingOriginalSession 引用
+            pendingOriginalSession = updatedSession;
+        }
+
+        // 练习模式下实时反馈
         if (currentMode === 'practice') {
             const question = currentQuestions[qIndex];
             const userAns = userAnswers[qIndex];
@@ -647,96 +379,322 @@
         });
     }
 
-    function getPendingSessions() {
-        const stored = localStorage.getItem(PENDING_KEY);
-        return stored ? JSON.parse(stored) : {};
+    function showQuestion(index) {
+        if (!currentQuestions.length) return;
+        currentQuestionIndex = index;
+        const q = currentQuestions[index];
+
+        document.getElementById('progress').textContent = index + 1;
+        document.getElementById('progress-fill').style.width = `${((index + 1) / currentQuestions.length) * 100}%`;
+        document.getElementById('q-number').textContent = index + 1;
+        document.getElementById('q-id').textContent = q.id;
+        const isMulti = q.answer.length > 1;
+        document.getElementById('q-type').textContent = isMulti ? '多选题' : '单选题';
+        document.getElementById('q-type').style.color = isMulti ? '#c44536' : '#2b6f9e';
+        // 处理题目中的图片标记 [image: 文件名]
+        let questionHtml = q.question.replace(/\[image:\s*([^\]]+)\]/g, '<img src="images/$1" loading="lazy" class="question-image" alt="题目配图">');
+        document.getElementById('q-text').innerHTML = questionHtml;
+
+        displayOptions(q, index);
+
+        document.getElementById('prev-btn').disabled = index === 0;
+        document.getElementById('next-btn').disabled = index === currentQuestions.length - 1;
+
+        // 练习模式下的反馈处理
+        if (currentMode === 'practice') {
+            const feedback = document.getElementById('practice-feedback');
+            feedback.innerHTML = '';
+            feedback.classList.remove('correct', 'incorrect');
+            const userAns = userAnswers[index];
+            if (userAns !== undefined && userAns !== null) {
+                const isCorrect = checkAnswerSingle(q, userAns);
+                showPracticeFeedback(isCorrect);
+            }
+        }
+        updateFavoriteButtonState();
+
+        // 如果是普通刷题，保存当前进度
+        if (currentMode === 'practice' && isNormalPractice) {
+            updatePendingSession();
+        }
     }
 
-    function savePendingSession(type, session) {
-        const sessions = getPendingSessions();
-        sessions[type] = session;
-        localStorage.setItem(PENDING_KEY, JSON.stringify(sessions));
-        updatePendingStatusAll();
+    // ----- 进度更新与保存 -----
+    function updatePendingSession() {
+        if (!isNormalPractice) return;
+        const type = currentExamType;
+        const order = currentOrder;
+        const session = {
+            questions: currentQuestions.map(q => q.id),
+            userAnswers: userAnswers.map(ans => ans),
+            currentIndex: currentQuestionIndex,
+            total: currentQuestions.length,
+            optionOrders: optionOrders
+        };
+        savePendingSession(type, order, session);
     }
 
-    function clearPendingSession(type) {
-        const sessions = getPendingSessions();
-        if (sessions[type]) delete sessions[type];
-        localStorage.setItem(PENDING_KEY, JSON.stringify(sessions));
-        updatePendingStatusAll();
+    // ----- 恢复会话 -----
+    async function loadPracticeSession(type, order, bank) {
+        const session = getPendingSession(type, order);
+        if (!session) return false;
+
+        const questionMap = {};
+        bank.forEach(q => questionMap[q.id] = q);
+        const questions = session.questions.map(id => questionMap[id]).filter(q => q);
+        if (questions.length !== session.questions.length) {
+            alert('题库已变化，无法恢复');
+            return false;
+        }
+
+        // 恢复全局变量
+        currentQuestions = questions;
+        currentExamType = type;
+        currentMode = 'practice';
+        isWrongPractice = false;
+        isNormalPractice = true;
+        currentOrder = order;
+        userAnswers = session.userAnswers.map(ans => ans); // 深拷贝
+        optionOrders = session.optionOrders.map(orderArr => [...orderArr]); // 深拷贝
+
+        // 重建 optionMappings
+        optionMappings = currentQuestions.map((q, idx) => {
+            let map = {};
+            optionOrders[idx].forEach((optIndex, displayIdx) => {
+                map[q.options[optIndex].value] = String.fromCharCode(65 + displayIdx);
+            });
+            return map;
+        });
+
+        // 根据答案状态自动跳转到第一个未答题
+        let firstUnanswered = -1;
+        for (let i = 0; i < userAnswers.length; i++) {
+            const ans = userAnswers[i];
+            if (ans === null || (Array.isArray(ans) && ans.length === 0)) {
+                firstUnanswered = i;
+                break;
+            }
+        }
+        if (firstUnanswered === -1) {
+            // 所有题都答完了，跳转到最后一题
+            currentQuestionIndex = userAnswers.length - 1;
+        } else {
+            currentQuestionIndex = firstUnanswered;
+        }
+
+        // 显示考试屏幕
+        showExamScreen();
+        document.getElementById('mode-badge').textContent = '刷题练习';
+        document.getElementById('timer-container').style.display = 'none';
+        document.getElementById('submit-btn').classList.add('hidden');
+        document.getElementById('favorite-btn').classList.remove('hidden');
+        document.getElementById('goto-btn').classList.remove('hidden');
+        document.getElementById('reset-wrong-btn').classList.add('hidden');
+        document.getElementById('practice-feedback').classList.remove('hidden');
+        document.getElementById('practice-feedback').innerHTML = '';
+
+        document.getElementById('current-exam-type').textContent = type + '类';
+        document.getElementById('total-questions').textContent = currentQuestions.length;
+
+        showQuestion(currentQuestionIndex);
+        return true;
     }
 
-    function updatePendingStatusAll() {
-        const sessions = getPendingSessions();
-        ['A','B','C'].forEach(t => {
-            const el = document.getElementById(`pending-status-${t}`);
-            if (el) {
-                const session = sessions[t];
-                if (session && session.currentIndex < session.total - 1) {
-                    el.textContent = `第${session.currentIndex+1}/${session.total}题`;
-                } else {
-                    el.textContent = '无';
+    // ----- 练习启动函数 -----
+    function startPractice(type, bank, order, wrongMode, customQuestions = null) {
+        currentMode = 'practice';
+        currentExamType = type;
+        isWrongPractice = wrongMode;
+        isNormalPractice = !wrongMode && !customQuestions; // 普通刷题才保存进度
+        currentOrder = order;
+
+        let baseQuestions = customQuestions ? [...customQuestions] : [...bank];
+
+        // 错题模式过滤
+        if (!customQuestions && wrongMode) {
+            const wrongIds = getWrongIds(type);
+            baseQuestions = bank.filter(q => wrongIds.includes(q.id));
+            if (baseQuestions.length === 0) {
+                alert('当前没有错题，先去练习全题库吧！');
+                return;
+            }
+        }
+
+        // 排序
+        if (order === 'asc') {
+            currentQuestions = baseQuestions;
+        } else if (order === 'desc') {
+            currentQuestions = [...baseQuestions].reverse();
+        } else {
+            currentQuestions = shuffleArray([...baseQuestions]);
+        }
+
+        if (currentQuestions.length === 0) return;
+
+        // 准备选项随机顺序和映射
+        prepareQuestions();
+
+        // 初始化用户答案数组
+        userAnswers = new Array(currentQuestions.length).fill(null);
+
+        // 如果是普通刷题，立即保存待做会话（初始状态）
+        if (isNormalPractice) {
+            const session = {
+                questions: currentQuestions.map(q => q.id),
+                userAnswers: userAnswers.map(ans => ans),
+                currentIndex: 0,
+                total: currentQuestions.length,
+                optionOrders: optionOrders
+            };
+            savePendingSession(type, order, session);
+        }
+
+        // 显示界面
+        showExamScreen();
+        document.getElementById('mode-badge').textContent = wrongMode ? '错题练习' : '刷题练习';
+        document.getElementById('timer-container').style.display = 'none';
+        document.getElementById('submit-btn').classList.add('hidden');
+        document.getElementById('favorite-btn').classList.remove('hidden');
+        document.getElementById('goto-btn').classList.remove('hidden');
+        if (wrongMode) {
+            document.getElementById('reset-wrong-btn').classList.remove('hidden');
+        } else {
+            document.getElementById('reset-wrong-btn').classList.add('hidden');
+        }
+        document.getElementById('practice-feedback').classList.remove('hidden');
+        document.getElementById('practice-feedback').innerHTML = '';
+
+        document.getElementById('current-exam-type').textContent = type + '类';
+        document.getElementById('total-questions').textContent = currentQuestions.length;
+
+        showQuestion(0);
+    }
+
+    async function startPracticeWithLoad(type, order, wrongMode = false) {
+        try {
+            const bank = await loadQuestionBank(type);
+            if (!wrongMode) {
+                const session = getPendingSession(type, order);
+                if (session) {
+                    await loadPracticeSession(type, order, bank);
+                    return;
                 }
             }
-        });
+            startPractice(type, bank, order, wrongMode);
+        } catch (e) {
+            alert('题库加载失败：' + e.message);
+        }
     }
 
-    function getWrongIds(type) {
-        const key = WRONG_KEYS[type];
-        const stored = localStorage.getItem(key);
-        return stored ? JSON.parse(stored) : [];
-    }
-
-    function saveWrongIds(type, ids) {
-        localStorage.setItem(WRONG_KEYS[type], JSON.stringify(ids));
-        updateWrongStatsAll();
-    }
-
-    function updateWrongStorage(questionId, isCorrect, type) {
-        let wrongs = getWrongIds(type);
-        if (!isCorrect) {
-            if (!wrongs.includes(questionId)) {
-                wrongs.push(questionId);
-                saveWrongIds(type, wrongs);
+    // ----- 待做练习（只练未答） -----
+    async function startPendingPractice(type, order) {
+        try {
+            const bank = await loadQuestionBank(type);
+            const session = getPendingSession(type, order);
+            let questions = [];
+            let originalSession = session;
+            let indexMap = [];
+            if (session) {
+                const questionMap = {};
+                bank.forEach(q => questionMap[q.id] = q);
+                const missing = session.questions.filter(id => !questionMap[id]);
+                if (missing.length > 0) {
+                    alert('题库已变化，待做会话已清除');
+                    clearPendingSession(type, order);
+                    questions = bank; // 退化为全题库
+                    originalSession = null;
+                    indexMap = Array.from({length: bank.length}, (_, i) => i);
+                } else {
+                    const validQuestions = session.questions.map(id => questionMap[id]);
+                    const pendingIndices = [];
+                    session.userAnswers.forEach((ans, idx) => {
+                        if (ans === null || (Array.isArray(ans) && ans.length === 0)) {
+                            pendingIndices.push(idx);
+                        }
+                    });
+                    if (pendingIndices.length > 0) {
+                        questions = pendingIndices.map(idx => validQuestions[idx]);
+                        indexMap = pendingIndices; // 当前题目列表的索引对应原始会话的索引
+                    } else {
+                        alert('当前没有未答题目');
+                        return;
+                    }
+                }
+            } else {
+                questions = bank;
+                indexMap = Array.from({length: bank.length}, (_, i) => i);
+                originalSession = null;
             }
-        } else {
-            const index = wrongs.indexOf(questionId);
-            if (index !== -1) {
-                wrongs.splice(index, 1);
-                saveWrongIds(type, wrongs);
+
+            // 保存待做练习的原始会话信息
+            pendingOriginalSession = originalSession ? { ...originalSession, userAnswers: [...originalSession.userAnswers] } : null;
+            pendingOriginalType = type;
+            pendingOriginalOrder = order;
+            pendingIndexMap = indexMap;
+
+            // 启动练习（不保存新会话）
+            startPractice(type, bank, order, false, questions);
+        } catch (e) {
+            alert('加载失败：' + e.message);
+        }
+    }
+
+    // ----- 收藏练习 -----
+    async function startFavoritePractice(type) {
+        try {
+            const bank = await loadQuestionBank(type);
+            const favIds = getFavoriteIds(type);
+            const questions = bank.filter(q => favIds.includes(q.id));
+            if (questions.length === 0) {
+                alert('当前没有收藏的题目，先去学习题目界面收藏吧！');
+                return;
             }
+            startPractice(type, bank, 'asc', false, questions); // 收藏题按原序练习，不保存进度
+        } catch (e) {
+            alert('题库加载失败');
         }
     }
 
-    function addWrongItem(questionId, type) {
-        let wrongs = getWrongIds(type);
-        if (!wrongs.includes(questionId)) {
-            wrongs.push(questionId);
-            saveWrongIds(type, wrongs);
+    // ----- 模拟考试 -----
+    function startExam(type, bank) {
+        currentMode = 'exam';
+        currentExamType = type;
+        const config = examConfig[type];
+        let shuffled = shuffleArray([...bank]);
+        currentQuestions = shuffled.slice(0, config.total);
+        prepareQuestions();
+        showExamScreen();
+        document.getElementById('mode-badge').textContent = '模拟考试';
+        document.getElementById('timer-container').style.display = 'block';
+        document.getElementById('submit-btn').classList.remove('hidden');
+        document.getElementById('reset-wrong-btn').classList.add('hidden');
+        document.getElementById('practice-feedback').classList.add('hidden');
+        document.getElementById('favorite-btn').classList.add('hidden');
+        document.getElementById('goto-btn').classList.add('hidden');
+
+        document.getElementById('current-exam-type').textContent = type + '类';
+        document.getElementById('total-questions').textContent = currentQuestions.length;
+
+        userAnswers = new Array(currentQuestions.length).fill(null);
+        randomizeOptionsForAll();
+
+        timeLeft = config.time * 60;
+        startTime = new Date();
+        startTimer();
+
+        showQuestion(0);
+    }
+
+    async function startExamWithLoad(type) {
+        try {
+            const bank = await loadQuestionBank(type);
+            startExam(type, bank);
+        } catch (e) {
+            alert('题库加载失败，请刷新重试\n' + e.message);
         }
     }
 
-    function updateWrongStatsAll() {
-        ['A','B','C'].forEach(t => {
-            const ids = getWrongIds(t);
-            document.getElementById(`wrong-count-${t}`).textContent = ids.length;
-        });
-    }
-
-    function removeCurrentFromWrong() {
-        if (currentMode !== 'practice' || !currentQuestions.length) return;
-        const q = currentQuestions[currentQuestionIndex];
-        let wrongs = getWrongIds(currentExamType);
-        const id = q.id;
-        if (wrongs.includes(id)) {
-            wrongs = wrongs.filter(w => w !== id);
-            saveWrongIds(currentExamType, wrongs);
-            alert('已从错题本移除');
-        } else {
-            alert('当前题目不在错题本中');
-        }
-    }
-
+    // ----- 导航与提交 -----
     function nextQuestion() {
         if (currentQuestionIndex < currentQuestions.length - 1) {
             showQuestion(currentQuestionIndex + 1);
@@ -766,24 +724,19 @@
         const minutes = Math.floor(used / 60);
         const seconds = used % 60;
 
-        document.getElementById('exam-screen').classList.add('screen-hidden');
-        document.getElementById('result-screen').classList.remove('screen-hidden');
+        showResultScreen();
 
-        // 填充错题列表（容器默认隐藏）
         displayExamWrongs(wrongs);
-        // 将模拟考试中的错题加入错题本
         wrongs.forEach(w => addWrongItem(w.question.id, currentExamType));
 
-        // 确保错题容器初始隐藏（如果无错题，也可隐藏按钮）
         const container = document.getElementById('wrong-questions-container');
         const toggleBtn = document.getElementById('toggle-wrong-btn');
         if (wrongs.length === 0) {
-            // 没有错题时，隐藏按钮和容器
             toggleBtn.style.display = 'none';
             container.classList.add('hidden');
         } else {
             toggleBtn.style.display = 'inline-block';
-            container.classList.add('hidden'); // 初始隐藏
+            container.classList.add('hidden');
             toggleBtn.textContent = '查看错题';
         }
 
@@ -832,39 +785,108 @@
         document.getElementById('time').textContent = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
     }
 
-    function shuffleArray(arr) {
-        for (let i = arr.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [arr[i], arr[j]] = [arr[j], arr[i]];
+    // ----- 收藏按钮 -----
+    function toggleFavorite() {
+        if (currentMode !== 'practice') return;
+        const q = currentQuestions[currentQuestionIndex];
+        const type = currentExamType;
+        let favs = getFavoriteIds(type);
+        const id = q.id;
+        if (favs.includes(id)) {
+            favs = favs.filter(f => f !== id);
+        } else {
+            favs.push(id);
         }
-        return arr;
+        saveFavoriteIds(type, favs);
+        updateFavoriteButtonState();
     }
 
-    // 查询功能
-    document.getElementById('query-btn').addEventListener('click', performQuery);
-    document.getElementById('query-input').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            performQuery();
+    function updateFavoriteButtonState() {
+        if (currentMode !== 'practice') return;
+        const q = currentQuestions[currentQuestionIndex];
+        const type = currentExamType;
+        const favs = getFavoriteIds(type);
+        const btn = document.getElementById('favorite-btn');
+        if (favs.includes(q.id)) {
+            btn.classList.add('favorited');
+            btn.textContent = '★ 已收藏';
+        } else {
+            btn.classList.remove('favorited');
+            btn.textContent = '☆ 收藏';
         }
-    });
+    }
 
+    // ----- 移出错题 -----
+    function removeCurrentFromWrong() {
+        if (currentMode !== 'practice' || !currentQuestions.length) return;
+        const q = currentQuestions[currentQuestionIndex];
+        let wrongs = getWrongIds(currentExamType);
+        const id = q.id;
+        if (wrongs.includes(id)) {
+            wrongs = wrongs.filter(w => w !== id);
+            saveWrongIds(currentExamType, wrongs);
+            alert('已从错题本移除');
+        } else {
+            alert('当前题目不在错题本中');
+        }
+    }
+
+    // ----- 跳转 -----
+    function showGotoModal() {
+        let modal = document.getElementById('goto-modal');
+        if (modal) modal.remove();
+        modal = document.createElement('div');
+        modal.id = 'goto-modal';
+        modal.className = 'goto-modal';
+        modal.innerHTML = `
+            <div class="goto-modal-content">
+                <h3>跳转到第几题？</h3>
+                <input type="number" id="goto-input" min="1" max="${currentQuestions.length}" value="${currentQuestionIndex + 1}">
+                <div class="goto-modal-actions">
+                    <button class="goto-confirm">确定</button>
+                    <button class="goto-cancel">取消</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        const input = modal.querySelector('#goto-input');
+        const confirmBtn = modal.querySelector('.goto-confirm');
+        const cancelBtn = modal.querySelector('.goto-cancel');
+
+        const close = () => modal.remove();
+
+        confirmBtn.addEventListener('click', () => {
+            const num = parseInt(input.value, 10);
+            if (isNaN(num) || num < 1 || num > currentQuestions.length) {
+                alert(`请输入1-${currentQuestions.length}之间的数字`);
+                return;
+            }
+            showQuestion(num - 1);
+            close();
+        });
+
+        cancelBtn.addEventListener('click', close);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) close();
+        });
+    }
+
+    // ----- 查询功能 -----
     async function performQuery() {
         const rawInput = document.getElementById('query-input').value.trim();
         if (!rawInput) {
             alert('请输入查询关键字');
             return;
         }
-        // 限制输入长度，防止超长字符串攻击
         if (rawInput.length > 100) {
             alert('查询内容过长，请精简后重试');
             return;
         }
-        // 转义输入
         const keyword = escapeHTML(rawInput);
 
         showLoading(true, '正在加载题库数据...');
-        
-        // 确保所有题库都已加载
+
         const types = ['A', 'B', 'C'];
         for (let type of types) {
             if (!questionBanks[type]) {
@@ -878,12 +900,11 @@
                 }
             }
         }
-        
+
         showLoading(false);
 
-        // 搜索匹配的题目
         const results = [];
-        
+
         // 1. 全字匹配完整ID
         types.forEach(type => {
             const bank = questionBanks[type];
@@ -894,8 +915,8 @@
                 }
             });
         });
-        
-        // 2. 如果没有，匹配后四位（连字符后部分）
+
+        // 2. 匹配后四位
         if (results.length === 0) {
             types.forEach(type => {
                 const bank = questionBanks[type];
@@ -909,8 +930,8 @@
                 });
             });
         }
-        
-        // 3. 如果还没有，关键词模糊匹配（包含即可）
+
+        // 3. 关键词模糊匹配
         if (results.length === 0) {
             types.forEach(type => {
                 const bank = questionBanks[type];
@@ -929,24 +950,22 @@
     function displayQueryResults(results) {
         const container = document.getElementById('query-results');
         container.innerHTML = '';
-        
+
         if (results.length === 0) {
             container.innerHTML = '<p style="text-align:center; color:#7f8c8d;">未找到匹配的题目</p>';
             return;
         }
 
-        results.forEach((item, idx) => {
+        results.forEach((item) => {
             const q = item.question;
             const type = item.type;
-            
-            // 构建选项HTML
+
             let optionsHtml = '';
             q.options.forEach((opt, i) => {
                 const letter = String.fromCharCode(65 + i);
                 optionsHtml += `<div class="option" style="cursor:default;">${letter}. ${opt.text}</div>`;
             });
 
-            // 将正确答案（如 "A" 或 "AC"）转换为字母显示
             let correctDisplay = '';
             for (let char of q.answer) {
                 const optIndex = q.options.findIndex(opt => opt.value === char);
@@ -957,8 +976,7 @@
 
             const itemDiv = document.createElement('div');
             itemDiv.className = 'query-item';
-            // 处理题目中的图片标记
-            const questionHtml = q.question.replace(/\[image:\s*([^\]]+)\]/g, '<img src="imageswebp/$1" loading="lazy" class="question-image" alt="题目配图">');
+            const questionHtml = q.question.replace(/\[image:\s*([^\]]+)\]/g, '<img src="images/$1" loading="lazy" class="question-image" alt="题目配图">');
             itemDiv.innerHTML = `
                 <div class="badge">${type}类题库</div>
                 <h4>${q.id}</h4>
@@ -969,4 +987,102 @@
             container.appendChild(itemDiv);
         });
     }
+
+    // ----- DOM 初始化 -----
+    document.addEventListener('DOMContentLoaded', function() {
+        // 确保启动界面显示
+        showStartScreen();
+        document.getElementById('loading-overlay').classList.add('hidden');
+
+        // 预加载题库，更新待做按钮显示
+        Promise.allSettled([
+            loadQuestionBank('A').catch(e => console.error('A题库加载失败', e)),
+            loadQuestionBank('B').catch(e => console.error('B题库加载失败', e)),
+            loadQuestionBank('C').catch(e => console.error('C题库加载失败', e))
+        ]).then(() => {
+            updatePendingStatusAll();
+        });
+
+        updateWrongStatsAll();
+        updateFavoriteStatsAll();
+
+        // 弹窗关闭
+        const modal = document.getElementById('startup-modal');
+        if (modal) {
+            const closeBtn = modal.querySelector('.modal-close');
+            const confirmBtn = modal.querySelector('.modal-confirm');
+            const closeModal = () => modal.style.display = 'none';
+            closeBtn.addEventListener('click', closeModal);
+            confirmBtn.addEventListener('click', closeModal);
+        }
+
+        // 事件监听
+        document.querySelectorAll('.exam-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const type = e.target.dataset.type;
+                startExamWithLoad(type);
+            });
+        });
+
+        document.querySelectorAll('.practice-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const type = e.target.dataset.type;
+                const order = e.target.dataset.order;
+                startPracticeWithLoad(type, order, false);
+            });
+        });
+
+        document.querySelectorAll('.wrong-practice-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const type = e.target.dataset.type;
+                startPracticeWithLoad(type, 'asc', true);
+            });
+        });
+
+        document.querySelectorAll('.favorite-practice-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const type = e.target.dataset.type;
+                startFavoritePractice(type);
+            });
+        });
+
+        document.querySelectorAll('.pending-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const type = e.target.dataset.type;
+                const order = e.target.dataset.order;
+                startPendingPractice(type, order);
+            });
+        });
+
+        document.getElementById('exit-practice-btn').addEventListener('click', () => {
+            clearInterval(timerInterval);
+            // 重置待做状态
+            pendingOriginalSession = null;
+            pendingOriginalType = null;
+            pendingOriginalOrder = null;
+            pendingIndexMap = [];
+            showStartScreen();
+        });
+
+        document.getElementById('prev-btn').addEventListener('click', prevQuestion);
+        document.getElementById('next-btn').addEventListener('click', nextQuestion);
+        document.getElementById('submit-btn').addEventListener('click', () => {
+            if (confirm('确定提交答案吗？')) submitExam();
+        });
+        document.getElementById('reset-wrong-btn').addEventListener('click', removeCurrentFromWrong);
+
+        document.getElementById('toggle-wrong-btn').addEventListener('click', function() {
+            const container = document.getElementById('wrong-questions-container');
+            container.classList.toggle('hidden');
+            this.textContent = container.classList.contains('hidden') ? '查看错题' : '隐藏错题';
+        });
+
+        document.getElementById('favorite-btn').addEventListener('click', toggleFavorite);
+        document.getElementById('goto-btn').addEventListener('click', showGotoModal);
+
+        document.getElementById('query-btn').addEventListener('click', performQuery);
+        document.getElementById('query-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') performQuery();
+        });
+    });
 })();
