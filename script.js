@@ -651,7 +651,7 @@
             const itemDiv = document.createElement('div');
             itemDiv.className = 'query-item';
             // 处理题目中的图片标记
-            const questionHtml = q.question.replace(/\[image:\s*([^\]]+)\]/g, '<img src="images/$1" loading="lazy" class="question-image" alt="题目配图">');
+            const questionHtml = q.question.replace(/\[image:\s*([^\]]+)\]/g, '<img src="imageswebp/$1" loading="lazy" class="question-image" alt="题目配图">');
             itemDiv.innerHTML = `
                 <div class="badge">${type}类题库</div>
                 <h4>${q.id}</h4>
