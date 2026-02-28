@@ -112,6 +112,16 @@
         document.getElementById('reset-wrong-btn').addEventListener('click', removeCurrentFromWrong);
     });
 
+    function escapeHTML(str) {
+        return str.replace(/[&<>"]/g, function(match) {
+            if (match === '&') return '&amp;';
+            if (match === '<') return '&lt;';
+            if (match === '>') return '&gt;';
+            if (match === '"') return '&quot;';
+            return match;
+        });
+    }
+
     // ----- 懒加载题库 -----
     function loadQuestionBank(type) {
         return new Promise((resolve, reject) => {
@@ -401,7 +411,8 @@
         const close = () => modal.remove();
 
         confirmBtn.addEventListener('click', () => {
-            const num = parseInt(input.value);
+            const num = parseInt(input.value, 10);
+            // 检查是否为有效数字且处于有效范围内
             if (isNaN(num) || num < 1 || num > currentQuestions.length) {
                 alert(`请输入1-${currentQuestions.length}之间的数字`);
                 return;
@@ -686,11 +697,18 @@
     });
 
     async function performQuery() {
-        const keyword = document.getElementById('query-input').value.trim();
-        if (!keyword) {
+        const rawInput = document.getElementById('query-input').value.trim();
+        if (!rawInput) {
             alert('请输入查询关键字');
             return;
         }
+        // 限制输入长度，防止超长字符串攻击
+        if (rawInput.length > 100) {
+            alert('查询内容过长，请精简后重试');
+            return;
+        }
+        // 转义输入
+        const keyword = escapeHTML(rawInput);
 
         showLoading(true, '正在加载题库数据...');
         
