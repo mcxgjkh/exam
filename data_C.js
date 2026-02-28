@@ -13318,7 +13318,7 @@ const questions_C = [
     },
     {
         "id": "MC1-0665",
-        "question": "谐振的垂直接地天线的振子长度最短也要1/4波长。如果架设天线时因条件受限而不得 不将振子缩短，那么在振子之中串入电感可以补偿失去的感抗，使天线谐振在所需频率上。 为了提高发射效率，应在振子的什么位置串入电感需根据架设条件择优确定。下图给出三种 加感方案。假设振子（灰色部分）均等长，则A、B、C三种方案按发射效率可排列为：[image: MC1-0665.png]",
+        "question": "谐振的垂直接地天线的振子长度最短也要1/4波长。如果架设天线时因条件受限而不得 不将振子缩短，那么在振子之中串入电感可以补偿失去的感抗，使天线谐振在所需频率上。 为了提高发射效率，应在振子的什么位置串入电感需根据架设条件择优确定。下图给出三种 加感方案。假设振子（灰色部分）均等长，则A、B、C三种方案按发射效率可排列为： [image: MC1-0665.webp]",
         "answer": "A",
         "options": [
             {
@@ -15043,7 +15043,7 @@ const questions_C = [
     },
     {
         "id": "MC1-0740",
-        "question": "下图所示是我国业余无线电爱好者开展野外通信活动常用的14/21/29MHz三频段偶极 天线。图中天线各段的电气长度应分别为：[image: MC1-0740.png]",
+        "question": "下图所示是我国业余无线电爱好者开展野外通信活动常用的14/21/29MHz三频段偶极 天线。图中天线各段的电气长度应分别为： [image: MC1-0740.webp]",
         "answer": "A",
         "options": [
             {
@@ -15066,7 +15066,7 @@ const questions_C = [
     },
     {
         "id": "MC1-0741",
-        "question": "下图所示是我国业余无线电爱好者开展野外通信活动常用的14/21/29MHz三频段偶极 天线。图中部件A、B、C、D的作用分别为：[image: MC1-0741.png]",
+        "question": "下图所示是我国业余无线电爱好者开展野外通信活动常用的14/21/29MHz三频段偶极 天线。图中部件A、B、C、D的作用分别为： [image: MC1-0741.webp]",
         "answer": "A",
         "options": [
             {
@@ -15089,7 +15089,7 @@ const questions_C = [
     },
     {
         "id": "MC1-0742",
-        "question": "谐振偶极天线的振子长度最短也要半个波长。如果架设天线时因条件受限而不得不将振 子缩短，那么在振子之中串入电感可以补偿失去的感抗，使天线谐振在所需频率下。为了提 高发射效率，应在振子的什么位置串入电感需根据架设条件择优确定。下图给出三种加感方 案。假设振子（灰色部分）均等长，则A、B、C三种方案按发射效率可排列为：[image: MC1-0742.png]",
+        "question": "谐振偶极天线的振子长度最短也要半个波长。如果架设天线时因条件受限而不得不将振 子缩短，那么在振子之中串入电感可以补偿失去的感抗，使天线谐振在所需频率下。为了提 高发射效率，应在振子的什么位置串入电感需根据架设条件择优确定。下图给出三种加感方 案。假设振子（灰色部分）均等长，则A、B、C三种方案按发射效率可排列为： [image: MC1-0742.webp]",
         "answer": "A",
         "options": [
             {
@@ -15112,7 +15112,7 @@ const questions_C = [
     },
     {
         "id": "MC1-0743",
-        "question": "对于需要频繁改换频段的业余无线电业务，爱好者们有时会将所用频段的偶极振子并联 起来一同馈电，构成一种用一根电缆即可操作的多频段天线。下图给出了一副由7、14和 28MHz半波长振子构成的多频段天线实例。关于其工作原理，以下分析正确的是：[image: MC1-0743.png]",
+        "question": "对于需要频繁改换频段的业余无线电业务，爱好者们有时会将所用频段的偶极振子并联 起来一同馈电，构成一种用一根电缆即可操作的多频段天线。下图给出了一副由7、14和 28MHz半波长振子构成的多频段天线实例。关于其工作原理，以下分析正确的是： [image: MC1-0743.webp]",
         "answer": "A",
         "options": [
             {
@@ -15434,7 +15434,7 @@ const questions_C = [
     },
     {
         "id": "MC1-0757",
-        "question": "塔上某天线通过50欧馈线连至50欧输出阻抗的收发信机。现需要在天线电路中串入天 线调谐器ATU和通过式驻波功率计M对天线的匹配情况进行补偿和监测。有四种方案可选： 1：ATU和M都在塔顶；2：ATU和M都在塔底；3：ATU在塔底，M在机房；4：ATU和M 都在机房。ATU完成调谐时，若按天线系统整体效率从高到低为序，各方案可排列为：[image: MC1-0757.png]",
+        "question": "塔上某天线通过50欧馈线连至50欧输出阻抗的收发信机。现需要在天线电路中串入天 线调谐器ATU和通过式驻波功率计M对天线的匹配情况进行补偿和监测。有四种方案可选： 1：ATU和M都在塔顶；2：ATU和M都在塔底；3：ATU在塔底，M在机房；4：ATU和M 都在机房。ATU完成调谐时，若按天线系统整体效率从高到低为序，各方案可排列为： [image: MC1-0757.webp]",
         "answer": "A",
         "options": [
             {
@@ -16147,7 +16147,7 @@ const questions_C = [
     },
     {
         "id": "MC1-0788",
-        "question": "业余条件下测试天线增益的典型方法如下图所示。用场强表或接收机接收设置在远处同 一地点，最大辐射方向朝向自己的半波偶极天线（上）和待测天线（下）的信号。调整送至 两副天线的射频功率Po和P，使收到的场强相同。则，待测天线的增益dBd值为： [image: MC1-0788.png]",
+        "question": "业余条件下测试天线增益的典型方法如下图所示。用场强表或接收机接收设置在远处同 一地点，最大辐射方向朝向自己的半波偶极天线（上）和待测天线（下）的信号。调整送至 两副天线的射频功率Po和P，使收到的场强相同。则，待测天线的增益dBd值为： [image: MC1-0788.webp]",
         "answer": "A",
         "options": [
             {
@@ -16170,7 +16170,7 @@ const questions_C = [
     },
     {
         "id": "MC1-0789",
-        "question": "业余条件下测试天线增益的典型方法如下图所示。用场强表或接收机接收设置在远处同 一地点，最大辐射方向朝向自己的半波偶极天线（上）和待测天线（下）的信号。调整送至 两副天线的射频功率Po和P，使收到的场强相同。则，待测天线的增益dBi值为： [image: MC1-0789.png]",
+        "question": "业余条件下测试天线增益的典型方法如下图所示。用场强表或接收机接收设置在远处同 一地点，最大辐射方向朝向自己的半波偶极天线（上）和待测天线（下）的信号。调整送至 两副天线的射频功率Po和P，使收到的场强相同。则，待测天线的增益dBi值为： [image: MC1-0789.webp]",
         "answer": "A",
         "options": [
             {
@@ -22196,7 +22196,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1059",
-        "question": "附图中的电路元器件符号代表： [image: MC1-1059.png]",
+        "question": "附图中的电路元器件符号代表： [image: MC1-1059.webp]",
         "answer": "A",
         "options": [
             {
@@ -22219,7 +22219,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1060",
-        "question": "附图中的电路元器件符号代表： [image: MC1-1060.png]",
+        "question": "附图中的电路元器件符号代表： [image: MC1-1060.webp]",
         "answer": "A",
         "options": [
             {
@@ -22242,7 +22242,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1061",
-        "question": "附图中的电路元器件符号代表： [image: MC1-1061.png]",
+        "question": "附图中的电路元器件符号代表： [image: MC1-1061.webp]",
         "answer": "A",
         "options": [
             {
@@ -22265,7 +22265,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1062",
-        "question": "附图中的电路元器件符号代表： 234 [image: MC1-1062.png]",
+        "question": "附图中的电路元器件符号代表： 234 [image: MC1-1062.webp]",
         "answer": "A",
         "options": [
             {
@@ -22288,7 +22288,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1063",
-        "question": "附图中的电路元器件符号代表： [image: MC1-1063.png]",
+        "question": "附图中的电路元器件符号代表： [image: MC1-1063.webp]",
         "answer": "A",
         "options": [
             {
@@ -22311,7 +22311,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1064",
-        "question": "附图中的电路元器件符号代表： [image: MC1-1064.png]",
+        "question": "附图中的电路元器件符号代表： [image: MC1-1064.webp]",
         "answer": "A",
         "options": [
             {
@@ -22334,7 +22334,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1065",
-        "question": "附图中的电路元器件符号代表： [image: MC1-1065.png]",
+        "question": "附图中的电路元器件符号代表： [image: MC1-1065.webp]",
         "answer": "A",
         "options": [
             {
@@ -22357,7 +22357,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1066",
-        "question": "附图中的电路元器件符号代表： 235 [image: MC1-1066.png]",
+        "question": "附图中的电路元器件符号代表： 235 [image: MC1-1066.webp]",
         "answer": "A",
         "options": [
             {
@@ -22380,7 +22380,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1067",
-        "question": "附图中的电路元器件符号代表： [image: MC1-1067.png]",
+        "question": "附图中的电路元器件符号代表： [image: MC1-1067.webp]",
         "answer": "A",
         "options": [
             {
@@ -22403,7 +22403,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1068",
-        "question": "附图中的电路元器件符号代表： [image: MC1-1068.png]",
+        "question": "附图中的电路元器件符号代表： [image: MC1-1068.webp]",
         "answer": "A",
         "options": [
             {
@@ -24289,7 +24289,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1150",
-        "question": "图中的电路为： [image: MC1-1150.png]",
+        "question": "图中的电路为： [image: MC1-1150.webp]",
         "answer": "A",
         "options": [
             {
@@ -24312,7 +24312,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1151",
-        "question": "图中的电路为： [image: MC1-1151.png]",
+        "question": "图中的电路为： [image: MC1-1151.webp]",
         "answer": "A",
         "options": [
             {
@@ -24335,7 +24335,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1152",
-        "question": "图中的电路为： [image: MC1-1152.png]",
+        "question": "图中的电路为： [image: MC1-1152.webp]",
         "answer": "A",
         "options": [
             {
@@ -24358,7 +24358,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1153",
-        "question": "在下面的三极管放大电路中，Rc的常用名称和作用是： [image: MC1-1153.png]",
+        "question": "在下面的三极管放大电路中，Rc的常用名称和作用是： [image: MC1-1153.webp]",
         "answer": "A",
         "options": [
             {
@@ -24381,7 +24381,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1154",
-        "question": "在下面的三极管放大电路中，Re的常用名称和作用是： [image: MC1-1154.png]",
+        "question": "在下面的三极管放大电路中，Re的常用名称和作用是： [image: MC1-1154.webp]",
         "answer": "A",
         "options": [
             {
@@ -24404,7 +24404,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1155",
-        "question": "在下面的三极管放大电路中，Rb1的常用名称和作用是： [image: MC1-1155.png]",
+        "question": "在下面的三极管放大电路中，Rb1的常用名称和作用是： [image: MC1-1155.webp]",
         "answer": "A",
         "options": [
             {
@@ -24427,7 +24427,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1156",
-        "question": "在下面的三极管放大电路中，Cb的常用名称和作用是： [image: MC1-1156.png]",
+        "question": "在下面的三极管放大电路中，Cb的常用名称和作用是： [image: MC1-1156.webp]",
         "answer": "A",
         "options": [
             {
@@ -24450,7 +24450,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1157",
-        "question": "在下面的三极管放大电路中，Ce的常用名称和作用是： [image: MC1-1157.png]",
+        "question": "在下面的三极管放大电路中，Ce的常用名称和作用是： [image: MC1-1157.webp]",
         "answer": "A",
         "options": [
             {
@@ -24473,7 +24473,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1158",
-        "question": "在下面的三极管放大电路中，Cc的常用名称和作用是： [image: MC1-1158.png]",
+        "question": "在下面的三极管放大电路中，Cc的常用名称和作用是： [image: MC1-1158.webp]",
         "answer": "A",
         "options": [
             {
@@ -24496,7 +24496,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1159",
-        "question": "下列电路具备的功能是： [image: MC1-1159.png]",
+        "question": "下列电路具备的功能是： [image: MC1-1159.webp]",
         "answer": "A",
         "options": [
             {
@@ -24519,7 +24519,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1160",
-        "question": "下列电路具备的功能是： [image: MC1-1160.png]",
+        "question": "下列电路具备的功能是： [image: MC1-1160.webp]",
         "answer": "A",
         "options": [
             {
@@ -24542,7 +24542,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1161",
-        "question": "下列电路具备的功能是： [image: MC1-1161.png]",
+        "question": "下列电路具备的功能是： [image: MC1-1161.webp]",
         "answer": "A",
         "options": [
             {
@@ -24565,7 +24565,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1162",
-        "question": "下列电路具备的功能是： [image: MC1-1162.png]",
+        "question": "下列电路具备的功能是： [image: MC1-1162.webp]",
         "answer": "A",
         "options": [
             {
@@ -24588,7 +24588,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1163",
-        "question": "下列电路具备的功能是： [image: MC1-1163.png]",
+        "question": "下列电路具备的功能是： [image: MC1-1163.webp]",
         "answer": "A",
         "options": [
             {
@@ -24611,7 +24611,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1164",
-        "question": "下列电路具备的功能是： [image: MC1-1164.png]",
+        "question": "下列电路具备的功能是： [image: MC1-1164.webp]",
         "answer": "A",
         "options": [
             {
@@ -24634,7 +24634,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1165",
-        "question": "下列电路具备的功能是： [image: MC1-1165.png]",
+        "question": "下列电路具备的功能是： [image: MC1-1165.webp]",
         "answer": "A",
         "options": [
             {
@@ -24657,7 +24657,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1166",
-        "question": "下列电路具备的功能是： [image: MC1-1166.png]",
+        "question": "下列电路具备的功能是： [image: MC1-1166.webp]",
         "answer": "A",
         "options": [
             {
@@ -24680,7 +24680,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1167",
-        "question": "下列电路具备的功能是： [image: MC1-1167.png]",
+        "question": "下列电路具备的功能是： [image: MC1-1167.webp]",
         "answer": "A",
         "options": [
             {
@@ -24703,7 +24703,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1168",
-        "question": "下列电路具备的功能是： [image: MC1-1168.png]",
+        "question": "下列电路具备的功能是： [image: MC1-1168.webp]",
         "answer": "A",
         "options": [
             {
@@ -24726,7 +24726,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1169",
-        "question": "下列电路具备的功能是： [image: MC1-1169.png]",
+        "question": "下列电路具备的功能是： [image: MC1-1169.webp]",
         "answer": "A",
         "options": [
             {
@@ -24749,7 +24749,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1170",
-        "question": "下列电路是一个： [image: MC1-1170.png]",
+        "question": "下列电路是一个： [image: MC1-1170.webp]",
         "answer": "A",
         "options": [
             {
@@ -24772,7 +24772,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1171",
-        "question": "下列电路是一个： [image: MC1-1171.png]",
+        "question": "下列电路是一个： [image: MC1-1171.webp]",
         "answer": "A",
         "options": [
             {
@@ -24795,7 +24795,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1172",
-        "question": "下列电路是一个： [image: MC1-1172.png]",
+        "question": "下列电路是一个： [image: MC1-1172.webp]",
         "answer": "A",
         "options": [
             {
@@ -24818,7 +24818,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1173",
-        "question": "下列电路是一个： [image: MC1-1173.png]",
+        "question": "下列电路是一个： [image: MC1-1173.webp]",
         "answer": "A",
         "options": [
             {
@@ -24841,7 +24841,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1174",
-        "question": "下列电路是一个： [image: MC1-1174.png]",
+        "question": "下列电路是一个： [image: MC1-1174.webp]",
         "answer": "A",
         "options": [
             {
@@ -24864,7 +24864,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1175",
-        "question": "下列电路是一个： [image: MC1-1175.png]",
+        "question": "下列电路是一个： [image: MC1-1175.webp]",
         "answer": "A",
         "options": [
             {
@@ -24887,7 +24887,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1176",
-        "question": "下列电路是一个： [image: MC1-1176.png]",
+        "question": "下列电路是一个： [image: MC1-1176.webp]",
         "answer": "A",
         "options": [
             {
@@ -24910,7 +24910,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1177",
-        "question": "下列电路是一个： [image: MC1-1177.png]",
+        "question": "下列电路是一个： [image: MC1-1177.webp]",
         "answer": "A",
         "options": [
             {
@@ -24933,7 +24933,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1178",
-        "question": "下列电路是一个： [image: MC1-1178.png]",
+        "question": "下列电路是一个： [image: MC1-1178.webp]",
         "answer": "A",
         "options": [
             {
@@ -24956,7 +24956,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1179",
-        "question": "金属氧化物绝缘栅场效应管（MOSFET）经常用来实现只有开与关两个状态的电路。在这 种电路中，术语“截止”与”饱和”是指晶体管的什么工作状态？ [image: MC1-1179.png]",
+        "question": "金属氧化物绝缘栅场效应管（MOSFET）经常用来实现只有开与关两个状态的电路。在这 种电路中，术语“截止”与”饱和”是指晶体管的什么工作状态？ [image: MC1-1179.webp]",
         "answer": "A",
         "options": [
             {
