@@ -36,6 +36,16 @@
 
         updateWrongStatsAll();
 
+        // 弹窗关闭功能
+        const modal = document.getElementById('startup-modal');
+        if (modal) {
+            const closeBtn = modal.querySelector('.modal-close');
+            const confirmBtn = modal.querySelector('.modal-confirm');
+            const closeModal = () => modal.style.display = 'none';
+            closeBtn.addEventListener('click', closeModal);
+            confirmBtn.addEventListener('click', closeModal);
+        }
+
         // 模拟考试按钮
         document.querySelectorAll('.exam-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
