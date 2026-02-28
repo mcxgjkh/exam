@@ -286,7 +286,7 @@ const questions_C = [
             },
             {
                 "value": "B",
-                "text": "一个业余无线电台只能包含一个发信机 3"
+                "text": "一个业余无线电台只能包含一个发信机"
             },
             {
                 "value": "C",
@@ -382,7 +382,7 @@ const questions_C = [
             },
             {
                 "value": "C",
-                "text": "单边带发射是不传送载波的调幅发射 4"
+                "text": "单边带发射是不传送载波的调幅发射"
             },
             {
                 "value": "D",
@@ -576,7 +576,7 @@ const questions_C = [
     },
     {
         "id": "MC1-0026",
-        "question": "无线电波是指： 6",
+        "question": "无线电波是指：",
         "answer": "A",
         "options": [
             {
@@ -673,7 +673,7 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "应当及时向作出许可决定的无线电管理机构办理业余无线电台执照注销手续 7"
+                "text": "应当及时向作出许可决定的无线电管理机构办理业余无线电台执照注销手续"
             },
             {
                 "value": "B",
@@ -777,7 +777,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "通过对业余无线电信号接收和衰减转发，缩小通联范围的业余无线电台 8"
+                "text": "通过对业余无线电信号接收和衰减转发，缩小通联范围的业余无线电台"
             }
         ]
     },
@@ -967,7 +967,7 @@ const questions_C = [
     },
     {
         "id": "MC1-0061",
-        "question": "取得C类业余无线电台操作技术能力验证证书的，可以申请设置、使用业余无线电台的 工作频段和最大发射功率为： 10",
+        "question": "取得C类业余无线电台操作技术能力验证证书的，可以申请设置、使用业余无线电台的 工作频段和最大发射功率为：",
         "answer": "A",
         "options": [
             {
@@ -1068,7 +1068,7 @@ const questions_C = [
             },
             {
                 "value": "B",
-                "text": "设置、使用最大发射功率不大于25瓦UHF频段业余无线电台 11"
+                "text": "设置、使用最大发射功率不大于25瓦UHF频段业余无线电台"
             },
             {
                 "value": "C",
@@ -1151,7 +1151,7 @@ const questions_C = [
     },
     {
         "id": "MC2-0069",
-        "question": "关于未成年人设置、使用业余无线电台，下列哪些选项为正确： 12",
+        "question": "关于未成年人设置、使用业余无线电台，下列哪些选项为正确：",
         "answer": "AB",
         "options": [
             {
@@ -1340,7 +1340,7 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "用于相互通信、技术研究和自我训练 14"
+                "text": "用于相互通信、技术研究和自我训练"
             },
             {
                 "value": "B",
@@ -1427,7 +1427,7 @@ const questions_C = [
     },
     {
         "id": "MC1-0110",
-        "question": "选择144MHz或430MHz业余模拟调频中继台同频段收发频差的原则是： 15",
+        "question": "选择144MHz或430MHz业余模拟调频中继台同频段收发频差的原则是：",
         "answer": "A",
         "options": [
             {
@@ -1519,7 +1519,7 @@ const questions_C = [
     },
     {
         "id": "MC1-0114",
-        "question": "在业余无线电台中转发广播电台、互联网聊天、电话通话、其他电台的联络信号，这类 行为的性质是： 16",
+        "question": "在业余无线电台中转发广播电台、互联网聊天、电话通话、其他电台的联络信号，这类 行为的性质是：",
         "answer": "A",
         "options": [
             {
@@ -1697,7 +1697,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "只要出于个人对信息的兴趣而不涉及赢利，可以接收任何无线电信号 18"
+                "text": "只要出于个人对信息的兴趣而不涉及赢利，可以接收任何无线电信号"
             }
         ]
     },
@@ -1984,7 +1984,7 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "相关企业批量生产的未取得型号核准证的无线电发射设备 21"
+                "text": "相关企业批量生产的未取得型号核准证的无线电发射设备"
             },
             {
                 "value": "B",
@@ -2088,7 +2088,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "在通信过程中使用自创的特殊缩略语 22"
+                "text": "在通信过程中使用自创的特殊缩略语"
             }
         ]
     },
@@ -2609,7 +2609,7 @@ const questions_C = [
             },
             {
                 "value": "B",
-                "text": "劝告拆除非法设置的电台；情节严重的，可以并处警告、查封或者没收设备 28"
+                "text": "劝告拆除非法设置的电台；情节严重的，可以并处警告、查封或者没收设备"
             },
             {
                 "value": "C",
@@ -2774,7 +2774,7 @@ const questions_C = [
             },
             {
                 "value": "C",
-                "text": "责令限期改正，可以处警告或者一千元以下的罚款 30"
+                "text": "责令限期改正，可以处警告或者一千元以下的罚款"
             },
             {
                 "value": "D",
@@ -2862,7 +2862,7 @@ const questions_C = [
             },
             {
                 "value": "B",
-                "text": "任何业余无线电台在任何频段都享有平等的频率使用权 31"
+                "text": "任何业余无线电台在任何频段都享有平等的频率使用权"
             },
             {
                 "value": "C",
@@ -2950,7 +2950,7 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "7MHz、14MHz、21MHz、28MHz、47GHz频段 32"
+                "text": "7MHz、14MHz、21MHz、28MHz、47GHz频段"
             },
             {
                 "value": "B",
@@ -3138,7 +3138,7 @@ const questions_C = [
             },
             {
                 "value": "B",
-                "text": "1800-1900kHz，次要业务 34"
+                "text": "1800-1900kHz，次要业务"
             },
             {
                 "value": "C",
@@ -3437,7 +3437,7 @@ const questions_C = [
             },
             {
                 "value": "B",
-                "text": "18.110-18.170MHz 37"
+                "text": "18.110-18.170MHz"
             },
             {
                 "value": "C",
@@ -3732,7 +3732,7 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "违法使用业余无线电台干扰无线电业务正常进行的 40"
+                "text": "违法使用业余无线电台干扰无线电业务正常进行的"
             },
             {
                 "value": "B",
@@ -3824,7 +3824,7 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "中频（中波） 41"
+                "text": "中频（中波）"
             },
             {
                 "value": "B",
@@ -3916,7 +3916,7 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "甚高频（米波） 42"
+                "text": "甚高频（米波）"
             },
             {
                 "value": "B",
@@ -3957,7 +3957,7 @@ const questions_C = [
     },
     {
         "id": "MC1-0223",
-        "question": "我国《无线电频率划分规定》划分给业余业务使用的最接近无线宽带WiFi频率的频段为 2,300-2,450MHz，属于无线电频谱的下列频段（波段）：",
+        "question": "我国《无线电频率划分规定》划分给业余业务使用的最接近无线宽带WiFi频率的频段为,300-2,450MHz，属于无线电频谱的下列频段（波段）：",
         "answer": "A",
         "options": [
             {
@@ -4003,12 +4003,12 @@ const questions_C = [
     },
     {
         "id": "MC1-0225",
-        "question": "我国《无线电频率划分规定》划分给业余业务使用的最接近Wi-Fi局域网频率的频段为 2,300-2,450MHz，属于无线电频谱的下列频段（波段）：",
+        "question": "我国《无线电频率划分规定》划分给业余业务使用的最接近Wi-Fi局域网频率的频段为,300-2,450MHz，属于无线电频谱的下列频段（波段）：",
         "answer": "A",
         "options": [
             {
                 "value": "A",
-                "text": "UHF 43"
+                "text": "UHF"
             },
             {
                 "value": "B",
@@ -4100,7 +4100,7 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "SHF 44"
+                "text": "SHF"
             },
             {
                 "value": "B",
@@ -4196,7 +4196,7 @@ const questions_C = [
             },
             {
                 "value": "B",
-                "text": "美国业余无线电转信联盟（ARRL），《业余无线电手册》 45"
+                "text": "美国业余无线电转信联盟（ARRL），《业余无线电手册》"
             },
             {
                 "value": "C",
@@ -4279,7 +4279,7 @@ const questions_C = [
     },
     {
         "id": "MC1-0237",
-        "question": "2米波段的话音联络通常位于144.035-145.800MHz。这也是IARU第3区波段规划中的 46 一个多模式共用细分频段。假设一部业余电台正以USB方式在该频段参与通联，发射带宽 小于3kHz并且频率容限优于±2kHz，则该电台的主载波设置范围可以是：",
+        "question": "2米波段的话音联络通常位于144.035-145.800MHz。这也是IARU第3区波段规划中的 一个多模式共用细分频段。假设一部业余电台正以USB方式在该频段参与通联，发射带宽 小于3kHz并且频率容限优于±2kHz，则该电台的主载波设置范围可以是：",
         "answer": "A",
         "options": [
             {
@@ -4463,7 +4463,7 @@ const questions_C = [
     },
     {
         "id": "MC1-0245",
-        "question": "“ITU分区”是业余无线电爱好者参加IARU相关活动并计算通信成绩的基础。以下哪些 “ITU 分区”位于我国境内： 48",
+        "question": "“ITU分区”是业余无线电爱好者参加IARU相关活动并计算通信成绩的基础。以下哪些 “ITU 分区”位于我国境内：",
         "answer": "A",
         "options": [
             {
@@ -4836,7 +4836,7 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "立即与该台确认险情并了解其需要什么帮助 52"
+                "text": "立即与该台确认险情并了解其需要什么帮助"
             },
             {
                 "value": "B",
@@ -4936,7 +4936,7 @@ const questions_C = [
             },
             {
                 "value": "C",
-                "text": "利用HF频段业余电台 53"
+                "text": "利用HF频段业余电台"
             },
             {
                 "value": "D",
@@ -5222,7 +5222,7 @@ const questions_C = [
     },
     {
         "id": "MC1-0286",
-        "question": "业余地球卫星的轨道倾角（inclination）是指包含： 56",
+        "question": "业余地球卫星的轨道倾角（inclination）是指包含：",
         "answer": "A",
         "options": [
             {
@@ -5327,7 +5327,7 @@ const questions_C = [
             },
             {
                 "value": "C",
-                "text": "其轨道平面通过地球北极和南极地区的卫星 57"
+                "text": "其轨道平面通过地球北极和南极地区的卫星"
             },
             {
                 "value": "D",
@@ -5613,7 +5613,7 @@ const questions_C = [
     },
     {
         "id": "MC1-0303",
-        "question": "业余卫星通信和业余无线电测向都会出现“多普勒效应”的概念。多普勒效应是指： 60",
+        "question": "业余卫星通信和业余无线电测向都会出现“多普勒效应”的概念。多普勒效应是指：",
         "answer": "A",
         "options": [
             {
@@ -5710,7 +5710,7 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "CQ CQ CQ，这里是BH1ZZZ，Bravo Hotel One Zulu Zulu Zulu，BH1ZZZ呼叫CQ，听到请 回答 61"
+                "text": "CQ CQ CQ，这里是BH1ZZZ，Bravo Hotel One Zulu Zulu Zulu，BH1ZZZ呼叫CQ，听到请 回答"
             },
             {
                 "value": "B",
@@ -5806,7 +5806,7 @@ const questions_C = [
             },
             {
                 "value": "B",
-                "text": "BH1ZZZ，我给你57的信号可以吗？ 62"
+                "text": "BH1ZZZ，我给你57的信号可以吗？"
             },
             {
                 "value": "C",
@@ -5825,15 +5825,15 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "BH1ZZZ, you are 57, QSL?"
+                "text": "BH1ZZZ, you are, QSL?"
             },
             {
                 "value": "B",
-                "text": "BH1ZZZ, may I rate you 57?"
+                "text": "BH1ZZZ, may I rate you?"
             },
             {
                 "value": "C",
-                "text": "Hey, 57, QSL?"
+                "text": "Hey,, QSL?"
             },
             {
                 "value": "D",
@@ -5906,7 +5906,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "从一种语言至另一种语言的转写 63"
+                "text": "从一种语言至另一种语言的转写"
             }
         ]
     },
@@ -6055,19 +6055,19 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "TNX FER NICE QSO ES HPE CU AGN 73 TU"
+                "text": "TNX FER NICE QSO ES HPE CU AGN TU"
             },
             {
                 "value": "B",
-                "text": "TNX FER NICE RPRT ES HPE CU AGN 73 TU"
+                "text": "TNX FER NICE RPRT ES HPE CU AGN TU"
             },
             {
                 "value": "C",
-                "text": "TNX FER QSL INFO ES HPE CU AGN 73 TU"
+                "text": "TNX FER QSL INFO ES HPE CU AGN TU"
             },
             {
                 "value": "D",
-                "text": "TNX FER WX INFO ES HPE CU AGN 73 TU"
+                "text": "TNX FER WX INFO ES HPE CU AGN TU"
             }
         ]
     },
@@ -6105,7 +6105,7 @@ const questions_C = [
             },
             {
                 "value": "B",
-                "text": "MODE XIAOMING 65"
+                "text": "MODE XIAOMING"
             },
             {
                 "value": "C",
@@ -6205,7 +6205,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "OP X6200 66"
+                "text": "OP X6200"
             }
         ]
     },
@@ -6239,19 +6239,19 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "PWR ABT 10 W"
+                "text": "PWR ABT W"
             },
             {
                 "value": "B",
-                "text": "I AM ABT 10 WATTS"
+                "text": "I AM ABT WATTS"
             },
             {
                 "value": "C",
-                "text": "RIG ABT 10 W"
+                "text": "RIG ABT W"
             },
             {
                 "value": "D",
-                "text": "ANT ABT 10 WATTS"
+                "text": "ANT ABT WATTS"
             }
         ]
     },
@@ -6262,7 +6262,7 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "ANT GP 50 MH"
+                "text": "ANT GP MH"
             },
             {
                 "value": "B",
@@ -6270,7 +6270,7 @@ const questions_C = [
             },
             {
                 "value": "C",
-                "text": "ANT 50 MH? GP?"
+                "text": "ANT MH? GP?"
             },
             {
                 "value": "D",
@@ -6285,19 +6285,19 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "WX FINE ES TEMP ABT 25 C"
+                "text": "WX FINE ES TEMP ABT C"
             },
             {
                 "value": "B",
-                "text": "WX ABT 25 C ES TEMP FINE"
+                "text": "WX ABT C ES TEMP FINE"
             },
             {
                 "value": "C",
-                "text": "WX TEMP ES FINE ABT 25 C"
+                "text": "WX TEMP ES FINE ABT C"
             },
             {
                 "value": "D",
-                "text": "TEMP WX ES 25 C ABT FINE 67"
+                "text": "TEMP WX ES C ABT FINE"
             }
         ]
     },
@@ -6492,7 +6492,7 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "CU、CU AGN或GB 69"
+                "text": "CU、CU AGN或GB"
             },
             {
                 "value": "B",
@@ -6592,7 +6592,7 @@ const questions_C = [
             },
             {
                 "value": "C",
-                "text": "我是新手，请发慢一些，照顾一下 70"
+                "text": "我是新手，请发慢一些，照顾一下"
             },
             {
                 "value": "D",
@@ -6891,7 +6891,7 @@ const questions_C = [
             },
             {
                 "value": "C",
-                "text": "QRB？ 73"
+                "text": "QRB？"
             },
             {
                 "value": "D",
@@ -7090,7 +7090,7 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "QSP ×××？ 75"
+                "text": "QSP ×××？"
             },
             {
                 "value": "B",
@@ -7194,7 +7194,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "QRV nnnn KHZ（或MHZ）？ 76"
+                "text": "QRV nnnn KHZ（或MHZ）？"
             }
         ]
     },
@@ -7292,7 +7292,7 @@ const questions_C = [
     },
     {
         "id": "MC1-0376",
-        "question": "如需对方重复上次的操作，比如重报呼号或信号报告，我们可使用缩语： 77",
+        "question": "如需对方重复上次的操作，比如重报呼号或信号报告，我们可使用缩语：",
         "answer": "A",
         "options": [
             {
@@ -7397,7 +7397,7 @@ const questions_C = [
             },
             {
                 "value": "C",
-                "text": "ROUTER 78"
+                "text": "ROUTER"
             },
             {
                 "value": "D",
@@ -7596,7 +7596,7 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "GE 80"
+                "text": "GE"
             },
             {
                 "value": "B",
@@ -7700,7 +7700,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "罗兰C时间 81"
+                "text": "罗兰C时间"
             }
         ]
     },
@@ -7798,7 +7798,7 @@ const questions_C = [
     },
     {
         "id": "MC1-0398",
-        "question": "在CW通联中，我们有时会抄到缩语“HPY”或“HPI”，意思是： 82",
+        "question": "在CW通联中，我们有时会抄到缩语“HPY”或“HPI”，意思是：",
         "answer": "A",
         "options": [
             {
@@ -7903,7 +7903,7 @@ const questions_C = [
             },
             {
                 "value": "C",
-                "text": "VY TNX 83"
+                "text": "VY TNX"
             },
             {
                 "value": "D",
@@ -8097,7 +8097,7 @@ const questions_C = [
     },
     {
         "id": "MC1-0411",
-        "question": "“温度”的缩语是： 85",
+        "question": "“温度”的缩语是：",
         "answer": "A",
         "options": [
             {
@@ -8202,7 +8202,7 @@ const questions_C = [
             },
             {
                 "value": "C",
-                "text": "物理 86"
+                "text": "物理"
             },
             {
                 "value": "D",
@@ -8488,7 +8488,7 @@ const questions_C = [
     },
     {
         "id": "MC1-0428",
-        "question": "发射类别（class of emission）是指用标准符号标示的某发射的一组特性，例如主载波调 89 制方式，调制信号，被发送信息的类型以及其他适用的信号特性。表示调频话的发射类别是：",
+        "question": "发射类别（class of emission）是指用标准符号标示的某发射的一组特性，例如主载波调 制方式，调制信号，被发送信息的类型以及其他适用的信号特性。表示调频话的发射类别是：",
         "answer": "A",
         "options": [
             {
@@ -8689,7 +8689,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "对主载波的频率误差不敏感 91"
+                "text": "对主载波的频率误差不敏感"
             }
         ]
     },
@@ -8884,7 +8884,7 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "CW 93"
+                "text": "CW"
             },
             {
                 "value": "B",
@@ -9076,7 +9076,7 @@ const questions_C = [
             },
             {
                 "value": "C",
-                "text": "调制信号的频率 95"
+                "text": "调制信号的频率"
             },
             {
                 "value": "D",
@@ -9172,7 +9172,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "每分钟包含的无间隙“点”的个数除以60即为WPM数 96"
+                "text": "每分钟包含的无间隙“点”的个数除以60即为WPM数"
             }
         ]
     },
@@ -9264,7 +9264,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "对于非衰落信道，K取50波特；对于HF等衰落信道，K取300波特 97"
+                "text": "对于非衰落信道，K取50波特；对于HF等衰落信道，K取300波特"
             }
         ]
     },
@@ -9555,7 +9555,7 @@ const questions_C = [
             },
             {
                 "value": "B",
-                "text": "确保视频信号中的低频分量的保真度 100"
+                "text": "确保视频信号中的低频分量的保真度"
             },
             {
                 "value": "C",
@@ -9735,7 +9735,7 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "2FSK 102"
+                "text": "2FSK"
             },
             {
                 "value": "B",
@@ -9822,7 +9822,7 @@ const questions_C = [
     },
     {
         "id": "MC1-0486",
-        "question": "数字通信经常涉及描述信号状态变化的“符号速率”和描述信息流量的“数据速率”这两个参 103 数。通信方式QPSK31使用载波f的互为正交的一对反相相位作为符号来传输数字00至11， 并且符号的发送时长约为32毫秒。QPSK31的符号速率和数据速率分别为：",
+        "question": "数字通信经常涉及描述信号状态变化的“符号速率”和描述信息流量的“数据速率”这两个参 数。通信方式QPSK31使用载波f的互为正交的一对反相相位作为符号来传输数字00至11， 并且符号的发送时长约为32毫秒。QPSK31的符号速率和数据速率分别为：",
         "answer": "A",
         "options": [
             {
@@ -9900,7 +9900,7 @@ const questions_C = [
             },
             {
                 "value": "B",
-                "text": "发送方使用一定的算法获取待发送报文的冗余校验数据，将之与报文一同编码并发送； 接收方按相应算法校验所收到的报文，如发现错误则利用冗余数据尝试加以纠正 104"
+                "text": "发送方使用一定的算法获取待发送报文的冗余校验数据，将之与报文一同编码并发送； 接收方按相应算法校验所收到的报文，如发现错误则利用冗余数据尝试加以纠正"
             },
             {
                 "value": "C",
@@ -9996,7 +9996,7 @@ const questions_C = [
             },
             {
                 "value": "C",
-                "text": "300波特、2400波特、19200波特 105"
+                "text": "300波特、2400波特、19200波特"
             },
             {
                 "value": "D",
@@ -10092,7 +10092,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "这个命题不成立，符号速率是始终等于数据速率的 106"
+                "text": "这个命题不成立，符号速率是始终等于数据速率的"
             }
         ]
     },
@@ -10180,7 +10180,7 @@ const questions_C = [
             },
             {
                 "value": "C",
-                "text": "FT4 107"
+                "text": "FT4"
             },
             {
                 "value": "D",
@@ -10374,7 +10374,7 @@ const questions_C = [
     },
     {
         "id": "MC2-0510",
-        "question": "FT4是与FT8类似的一种通信方式。其特点是： 109",
+        "question": "FT4是与FT8类似的一种通信方式。其特点是：",
         "answer": "AB",
         "options": [
             {
@@ -10471,7 +10471,7 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "为爱好者提供一种传输带宽较窄，完全适合HF的数字语音方式 110"
+                "text": "为爱好者提供一种传输带宽较窄，完全适合HF的数字语音方式"
             },
             {
                 "value": "B",
@@ -10563,7 +10563,7 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "显著低于10瓦 111"
+                "text": "显著低于10瓦"
             },
             {
                 "value": "B",
@@ -10650,12 +10650,12 @@ const questions_C = [
     },
     {
         "id": "MC1-0522",
-        "question": "一部业余无线电台以SSB方式发射时的峰值输出功率为10瓦，电源效率约为80%。若该 台利用此方式发送一段时长10秒的Robot 8 SSTV黑白图像，则此期间的平均发射功率：",
+        "question": "一部业余无线电台以SSB方式发射时的峰值输出功率为10瓦，电源效率约为80%。若该 台利用此方式发送一段时长10秒的Robot SSTV黑白图像，则此期间的平均发射功率：",
         "answer": "A",
         "options": [
             {
                 "value": "A",
-                "text": "约为10瓦 112"
+                "text": "约为10瓦"
             },
             {
                 "value": "B",
@@ -10759,7 +10759,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "发起正常满功率CQ呼叫，并设置好接收机的NB、AGC等功能 113"
+                "text": "发起正常满功率CQ呼叫，并设置好接收机的NB、AGC等功能"
             }
         ]
     },
@@ -10811,7 +10811,7 @@ const questions_C = [
     },
     {
         "id": "MC1-0529",
-        "question": "DX Summit消息“PY2SS 28005.3 KH6/N6GQ simplex, fading signal in SA 2040 15 Feb 2012” 的意思是：",
+        "question": "DX Summit消息“PY2SS 28005.3 KH6/N6GQ simplex, fading signal in SA 2040 Feb 2012” 的意思是：",
         "answer": "A",
         "options": [
             {
@@ -10834,7 +10834,7 @@ const questions_C = [
     },
     {
         "id": "MC1-0530",
-        "question": "DX Summit消息“JA2WS 14009.6 E51WWA Calling CQ, no takers, Cook Is 0052 14 Feb 2018”的意思是：",
+        "question": "DX Summit消息“JA2WS 14009.6 E51WWA Calling CQ, no takers, Cook Is 0052 Feb 2018”的意思是：",
         "answer": "A",
         "options": [
             {
@@ -10851,7 +10851,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "JA2WS在库克岛呼叫E51WWA，没有应答 114"
+                "text": "JA2WS在库克岛呼叫E51WWA，没有应答"
             }
         ]
     },
@@ -11050,7 +11050,7 @@ const questions_C = [
             },
             {
                 "value": "B",
-                "text": "30 116"
+                "text": "30"
             },
             {
                 "value": "C",
@@ -11138,7 +11138,7 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "东西走向 117"
+                "text": "东西走向"
             },
             {
                 "value": "B",
@@ -11242,7 +11242,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "W1AW 118"
+                "text": "W1AW"
             }
         ]
     },
@@ -11621,7 +11621,7 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "竞赛主办方根据日志匹配参赛双方的通信联络，计算比赛得分 122"
+                "text": "竞赛主办方根据日志匹配参赛双方的通信联络，计算比赛得分"
             },
             {
                 "value": "B",
@@ -11690,7 +11690,7 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "2fT - fR 或 (fT + fR ) / 2"
+                "text": "2fT - fR 或 (fT + fR ) /"
             },
             {
                 "value": "B",
@@ -11800,7 +11800,7 @@ const questions_C = [
     },
     {
         "id": "MC1-0599",
-        "question": "全功能小型收发信机的面板上常有缩写为“NB”和“SQL”的功能，它们有什么不同？ 124",
+        "question": "全功能小型收发信机的面板上常有缩写为“NB”和“SQL”的功能，它们有什么不同？",
         "answer": "A",
         "options": [
             {
@@ -11897,7 +11897,7 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "收信机自动增益控制，对中频级信号电平进行检测并反馈控制，防止电路过载 125"
+                "text": "收信机自动增益控制，对中频级信号电平进行检测并反馈控制，防止电路过载"
             },
             {
                 "value": "B",
@@ -12001,7 +12001,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "有用微弱信号和强干扰同时出现时 126"
+                "text": "有用微弱信号和强干扰同时出现时"
             }
         ]
     },
@@ -12196,7 +12196,7 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "发信语音压缩，对音频输入电平进行检测并反馈控制，以使包络幅度较小语音获得提升 128"
+                "text": "发信语音压缩，对音频输入电平进行检测并反馈控制，以使包络幅度较小语音获得提升"
             },
             {
                 "value": "B",
@@ -12300,7 +12300,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "将电台设为SSB方式，深呼吸后用平稳的气流对话筒发长音“嘻” 129"
+                "text": "将电台设为SSB方式，深呼吸后用平稳的气流对话筒发长音“嘻”"
             }
         ]
     },
@@ -12392,7 +12392,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "在电缆芯线中串联带通滤波器 130"
+                "text": "在电缆芯线中串联带通滤波器"
             }
         ]
     },
@@ -12679,7 +12679,7 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "滤波器的阶数越高，抑制倍频干扰的效果越好 133"
+                "text": "滤波器的阶数越高，抑制倍频干扰的效果越好"
             },
             {
                 "value": "B",
@@ -12766,7 +12766,7 @@ const questions_C = [
     },
     {
         "id": "MC2-0641",
-        "question": "分集接收用多个接收机同时捕获同一信号，以获取更完整的信息并使信号更易辩识。但 是，为收发信机的辅助接收机架设用于分集接收的独立接收天线时需注意： 134",
+        "question": "分集接收用多个接收机同时捕获同一信号，以获取更完整的信息并使信号更易辩识。但 是，为收发信机的辅助接收机架设用于分集接收的独立接收天线时需注意：",
         "answer": "AB",
         "options": [
             {
@@ -12950,7 +12950,7 @@ const questions_C = [
     },
     {
         "id": "MC1-0649",
-        "question": "发射天线的作用是： 136",
+        "question": "发射天线的作用是：",
         "answer": "A",
         "options": [
             {
@@ -13051,7 +13051,7 @@ const questions_C = [
             },
             {
                 "value": "B",
-                "text": "一种用于专业通信的增益极高的专用天线，在业余无线电中没有应用价值 137"
+                "text": "一种用于专业通信的增益极高的专用天线，在业余无线电中没有应用价值"
             },
             {
                 "value": "C",
@@ -13151,7 +13151,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "这种天线辐射各向同性的球面波 138"
+                "text": "这种天线辐射各向同性的球面波"
             }
         ]
     },
@@ -13323,7 +13323,7 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "C-顶部加感，B-中部加感，A-底部加感 140"
+                "text": "C-顶部加感，B-中部加感，A-底部加感"
             },
             {
                 "value": "B",
@@ -13515,7 +13515,7 @@ const questions_C = [
             },
             {
                 "value": "C",
-                "text": "防止传输线上的驻波超过限值 142"
+                "text": "防止传输线上的驻波超过限值"
             },
             {
                 "value": "D",
@@ -13611,7 +13611,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "电网的供电能力远超发射机所能提供的电功率，这就迫使线路各处电压趋同 143"
+                "text": "电网的供电能力远超发射机所能提供的电功率，这就迫使线路各处电压趋同"
             }
         ]
     },
@@ -13709,7 +13709,7 @@ const questions_C = [
     },
     {
         "id": "MC2-0682",
-        "question": "受潮是同轴电缆失效损坏的主要原因。湿气渗透会导致： 144",
+        "question": "受潮是同轴电缆失效损坏的主要原因。湿气渗透会导致：",
         "answer": "AB",
         "options": [
             {
@@ -13814,7 +13814,7 @@ const questions_C = [
             },
             {
                 "value": "C",
-                "text": "50欧姆同轴软电缆 145"
+                "text": "50欧姆同轴软电缆"
             },
             {
                 "value": "D",
@@ -14278,7 +14278,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "S8 150"
+                "text": "S8"
             }
         ]
     },
@@ -14366,7 +14366,7 @@ const questions_C = [
             },
             {
                 "value": "C",
-                "text": "大气扰动影响 151"
+                "text": "大气扰动影响"
             },
             {
                 "value": "D",
@@ -14652,7 +14652,7 @@ const questions_C = [
     },
     {
         "id": "MC1-0723",
-        "question": "制作工作频率为f（单位：兆赫兹）的某相控天线阵列需要长度为1/4波长的同轴电缆， 大致长度（单位：米）应当为： 154",
+        "question": "制作工作频率为f（单位：兆赫兹）的某相控天线阵列需要长度为1/4波长的同轴电缆， 大致长度（单位：米）应当为：",
         "answer": "A",
         "options": [
             {
@@ -14757,7 +14757,7 @@ const questions_C = [
             },
             {
                 "value": "C",
-                "text": "将振子加长一些 155"
+                "text": "将振子加长一些"
             },
             {
                 "value": "D",
@@ -14853,7 +14853,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "驻波比接近1:1时通信效果才会最好，无关振子长度 156"
+                "text": "驻波比接近1:1时通信效果才会最好，无关振子长度"
             }
         ]
     },
@@ -14945,7 +14945,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "根据通信双方的发射功率、天线极化、通信方向上障碍物所遮挡的仰角、太阳10.7cm 射 电通量，找公式计算 157"
+                "text": "根据通信双方的发射功率、天线极化、通信方向上障碍物所遮挡的仰角、太阳10.7cm 射 电通量，找公式计算"
             }
         ]
     },
@@ -15037,7 +15037,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "如果设计得当、制作精心、调试得法，这种加感天线的效果可以超越全尺寸天线 158"
+                "text": "如果设计得当、制作精心、调试得法，这种加感天线的效果可以超越全尺寸天线"
             }
         ]
     },
@@ -15194,7 +15194,7 @@ const questions_C = [
             },
             {
                 "value": "C",
-                "text": "导向器与反射器的数量之比 160"
+                "text": "导向器与反射器的数量之比"
             },
             {
                 "value": "D",
@@ -15273,7 +15273,7 @@ const questions_C = [
     },
     {
         "id": "MC1-0750",
-        "question": "为了降低辐射仰角，小明试着将T2FD天线的半边振子直立悬挂起来。他将折合振子的馈 电端通过匹配变压器连至电缆的芯线，将带有吸收电阻的另一端与地网和电缆的屏蔽层相连。 这种天线的极化方式为： 161",
+        "question": "为了降低辐射仰角，小明试着将T2FD天线的半边振子直立悬挂起来。他将折合振子的馈 电端通过匹配变压器连至电缆的芯线，将带有吸收电阻的另一端与地网和电缆的屏蔽层相连。 这种天线的极化方式为：",
         "answer": "A",
         "options": [
             {
@@ -15457,7 +15457,7 @@ const questions_C = [
     },
     {
         "id": "MC1-0758",
-        "question": "《中华人民共和国无线电频率划分规定》脚注5.67A说“使用135.7-137.8kHz频段内频 163 率的业余业务台站，其最大有效辐射功率不得超过1瓦（e.i.r.p.）”。其意思为，该频段的 业余电台：",
+        "question": "《中华人民共和国无线电频率划分规定》脚注5.67A说“使用135.7-137.8kHz频段内频 率的业余业务台站，其最大有效辐射功率不得超过1瓦（e.i.r.p.）”。其意思为，该频段的 业余电台：",
         "answer": "A",
         "options": [
             {
@@ -15554,7 +15554,7 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "外导体的内径与内导体的外径之比越大，特性阻抗越高 164"
+                "text": "外导体的内径与内导体的外径之比越大，特性阻抗越高"
             },
             {
                 "value": "B",
@@ -15646,7 +15646,7 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "使用电气长度正好等于测量波长的连接电缆 165"
+                "text": "使用电气长度正好等于测量波长的连接电缆"
             },
             {
                 "value": "B",
@@ -15746,7 +15746,7 @@ const questions_C = [
             },
             {
                 "value": "C",
-                "text": "波速 166"
+                "text": "波速"
             },
             {
                 "value": "D",
@@ -15842,7 +15842,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "当距离一定时，频率增加到N倍，L增大到log(N)倍 167"
+                "text": "当距离一定时，频率增加到N倍，L增大到log(N)倍"
             }
         ]
     },
@@ -15917,7 +15917,7 @@ const questions_C = [
     },
     {
         "id": "MC1-0778",
-        "question": "自由空间中甲乙两电台相距100km，均使用增益为0dBi的天线工作于145MHz。如果发射 方的功率为1W，则接收方可获得约-115.6dBm的信号功率。现发射方将功率降低为0.25W， 168 则接收方的信号功率变为：【提示：自由空间中无线电波的路径损耗L =32.4 + 20log(d) + 20log(f)；其中，d为发射方与接收方之间的距离（km），f为工作频率（MHz）】",
+        "question": "自由空间中甲乙两电台相距100km，均使用增益为0dBi的天线工作于145MHz。如果发射 方的功率为1W，则接收方可获得约-115.6dBm的信号功率。现发射方将功率降低为0.25W， 则接收方的信号功率变为：【提示：自由空间中无线电波的路径损耗L =32.4 + 20log(d) + 20log(f)；其中，d为发射方与接收方之间的距离（km），f为工作频率（MHz）】",
         "answer": "A",
         "options": [
             {
@@ -16095,7 +16095,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "无线电波从馈线进入发射天线的馈电点时遇到的反射即为波阻抗Z 170"
+                "text": "无线电波从馈线进入发射天线的馈电点时遇到的反射即为波阻抗Z"
             }
         ]
     },
@@ -16175,19 +16175,19 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "10 log(Po/P) + 2.15"
+                "text": "10 log(Po/P) +.15"
             },
             {
                 "value": "B",
-                "text": "10 log(P/Po) + 2.15"
+                "text": "10 log(P/Po) +.15"
             },
             {
                 "value": "C",
-                "text": "20 log(P/Po) + 2.15 171"
+                "text": "20 log(P/Po) +.15"
             },
             {
                 "value": "D",
-                "text": "10 log(P-Po) + 2.15"
+                "text": "10 log(P-Po) +.15"
             }
         ]
     },
@@ -16371,7 +16371,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "发射天线垂直极化，接收天线的极化应当平行于两台站之间的连线 173"
+                "text": "发射天线垂直极化，接收天线的极化应当平行于两台站之间的连线"
             }
         ]
     },
@@ -16670,7 +16670,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "0-6 176"
+                "text": "0-6"
             }
         ]
     },
@@ -16860,7 +16860,7 @@ const questions_C = [
     },
     {
         "id": "MC1-0819",
-        "question": "自制业余无线电发射设备，在经无线电检测机构检验合格并取得电台执照之前，应在调 178 测时在设备的天线端口连接（或在串联必要的仪表之后连接）：",
+        "question": "自制业余无线电发射设备，在经无线电检测机构检验合格并取得电台执照之前，应在调 测时在设备的天线端口连接（或在串联必要的仪表之后连接）：",
         "answer": "A",
         "options": [
             {
@@ -16961,7 +16961,7 @@ const questions_C = [
             },
             {
                 "value": "B",
-                "text": "尽量对已调射频信号加以放大 179"
+                "text": "尽量对已调射频信号加以放大"
             },
             {
                 "value": "C",
@@ -17057,7 +17057,7 @@ const questions_C = [
             },
             {
                 "value": "C",
-                "text": "提高接收机音频输出的保真度 180"
+                "text": "提高接收机音频输出的保真度"
             },
             {
                 "value": "D",
@@ -17153,7 +17153,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "由天线收到的QRN的随机幅度变化经放大形成，其大小与QRN的电压的平方根成正比 181"
+                "text": "由天线收到的QRN的随机幅度变化经放大形成，其大小与QRN的电压的平方根成正比"
             }
         ]
     },
@@ -17900,7 +17900,7 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "灵敏度指标的数值越小，接收微弱信号的能力越强 189"
+                "text": "灵敏度指标的数值越小，接收微弱信号的能力越强"
             },
             {
                 "value": "B",
@@ -17996,7 +17996,7 @@ const questions_C = [
             },
             {
                 "value": "B",
-                "text": "可以推断甲机接收微弱信号的能力比乙机的差，因为灵敏度指标的数值较小 190"
+                "text": "可以推断甲机接收微弱信号的能力比乙机的差，因为灵敏度指标的数值较小"
             },
             {
                 "value": "C",
@@ -18088,7 +18088,7 @@ const questions_C = [
             },
             {
                 "value": "B",
-                "text": "0.5μV 191"
+                "text": "0.5μV"
             },
             {
                 "value": "C",
@@ -18188,7 +18188,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "-103dBm 192"
+                "text": "-103dBm"
             }
         ]
     },
@@ -18654,7 +18654,7 @@ const questions_C = [
     },
     {
         "id": "MC2-0897",
-        "question": "有时，两米波段ARDF接收机会选配仅有驱动和反射两个单元的八木天线。这是因为： 197",
+        "question": "有时，两米波段ARDF接收机会选配仅有驱动和反射两个单元的八木天线。这是因为：",
         "answer": "AB",
         "options": [
             {
@@ -18746,7 +18746,7 @@ const questions_C = [
     },
     {
         "id": "MC1-0901",
-        "question": "在HF业余频段中，我们有时会在SSB方式下听到一种音调周期性变化的信号，并可以在 每个周期中听到“笃、笃”声或“咯、咯”声。不同业余电台所发的这种信号，音调的变化周期 198 可能不同，从每秒数次至一两秒一次都有。使用这种信号的通信方式可能是：",
+        "question": "在HF业余频段中，我们有时会在SSB方式下听到一种音调周期性变化的信号，并可以在 每个周期中听到“笃、笃”声或“咯、咯”声。不同业余电台所发的这种信号，音调的变化周期 可能不同，从每秒数次至一两秒一次都有。使用这种信号的通信方式可能是：",
         "answer": "A",
         "options": [
             {
@@ -18847,7 +18847,7 @@ const questions_C = [
             },
             {
                 "value": "B",
-                "text": "一条随语音闪烁的直线 199"
+                "text": "一条随语音闪烁的直线"
             },
             {
                 "value": "C",
@@ -18947,7 +18947,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "电影奥斯卡金奖的基金所赞助的业余卫星活动 200"
+                "text": "电影奥斯卡金奖的基金所赞助的业余卫星活动"
             }
         ]
     },
@@ -19137,7 +19137,7 @@ const questions_C = [
     },
     {
         "id": "MC2-0926",
-        "question": "直流电（DC）是以电荷的运动方向始终不变来定义的。关于直流电，以下描述正确的是： 202",
+        "question": "直流电（DC）是以电荷的运动方向始终不变来定义的。关于直流电，以下描述正确的是：",
         "answer": "AB",
         "options": [
             {
@@ -19238,7 +19238,7 @@ const questions_C = [
             },
             {
                 "value": "B",
-                "text": "加在电路两端的电源驱动电子流动的力量大小 203"
+                "text": "加在电路两端的电源驱动电子流动的力量大小"
             },
             {
                 "value": "C",
@@ -19545,7 +19545,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "欧（姆） 206"
+                "text": "欧（姆）"
             }
         ]
     },
@@ -19744,7 +19744,7 @@ const questions_C = [
             },
             {
                 "value": "B",
-                "text": "10＾6，兆 208"
+                "text": "10＾6，兆"
             },
             {
                 "value": "C",
@@ -20051,7 +20051,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "变压器可将交流电压和电流转换成交流的另一种电压和电流，可用来制作交流电源 211"
+                "text": "变压器可将交流电压和电流转换成交流的另一种电压和电流，可用来制作交流电源"
             }
         ]
     },
@@ -20241,7 +20241,7 @@ const questions_C = [
     },
     {
         "id": "MC2-0974",
-        "question": "有些收发信机会在13.8V直流电源插座附近安装一个标有数字的复位按钮。其作用是什 么？ 213",
+        "question": "有些收发信机会在13.8V直流电源插座附近安装一个标有数字的复位按钮。其作用是什 么？",
         "answer": "AB",
         "options": [
             {
@@ -20346,7 +20346,7 @@ const questions_C = [
             },
             {
                 "value": "C",
-                "text": "正交至电路中 214"
+                "text": "正交至电路中"
             },
             {
                 "value": "D",
@@ -21009,7 +21009,7 @@ const questions_C = [
             },
             {
                 "value": "B",
-                "text": "100伏 221"
+                "text": "100伏"
             },
             {
                 "value": "C",
@@ -21109,7 +21109,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "35.4伏 222"
+                "text": "35.4伏"
             }
         ]
     },
@@ -21391,7 +21391,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1024",
-        "question": "能够以磁场形式储存能量的元件是： 225",
+        "question": "能够以磁场形式储存能量的元件是：",
         "answer": "A",
         "options": [
             {
@@ -21492,7 +21492,7 @@ const questions_C = [
             },
             {
                 "value": "B",
-                "text": "电压为0 226"
+                "text": "电压为0"
             },
             {
                 "value": "C",
@@ -21690,7 +21690,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1037",
-        "question": "将电阻R和电容C串联后突然接到直流电压U上，电阻R两端的电压会： 228",
+        "question": "将电阻R和电容C串联后突然接到直流电压U上，电阻R两端的电压会：",
         "answer": "A",
         "options": [
             {
@@ -21787,7 +21787,7 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "从U按指数规律逐渐减小到0 229"
+                "text": "从U按指数规律逐渐减小到0"
             },
             {
                 "value": "B",
@@ -21883,7 +21883,7 @@ const questions_C = [
             },
             {
                 "value": "B",
-                "text": "从0按指数规律逐渐增加到U 230"
+                "text": "从0按指数规律逐渐增加到U"
             },
             {
                 "value": "C",
@@ -21983,7 +21983,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "从0突然跳到U/R并保持 231"
+                "text": "从0突然跳到U/R并保持"
             }
         ]
     },
@@ -22075,7 +22075,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "f = 2π(LC)＾(1/2) 232"
+                "text": "f = 2π(LC)＾(1/2)"
             }
         ]
     },
@@ -22265,7 +22265,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1062",
-        "question": "附图中的电路元器件符号代表： 234 [image: MC1-1062.webp]",
+        "question": "附图中的电路元器件符号代表： [image: MC1-1062.webp]",
         "answer": "A",
         "options": [
             {
@@ -22357,7 +22357,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1066",
-        "question": "附图中的电路元器件符号代表： 235 [image: MC1-1066.webp]",
+        "question": "附图中的电路元器件符号代表： [image: MC1-1066.webp]",
         "answer": "A",
         "options": [
             {
@@ -22449,7 +22449,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1070",
-        "question": "附图中的电路元器件符号代表： 236",
+        "question": "附图中的电路元器件符号代表：",
         "answer": "A",
         "options": [
             {
@@ -22541,7 +22541,7 @@ const questions_C = [
     },
     {
         "id": "MC3-1074",
-        "question": "按制造材料细分，常见的电阻有： 237",
+        "question": "按制造材料细分，常见的电阻有：",
         "answer": "ABC",
         "options": [
             {
@@ -22642,7 +22642,7 @@ const questions_C = [
             },
             {
                 "value": "B",
-                "text": "3.7千欧 238"
+                "text": "3.7千欧"
             },
             {
                 "value": "C",
@@ -22840,7 +22840,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1087",
-        "question": "我们经常使用的独石电容是一种： 240",
+        "question": "我们经常使用的独石电容是一种：",
         "answer": "A",
         "options": [
             {
@@ -22941,7 +22941,7 @@ const questions_C = [
             },
             {
                 "value": "B",
-                "text": "微法拉 241"
+                "text": "微法拉"
             },
             {
                 "value": "C",
@@ -23029,7 +23029,7 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "微法拉 242"
+                "text": "微法拉"
             },
             {
                 "value": "B",
@@ -23125,7 +23125,7 @@ const questions_C = [
             },
             {
                 "value": "B",
-                "text": "电抗器 243"
+                "text": "电抗器"
             },
             {
                 "value": "C",
@@ -23225,7 +23225,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "跨接在阻抗为8欧姆的扬声器两端 244"
+                "text": "跨接在阻抗为8欧姆的扬声器两端"
             }
         ]
     },
@@ -23507,7 +23507,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1116",
-        "question": "为什么变压器中的铁芯要由截面积大，导磁率高的多片矽钢片堆叠构成，而不像继电器 中的衔铁那样使用整体铁芯？ 247",
+        "question": "为什么变压器中的铁芯要由截面积大，导磁率高的多片矽钢片堆叠构成，而不像继电器 中的衔铁那样使用整体铁芯？",
         "answer": "A",
         "options": [
             {
@@ -23691,7 +23691,7 @@ const questions_C = [
     },
     {
         "id": "MC2-1124",
-        "question": "一个电容器，在50Hz频率下测得容抗为100欧姆。推断其在5MHz下的容抗应为0.001 249 欧姆，但实测值却显著偏大。这是因为：",
+        "question": "一个电容器，在50Hz频率下测得容抗为100欧姆。推断其在5MHz下的容抗应为0.001 欧姆，但实测值却显著偏大。这是因为：",
         "answer": "AB",
         "options": [
             {
@@ -23788,7 +23788,7 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "分别叫正极和负极，有时亦称阳极和阴极 250"
+                "text": "分别叫正极和负极，有时亦称阳极和阴极"
             },
             {
                 "value": "B",
@@ -23892,7 +23892,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "应当正向直接连接到直流电源上 251"
+                "text": "应当正向直接连接到直流电源上"
             }
         ]
     },
@@ -23990,7 +23990,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1137",
-        "question": "双极型三极管的三个基本电极是： 252",
+        "question": "双极型三极管的三个基本电极是：",
         "answer": "A",
         "options": [
             {
@@ -24095,7 +24095,7 @@ const questions_C = [
             },
             {
                 "value": "C",
-                "text": "互导（跨导）；单位为“倍”；符号为“A” 253"
+                "text": "互导（跨导）；单位为“倍”；符号为“A”"
             },
             {
                 "value": "D",
@@ -25134,7 +25134,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "带有正反馈的共发射极放大电路 264"
+                "text": "带有正反馈的共发射极放大电路"
             }
         ]
     },
@@ -25333,7 +25333,7 @@ const questions_C = [
             },
             {
                 "value": "B",
-                "text": "甲乙类放大器 266"
+                "text": "甲乙类放大器"
             },
             {
                 "value": "C",
@@ -25433,7 +25433,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "对于D类放大器，器件的导通角度至多半个信号周期，并且器件始终线性工作 267"
+                "text": "对于D类放大器，器件的导通角度至多半个信号周期，并且器件始终线性工作"
             }
         ]
     },
@@ -25623,7 +25623,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1208",
-        "question": "在A、B、C、D四类放大器中，可以用作对讲机的FM射频功率放大器的全部类别有：（不 269 考虑电源效率）",
+        "question": "在A、B、C、D四类放大器中，可以用作对讲机的FM射频功率放大器的全部类别有：（不 考虑电源效率）",
         "answer": "A",
         "options": [
             {
@@ -26211,7 +26211,7 @@ const questions_C = [
             },
             {
                 "value": "C",
-                "text": "抑制载波单边带幅度调制SSB 275"
+                "text": "抑制载波单边带幅度调制SSB"
             },
             {
                 "value": "D",
@@ -26410,7 +26410,7 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "只需为输入基带适当叠加直流分量，使基带极性不发生反转，即可获得AM输出 277"
+                "text": "只需为输入基带适当叠加直流分量，使基带极性不发生反转，即可获得AM输出"
             },
             {
                 "value": "B",
@@ -26514,7 +26514,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "可变频率石英晶体振荡器 278"
+                "text": "可变频率石英晶体振荡器"
             }
         ]
     },
@@ -26882,7 +26882,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "中心频率约为3kHz的带通滤波器 282"
+                "text": "中心频率约为3kHz的带通滤波器"
             }
         ]
     },
@@ -27062,7 +27062,7 @@ const questions_C = [
             },
             {
                 "value": "C",
-                "text": "与锁相环频率合成器相比，可以使用速度较低的数字逻辑器件 284"
+                "text": "与锁相环频率合成器相比，可以使用速度较低的数字逻辑器件"
             },
             {
                 "value": "D",
@@ -27532,7 +27532,7 @@ const questions_C = [
     },
     {
         "id": "MC1-1291",
-        "question": "既然模拟滤波器早已支持业余无线电通信成功运作，我们为什么还要研发使用数字滤波 289 器？",
+        "question": "既然模拟滤波器早已支持业余无线电通信成功运作，我们为什么还要研发使用数字滤波 器？",
         "answer": "A",
         "options": [
             {
@@ -27633,7 +27633,7 @@ const questions_C = [
             },
             {
                 "value": "B",
-                "text": "移相法 290"
+                "text": "移相法"
             },
             {
                 "value": "C",
@@ -27733,7 +27733,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "为该电压的平均值 291"
+                "text": "为该电压的平均值"
             }
         ]
     },
@@ -27825,7 +27825,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "万用表的电池肯定电量不足了 292"
+                "text": "万用表的电池肯定电量不足了"
             }
         ]
     },
@@ -28020,7 +28020,7 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "波形图 294"
+                "text": "波形图"
             },
             {
                 "value": "B",
@@ -28120,7 +28120,7 @@ const questions_C = [
             },
             {
                 "value": "C",
-                "text": "短路接头 295"
+                "text": "短路接头"
             },
             {
                 "value": "D",
@@ -28319,7 +28319,7 @@ const questions_C = [
         "options": [
             {
                 "value": "A",
-                "text": "40dB 297"
+                "text": "40dB"
             },
             {
                 "value": "B",
@@ -28423,7 +28423,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "100dB 298"
+                "text": "100dB"
             }
         ]
     },
@@ -28705,7 +28705,7 @@ const questions_C = [
     },
     {
         "id": "MC3-1342",
-        "question": "功率为0dBμ的射频信号通过增益为36dB的电路后，输出功率为： 301",
+        "question": "功率为0dBμ的射频信号通过增益为36dB的电路后，输出功率为：",
         "answer": "ABC",
         "options": [
             {
@@ -28806,7 +28806,7 @@ const questions_C = [
             },
             {
                 "value": "B",
-                "text": "杂散发射不低于最大允许功率电平、电源电压及频率符合国家电网标准、采用标准天线 阻抗 302"
+                "text": "杂散发射不低于最大允许功率电平、电源电压及频率符合国家电网标准、采用标准天线 阻抗"
             },
             {
                 "value": "C",
@@ -28906,7 +28906,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "杂散发射包括谐波发射、带外发射 303"
+                "text": "杂散发射包括谐波发射、带外发射"
             }
         ]
     },
@@ -29197,7 +29197,7 @@ const questions_C = [
             },
             {
                 "value": "B",
-                "text": "在每个避雷器的地线连接处安装开关以在发信时断开，防止射频电流损伤避雷器 306"
+                "text": "在每个避雷器的地线连接处安装开关以在发信时断开，防止射频电流损伤避雷器"
             },
             {
                 "value": "C",
@@ -29293,7 +29293,7 @@ const questions_C = [
             },
             {
                 "value": "C",
-                "text": "HF射频交流电、工频交流电、UHF射频交流电 307"
+                "text": "HF射频交流电、工频交流电、UHF射频交流电"
             },
             {
                 "value": "D",
@@ -29481,7 +29481,7 @@ const questions_C = [
             },
             {
                 "value": "D",
-                "text": "迅速起身逃离火场 309"
+                "text": "迅速起身逃离火场"
             }
         ]
     }

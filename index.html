@@ -7,6 +7,28 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- 启动提示弹窗 -->
+    <div id="startup-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>提示</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>本系统由BH6RKW独立开发</p>
+            </div>
+            <div class="modal-body">
+                <p>如果您在使用过程中遇到了bug或题目不符的情况，请前往 <a href="https://github.com/mcxgjkh/exam" target="_blank">github.com/mcxgjkh/exam</a> 提交issue，您也可以在题目库中更改为正确题目并前往github提交到另一个分支。</p>
+            </div>
+            <div class="modal-body">
+                <p>BUG提交贡献者：BH6SGE</p>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-confirm">知道了</button>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <header>
             <h1>业余无线电考试刷题模拟系统</h1>
@@ -148,28 +170,6 @@
             </div>
 
             <button class="restart-btn" onclick="location.reload()">重新开始</button>
-        </div>
-
-        <!-- 启动提示弹窗 -->
-        <div id="startup-modal" class="modal-overlay">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3>提示</h3>
-                    <button class="modal-close">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <p>本系统由BH6RKW独立开发</p>
-                </div>
-                <div class="modal-body">
-                    <p>如果您在使用过程中遇到了bug或题目不符的情况，请前往 <a href="https://github.com/mcxgjkh/exam" target="_blank">github.com/mcxgjkh/exam</a> 提交issue，您也可以在题目库中更改为正确题目并前往github提交到另一个分支。</p>
-                </div>
-                <div class="modal-body">
-                    <p>贡献者：BH6SGE</p>
-                </div>
-                <div class="modal-footer">
-                    <button class="modal-confirm">知道了</button>
-                </div>
-            </div>
         </div>
 
         <footer>
