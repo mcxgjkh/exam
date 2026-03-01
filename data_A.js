@@ -5503,19 +5503,19 @@ const questions_A = [
         "options": [
             {
                 "value": "A",
-                "text": "FourUniformOneUniform November"
+                "text": "Four Uniform One Uniform November"
             },
             {
                 "value": "B",
-                "text": "BravoHotelOneXrayYankeeZulu"
+                "text": "Bravo Hotel One Xray Yankee Zulu"
             },
             {
                 "value": "C",
-                "text": "BravoSeven CharlieRomeo Alfa"
+                "text": "Bravo Seven Charlie Romeo Alfa"
             },
             {
                 "value": "D",
-                "text": "VictorRomeoTwoZulu QuebecWhiskey"
+                "text": "Victor Romeo Two Zulu Quebec Whiskey"
             }
         ]
     },

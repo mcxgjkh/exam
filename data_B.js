@@ -5429,24 +5429,24 @@ const questions_B = [
     },
     {
         "id": "MC1-0249",
-        "question": "需要拼出呼号、术语和必要的文字时，业余无线电爱好者普遍使用ITU语音字母表中规 定的字母拼读法。呼号4U1UN可以拼读为：",
+        "question": "需要拼出呼号、术语和必要的文字时，业余无线电爱好者普遍使用ITU语音字母表中规定的字母拼读法。呼号4U1UN可以拼读为：",
         "answer": "A",
         "options": [
             {
                 "value": "A",
-                "text": "FourUniformOneUniform November"
+                "text": "Four Uniform One Uniform November"
             },
             {
                 "value": "B",
-                "text": "BravoHotelOneXrayYankeeZulu"
+                "text": "Bravo Hotel One Xray Yankee Zulu"
             },
             {
                 "value": "C",
-                "text": "BravoSeven CharlieRomeo Alfa"
+                "text": "Bravo Seven Charlie Romeo Alfa"
             },
             {
                 "value": "D",
-                "text": "VictorRomeoTwoZulu QuebecWhiskey"
+                "text": "Victor Romeo Two Zulu Quebec Whiskey"
             }
         ]
     },
