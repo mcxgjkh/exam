@@ -392,7 +392,7 @@
         document.getElementById('q-type').textContent = isMulti ? '多选题' : '单选题';
         document.getElementById('q-type').style.color = isMulti ? '#c44536' : '#2b6f9e';
         // 处理题目中的图片标记 [image: 文件名]
-        let questionHtml = q.question.replace(/\[image:\s*([^\]]+)\]/g, '<img src="images/$1" loading="lazy" class="question-image" alt="题目配图">');
+        let questionHtml = q.question.replace(/\[image:\s*([^\]]+)\]/g, '<img src="imageswebp/$1" loading="lazy" class="question-image" alt="题目配图">');
         document.getElementById('q-text').innerHTML = questionHtml;
 
         displayOptions(q, index);
@@ -976,7 +976,7 @@
 
             const itemDiv = document.createElement('div');
             itemDiv.className = 'query-item';
-            const questionHtml = q.question.replace(/\[image:\s*([^\]]+)\]/g, '<img src="images/$1" loading="lazy" class="question-image" alt="题目配图">');
+            const questionHtml = q.question.replace(/\[image:\s*([^\]]+)\]/g, '<img src="imageswebp/$1" loading="lazy" class="question-image" alt="题目配图">');
             itemDiv.innerHTML = `
                 <div class="badge">${type}类题库</div>
                 <h4>${q.id}</h4>
