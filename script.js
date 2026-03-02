@@ -1,4 +1,4 @@
-// script.js - 增强版，支持刷题/错题/收藏/待做/懒加载/图片
+// script.js
 (function() {
     // ----- 全局变量 -----
     let currentQuestions = [];
@@ -295,12 +295,6 @@
 
             optionDiv.querySelector('input').addEventListener('change', (e) => {
                 updateAnswer(opt.value, qIndex, isMulti);
-                if (currentMode === 'practice') {
-                    const ans = userAnswers[qIndex];
-                    const correct = checkAnswerSingle(question, ans);
-                    showPracticeFeedback(correct);
-                    updateWrongStorage(question.id, correct, currentExamType);
-                }
             });
 
             if (isChecked) optionDiv.classList.add('selected');
@@ -346,28 +340,37 @@
 
         // 如果是待做练习（有原始会话），更新原始会话
         if (pendingIndexMap.length > 0 && pendingOriginalSession) {
-            // 找到当前题目在原始会话中的索引
             const originalIdx = pendingIndexMap[qIndex];
-            // 复制原始会话
             let updatedSession = {
                 ...pendingOriginalSession,
                 userAnswers: [...pendingOriginalSession.userAnswers]
             };
-            // 更新答案
             updatedSession.userAnswers[originalIdx] = userAnswers[qIndex];
-            // 保存
             savePendingSession(pendingOriginalType, pendingOriginalOrder, updatedSession);
-            // 更新 pendingOriginalSession 引用
             pendingOriginalSession = updatedSession;
         }
 
-        // 练习模式下实时反馈
+        // 练习模式下处理反馈（多选题不实时反馈）
         if (currentMode === 'practice') {
             const question = currentQuestions[qIndex];
-            const userAns = userAnswers[qIndex];
-            const isCorrect = checkAnswerSingle(question, userAns);
-            showPracticeFeedback(isCorrect);
-            updateWrongStorage(question.id, isCorrect, currentExamType);
+            if (isMulti) {
+                // 如果是多选题，且当前下一题可见（即已经确认过），则切换回确认按钮
+                const nextBtn = document.getElementById('next-btn');
+                const confirmBtn = document.getElementById('confirm-btn');
+                if (nextBtn.style.display !== 'none') {
+                    // 已经确认过，现在用户修改了答案，需要重新确认
+                    confirmBtn.style.display = 'inline-block';
+                    nextBtn.style.display = 'none';
+                    document.getElementById('practice-feedback').innerHTML = ''; // 清除之前的结果
+                }
+                // 不触发实时反馈和错题更新
+            } else {
+                // 单选题实时反馈
+                const userAns = userAnswers[qIndex];
+                const isCorrect = checkAnswerSingle(question, userAns);
+                showPracticeFeedback(isCorrect);
+                updateWrongStorage(question.id, isCorrect, currentExamType);
+            }
         }
     }
 
@@ -400,23 +403,64 @@
         document.getElementById('prev-btn').disabled = index === 0;
         document.getElementById('next-btn').disabled = index === currentQuestions.length - 1;
 
-        // 练习模式下的反馈处理
+        // 根据题型和模式设置按钮状态
+        const confirmBtn = document.getElementById('confirm-btn');
+        const nextBtn = document.getElementById('next-btn');
         if (currentMode === 'practice') {
-            const feedback = document.getElementById('practice-feedback');
-            feedback.innerHTML = '';
-            feedback.classList.remove('correct', 'incorrect');
-            const userAns = userAnswers[index];
-            if (userAns !== undefined && userAns !== null) {
-                const isCorrect = checkAnswerSingle(q, userAns);
-                showPracticeFeedback(isCorrect);
+            if (isMulti) {
+                // 多选题：显示确认按钮，隐藏下一题
+                confirmBtn.style.display = 'inline-block';
+                nextBtn.style.display = 'none';
+                // 清除反馈（因为未确认）
+                document.getElementById('practice-feedback').innerHTML = '';
+            } else {
+                // 单选题：隐藏确认，显示下一题
+                confirmBtn.style.display = 'none';
+                nextBtn.style.display = 'inline-block';
+                // 如果有已选答案，显示反馈
+                const userAns = userAnswers[index];
+                if (userAns !== undefined && userAns !== null) {
+                    const isCorrect = checkAnswerSingle(q, userAns);
+                    showPracticeFeedback(isCorrect);
+                } else {
+                    document.getElementById('practice-feedback').innerHTML = '';
+                }
             }
+        } else {
+            // 模拟考试：隐藏确认，显示下一题
+            confirmBtn.style.display = 'none';
+            nextBtn.style.display = 'inline-block';
         }
+
         updateFavoriteButtonState();
 
         // 如果是普通刷题，保存当前进度
         if (currentMode === 'practice' && isNormalPractice) {
             updatePendingSession();
         }
+    }
+
+    // ----- 确认按钮处理 -----
+    function confirmAnswer() {
+        if (currentMode !== 'practice') return;
+        const q = currentQuestions[currentQuestionIndex];
+        const isMulti = q.answer.length > 1;
+        if (!isMulti) return; // 单选题不应触发
+
+        const userAns = userAnswers[currentQuestionIndex];
+        if (userAns === null || (Array.isArray(userAns) && userAns.length === 0)) {
+            // 未选任何选项，可以提示或直接视为错误
+            showPracticeFeedback(false);
+            updateWrongStorage(q.id, false, currentExamType);
+        } else {
+            const isCorrect = checkAnswerSingle(q, userAns);
+            showPracticeFeedback(isCorrect);
+            updateWrongStorage(q.id, isCorrect, currentExamType);
+        }
+
+        // 切换按钮：隐藏确认，显示下一题
+        document.getElementById('confirm-btn').style.display = 'none';
+        document.getElementById('next-btn').style.display = 'inline-block';
     }
 
     // ----- 进度更新与保存 -----
@@ -515,7 +559,7 @@
             const wrongIds = getWrongIds(type);
             baseQuestions = bank.filter(q => wrongIds.includes(q.id));
             if (baseQuestions.length === 0) {
-                alert('当前没有错题，先去练习全题库吧！');
+                alert('当前没有错题，先去学习题目吧！');
                 return;
             }
         }
@@ -1066,6 +1110,7 @@
 
         document.getElementById('prev-btn').addEventListener('click', prevQuestion);
         document.getElementById('next-btn').addEventListener('click', nextQuestion);
+        document.getElementById('confirm-btn').addEventListener('click', confirmAnswer);
         document.getElementById('submit-btn').addEventListener('click', () => {
             if (confirm('确定提交答案吗？')) submitExam();
         });
