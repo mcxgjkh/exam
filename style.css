@@ -1,9 +1,16 @@
-/* style.css - 现代化设计，清爽蓝白基调 */
+/* style.css */
+@font-face {
+    font-family: "HYWenhei";
+    src:url("汉仪文黑-85W.woff2") format("woff2");
+    font-weight: normal;
+    font-style: normal;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Inter', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'HYWenhei', 'Inter', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 body {
@@ -35,7 +42,7 @@ header {
 
 h1 {
     font-size: 2rem;
-    font-weight: 600;
+    font-weight: 500;
     background: linear-gradient(145deg, #1e4b6e, #2c6185);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -66,7 +73,7 @@ h1 {
 
 .mode-card h2 {
     font-size: 1.5rem;
-    font-weight: 600;
+    font-weight: 500;
     color: #1f4662;
     margin-bottom: 6px;
 }
@@ -99,7 +106,7 @@ h1 {
 
 
 
-.class-btn, .practice-btn, .wrong-practice-btn {
+.class-btn, .practice-btn, .wrong-practice-btn, .favorite-practice-btn {
     border: none;
     padding: 12px 24px;
     border-radius: 50px;
@@ -111,9 +118,10 @@ h1 {
     color: #2b4d6a;
     border: 1.5px solid #c7ddec;
     box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    white-space: nowrap;
 }
 
-.class-btn:hover, .practice-btn:hover, .wrong-practice-btn:hover {
+.class-btn:hover, .practice-btn:hover, .wrong-practice-btn:hover ,.favorite-practice-btn:hover {
     background: #1f4f73;        /* 深色背景 */
     color: white;                /* 白色文字保证可读 */
     border-color: #1f4f73;
@@ -125,7 +133,7 @@ h1 {
     background: #1f4f73;
     color: white;
     border: none;
-    font-weight: 600;
+    font-weight: 500;
     min-width: 160px;
 }
 
@@ -192,7 +200,7 @@ h1 {
 
 .timer {
     color: #c44536;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 .exit-btn {
@@ -238,7 +246,7 @@ h1 {
 .question-number {
     font-size: 1.1rem;
     color: #1a4d6f;
-    font-weight: 600;
+    font-weight: 500;
     margin-bottom: 12px;
     border-bottom: 2px solid #e2edf6;
     padding-bottom: 10px;
@@ -254,7 +262,7 @@ h1 {
 .question-type {
     font-size: 0.9rem;
     color: #3778a5;
-    font-weight: 600;
+    font-weight: 500;
     margin-bottom: 15px;
 }
 
@@ -362,7 +370,7 @@ h1 {
     padding: 12px;
     border-radius: 60px;
     margin: 10px 0 0;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 .practice-feedback.correct {
@@ -388,7 +396,7 @@ h1 {
     border: none;
     padding: 12px 32px;
     border-radius: 60px;
-    font-weight: 600;
+    font-weight: 500;
     font-size: 1rem;
     cursor: pointer;
     transition: 0.15s;
@@ -443,7 +451,7 @@ h1 {
     display: inline-block;
     padding: 10px 30px;
     border-radius: 40px;
-    font-weight: 600;
+    font-weight: 500;
     margin-top: 10px;
 }
 
@@ -472,7 +480,7 @@ h1 {
     border: none;
     padding: 14px 40px;
     border-radius: 60px;
-    font-weight: 600;
+    font-weight: 500;
     font-size: 1.1rem;
     cursor: pointer;
     background: #1f4f73;
@@ -546,11 +554,6 @@ footer {
     font-size: 0.9rem;
 }
 
-@media (max-width: 640px) {
-    .exam-info { flex-direction: column; gap: 8px; }
-    .option label { padding-left: 44px; }
-}
-
 .screen-hidden {
     display: none;
 }
@@ -562,7 +565,7 @@ footer {
     color: #245e86;
     padding: 10px 30px;
     border-radius: 60px;
-    font-weight: 600;
+    font-weight: 500;
     font-size: 1rem;
     cursor: pointer;
     transition: 0.15s;
@@ -604,7 +607,7 @@ footer {
     color: white;
     border: none;
     border-radius: 50px;
-    font-weight: 600;
+    font-weight: 500;
     cursor: pointer;
     transition: 0.15s;
 }
@@ -648,7 +651,7 @@ footer {
 }
 .query-item .correct-answer {
     color: #328f5e;
-    font-weight: 600;
+    font-weight: 500;
     margin-top: 10px;
 }
 .query-item .badge {
@@ -745,7 +748,7 @@ footer {
     border: none;
     padding: 10px 24px;
     border-radius: 30px;
-    font-weight: 600;
+    font-weight: 500;
     cursor: pointer;
     transition: 0.15s;
 }
@@ -759,22 +762,10 @@ footer {
     display: flex;
     gap: 12px;
     justify-content: center;
-    margin: 15px 0;
 }
 .favorite-practice-row button {
-    flex: 1;
+    flex: 1; /* 三个按钮等宽 */
     max-width: 200px;
-    text-align: center;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 50px;
-    font-weight: 500;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.15s;
-    background: white;
-    color: #2b4d6a;
-    border: 1.5px solid #c7ddec;
 }
 .favorite-practice-row button:hover {
     background: #1f4f73;
@@ -856,7 +847,7 @@ footer {
     border: none;
     border-radius: 30px;
     cursor: pointer;
-    font-weight: 600;
+    font-weight: 500;
 }
 .goto-confirm {
     background: #1f4f73;
@@ -876,7 +867,7 @@ footer {
 }
 .pending-type {
     min-width: 40px;
-    font-weight: 600;
+    font-weight: 500;
     color: #1e3f58;
 }
 .pending-btn {
@@ -898,4 +889,678 @@ footer {
     background: #1f4f73;
     color: white;
     border-color: #1f4f73;
+}
+
+@media (max-width: 640px) {
+    .exam-info {
+        flex-direction: column;
+        gap: 8px;
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+    .option label {
+        padding-left: 44px;
+    }
+    h1 {
+        font-weight: 500;
+        background: linear-gradient(145deg, #1e4b6e, #2c6185);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        letter-spacing: -0.5px;
+        white-space: nowrap;
+        overflow: hidden;
+        font-size: clamp(12px, 5vw, 48px);
+    }
+
+    /* 紧凑优化：缩小内边距、字体，让一屏容纳更多内容 */
+    .question-container {
+        padding: 16px;
+    }
+    .question-text {
+        font-size: 1rem;
+        margin-bottom: 16px;
+    }
+    .option label {
+        padding: 8px 12px 8px 40px;
+        font-size: 0.9rem;
+    }
+    .navigation {
+        gap: 8px;
+        margin-top: 20px;
+    }
+    .nav-btn {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+        min-width: 80px;
+    }
+    .exam-header {
+        margin-bottom: 10px;
+    }
+    .mode-badge {
+        padding: 4px 12px;
+        font-size: 0.8rem;
+    }
+    .exit-btn {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+
+    /* 窄屏时容器内边距适当减小 */
+    .container {
+        padding: 16px;
+    }
+
+    /* 结果屏幕适配 */
+    #result-screen {
+        padding: 20px;
+    }
+    .score {
+        font-size: 4rem;
+    }
+    .result-details {
+        min-width: 240px;
+        padding: 16px;
+    }
+    .toggle-wrong-btn {
+        padding: 8px 20px;
+        font-size: 0.9rem;
+        min-width: 140px;
+    }
+    .restart-btn {
+        padding: 12px 30px;
+        font-size: 1rem;
+    }
+
+    /* 页脚 */
+    footer {
+        font-size: 0.8rem;
+        margin-top: 30px;
+    }
+
+    /* 弹窗 */
+    .modal-content {
+        width: 95%;
+        padding: 16px;
+    }
+    .modal-body {
+        font-size: 0.9rem;
+    }
+    .modal-confirm {
+        padding: 8px 20px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 435px) {
+    .mode-card h2 {
+    font-size: 1.2rem;
+    }
+
+    .mode-desc {
+        font-size: 0.8rem;
+        margin-bottom: 12px;
+    }
+
+    /* 通用按钮行弹性布局，填满宽度 */
+    .practice-row,
+    .wrong-practice-row,
+    .favorite-practice-row,
+    .pending-row {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 4px;
+        width: 100%;
+        justify-content: flex-start; /* 覆盖原有居中，避免留白 */
+    }
+
+    /* 按钮统一等分剩余宽度 */
+    .practice-btn,
+    .wrong-practice-btn,
+    .favorite-practice-btn,
+    .pending-btn {
+        flex: 1 1 0;
+        min-width: 0;                /* 允许内容收缩 */
+        padding: 6px 8px;            /* 进一步缩小内边距 */
+        font-size: 0.75rem;          /* 缩小字体 */
+        white-space: nowrap;          /* 保持不换行 */
+    }
+
+    /* 标签固定宽度，不压缩 */
+    .practice-label,
+    .pending-type {
+        flex-shrink: 0;
+        font-size: 0.8rem;
+        padding-right: 4px;
+        line-height: 1.2;
+    }
+
+    /* 错题统计、收藏统计等保持居中，但内部 span 可适当缩小 */
+    .wrong-stats,
+    .favorite-stats {
+        gap: 4px;                     /* 缩小间距 */
+    }
+    .wrong-stats span,
+    .favorite-stats span {
+        max-width: none;
+        padding: 4px 0;
+        font-size: 0.8rem;
+    }
+
+    /* 进一步压缩题目区 */
+    .question-container {
+        padding: 10px;
+    }
+    .question-text {
+        font-size: 0.85rem;
+        margin-bottom: 10px;
+    }
+    .option label {
+        padding: 5px 8px 5px 32px;
+        font-size: 0.75rem;
+    }
+    .option label:before {
+        width: 16px;
+        height: 16px;
+        left: 10px;
+    }
+    .navigation {
+        gap: 4px;
+        margin-top: 15px;
+    }
+    .nav-btn {
+        padding: 5px 8px;
+        font-size: 0.75rem;
+        min-width: 50px;
+    }
+    .exam-info {
+        padding: 4px 8px;
+        font-size: 0.75rem;
+        gap: 4px;
+    }
+    .mode-badge {
+        padding: 2px 6px;
+        font-size: 0.65rem;
+    }
+    .exit-btn {
+        padding: 3px 6px;
+        font-size: 0.65rem;
+    }
+
+    /* 减小容器外边距，让内容更紧凑 */
+    .container {
+        padding: 12px;
+    }
+    .mode-card {
+        padding: 16px;
+    }
+    .class-select {
+        gap: 8px;
+    }
+    .class-btn {
+        min-width: 120px;
+        padding: 8px 12px;
+        font-size: 0.8rem;
+    }
+
+    /* 查询区域 */
+    .query-input-row {
+        gap: 6px;
+    }
+    .query-input {
+        padding: 8px 12px;
+        font-size: 0.8rem;
+    }
+    .query-btn {
+        padding: 8px 16px;
+        font-size: 0.8rem;
+    }
+
+    /* 结果屏幕进一步缩小 */
+    #result-screen {
+        padding: 16px;
+    }
+    .score {
+        font-size: 3.5rem;
+    }
+    .result-details {
+        min-width: 200px;
+        padding: 12px;
+        font-size: 0.9rem;
+    }
+    .toggle-wrong-btn {
+        padding: 6px 16px;
+        font-size: 0.8rem;
+        min-width: 120px;
+    }
+    .restart-btn {
+        padding: 10px 24px;
+        font-size: 0.9rem;
+    }
+
+    /* 页脚 */
+    footer {
+        font-size: 0.7rem;
+        margin-top: 20px;
+    }
+
+    /* 弹窗 */
+    .modal-content {
+        padding: 12px;
+    }
+    .modal-body {
+        font-size: 0.8rem;
+        margin-bottom: 12px;
+    }
+    .modal-confirm {
+        padding: 6px 16px;
+        font-size: 0.8rem;
+    }
+    .goto-modal-content {
+        width: 90%;
+        padding: 20px;
+    }
+}
+
+@media (max-width: 350px) {
+    .mode-card h2 {
+    font-size: 1rem;
+    }
+    .mode-desc {
+        font-size: 0.7rem;
+        margin-bottom: 8px;
+    }
+
+    /* 待做行：进一步缩小字体和内边距，防止溢出 */
+    .pending-btn {
+        padding: 4px 4px;
+        font-size: 0.7rem;
+    }
+    .pending-type {
+        font-size: 0.7rem;
+        min-width: 35px;
+    }
+
+    /* 统一所有练习按钮字体大小 */
+    .practice-btn,
+    .wrong-practice-btn,
+    .favorite-practice-btn,
+    .pending-btn {
+        font-size: 0.7rem;
+        padding: 4px 6px;
+    }
+
+    /* 错题统计、收藏统计字体缩小 */
+    .wrong-stats span,
+    .favorite-stats span {
+        font-size: 0.7rem;
+        padding: 3px 0;
+    }
+    .wrong-stats,
+    .favorite-stats {
+        gap: 2px;
+    }
+
+    /* 题目区继续压缩 */
+    .question-container {
+        padding: 8px;
+    }
+    .question-text {
+        font-size: 0.8rem;
+        margin-bottom: 8px;
+    }
+    .option label {
+        padding: 4px 6px 4px 28px;
+        font-size: 0.7rem;
+    }
+    .option label:before {
+        width: 14px;
+        height: 14px;
+        left: 8px;
+    }
+    .navigation {
+        gap: 2px;
+    }
+    .nav-btn {
+        padding: 4px 6px;
+        font-size: 0.7rem;
+        min-width: 45px;
+    }
+    .exam-info {
+        padding: 3px 6px;
+        font-size: 0.7rem;
+        gap: 2px;
+    }
+    .mode-badge {
+        padding: 2px 4px;
+        font-size: 0.6rem;
+    }
+    .exit-btn {
+        padding: 2px 4px;
+        font-size: 0.6rem;
+    }
+    .container {
+        padding: 8px;
+    }
+    .mode-card {
+        padding: 12px;
+    }
+    .class-btn {
+        min-width: 100px;
+        padding: 6px 8px;
+        font-size: 0.7rem;
+    }
+
+    /* 结果屏幕 */
+    #result-screen {
+        padding: 12px;
+    }
+    .score {
+        font-size: 3rem;
+    }
+    .result-details {
+        min-width: 180px;
+        padding: 10px;
+        font-size: 0.8rem;
+    }
+    .toggle-wrong-btn {
+        padding: 5px 12px;
+        font-size: 0.7rem;
+        min-width: 100px;
+    }
+    .restart-btn {
+        padding: 8px 20px;
+        font-size: 0.8rem;
+    }
+
+    /* 页脚 */
+    footer {
+        font-size: 0.6rem;
+        margin-top: 15px;
+    }
+
+    /* 弹窗 */
+    .modal-content {
+        padding: 10px;
+    }
+    .modal-body {
+        font-size: 0.7rem;
+        margin-bottom: 10px;
+    }
+    .modal-confirm {
+        padding: 5px 12px;
+        font-size: 0.7rem;
+    }
+    .goto-modal-content {
+        padding: 15px;
+    }
+    .goto-modal-content input {
+        padding: 6px;
+        font-size: 0.8rem;
+    }
+    .goto-modal-actions button {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 324px) {
+    .mode-card h2 {
+    font-size: 0.9rem;
+    }
+    .mode-desc {
+        font-size: 0.6rem;
+        margin-bottom: 6px;
+    }
+
+    /* 查询区域：防止按钮换行 */
+    .query-input-row {
+        flex-wrap: nowrap;
+        gap: 2px;
+    }
+    .query-input {
+        padding: 6px 8px;
+        font-size: 0.65rem;
+        min-width: 0;
+        width: 60%;
+    }
+    .query-btn {
+        padding: 6px 8px;
+        font-size: 0.65rem;
+        white-space: nowrap;
+        flex: 0 0 auto;
+        width: auto;
+        min-width: 50px;
+    }
+
+    /* 确保所有按钮字体一致且足够小 */
+    .practice-btn,
+    .wrong-practice-btn,
+    .favorite-practice-btn,
+    .pending-btn,
+    .class-btn {
+        font-size: 0.65rem;
+        padding: 4px 4px;
+    }
+
+    /* 进一步压缩其他元素 */
+    .practice-label,
+    .pending-type {
+        font-size: 0.65rem;
+    }
+    .wrong-stats span,
+    .favorite-stats span {
+        font-size: 0.65rem;
+    }
+    .question-container {
+        padding: 6px;
+    }
+    .question-text {
+        font-size: 0.75rem;
+    }
+    .option label {
+        padding: 3px 4px 3px 24px;
+        font-size: 0.65rem;
+    }
+    .option label:before {
+        width: 12px;
+        height: 12px;
+        left: 6px;
+    }
+    .nav-btn {
+        padding: 3px 4px;
+        font-size: 0.65rem;
+        min-width: 40px;
+    }
+    .exam-info {
+        padding: 2px 4px;
+        font-size: 0.6rem;
+    }
+    .mode-badge {
+        padding: 1px 3px;
+        font-size: 0.55rem;
+    }
+    .exit-btn {
+        padding: 1px 3px;
+        font-size: 0.55rem;
+    }
+
+    /* 结果屏幕 */
+    #result-screen {
+        padding: 8px;
+    }
+    .score {
+        font-size: 2.5rem;
+    }
+    .result-details {
+        min-width: 160px;
+        padding: 8px;
+        font-size: 0.7rem;
+    }
+    .toggle-wrong-btn {
+        padding: 4px 8px;
+        font-size: 0.6rem;
+        min-width: 80px;
+    }
+    .restart-btn {
+        padding: 6px 16px;
+        font-size: 0.7rem;
+    }
+
+    /* 页脚 */
+    footer {
+        font-size: 0.5rem;
+        margin-top: 10px;
+    }
+
+    /* 弹窗 */
+    .modal-content {
+        padding: 8px;
+    }
+    .modal-body {
+        font-size: 0.6rem;
+        margin-bottom: 8px;
+    }
+    .modal-confirm {
+        padding: 4px 10px;
+        font-size: 0.6rem;
+    }
+    .goto-modal-content {
+        padding: 10px;
+    }
+    .goto-modal-content input {
+        padding: 4px;
+        font-size: 0.7rem;
+    }
+    .goto-modal-actions button {
+        padding: 4px 8px;
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 300px) {
+  body {
+    background: linear-gradient(145deg, #f6fafd 0%, #edf2f7 100%); /* 保持原有渐变背景 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 16px;
+  }
+  body > * {
+    display: none !important; /* 隐藏所有原有内容（容器内的所有元素） */
+  }
+  body::before {
+    content: "您的屏幕宽度小于300像素，低于本网站题目显示下限，请更换设备后再访问。";
+    display: block;
+    text-align: center;
+    font-size: 1.1rem;
+    color: #1e293b; /* 网站主文字色 */
+    background: white; /* 白色卡片 */
+    padding: 32px 24px;
+    border-radius: 28px; /* 与卡片圆角一致 */
+    box-shadow: 0 12px 30px -12px rgba(30,60,90,0.2); /* 卡片阴影 */
+    max-width: 280px;
+    width: 100%;
+    line-height: 1.6;
+    font-family: 'HYWenhei', 'Inter', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 500;
+    border: 1px solid rgba(200,220,240,0.5); /* 卡片边框 */
+  }
+}
+
+@media (max-width: 200px) {
+  body {
+    background: linear-gradient(145deg, #f6fafd 0%, #edf2f7 100%); /* 保持原有渐变背景 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 16px;
+  }
+  body > * {
+    display: none !important; /* 隐藏所有原有内容（容器内的所有元素） */
+  }
+  body::before {
+    content: "Error:屏宽过小";
+    display: block;
+    text-align: center;
+    font-size: 1.1rem;
+    color: #1e293b; /* 网站主文字色 */
+    background: white; /* 白色卡片 */
+    padding: 32px 24px;
+    border-radius: 28px; /* 与卡片圆角一致 */
+    box-shadow: 0 12px 30px -12px rgba(30,60,90,0.2); /* 卡片阴影 */
+    max-width: 280px;
+    width: 100%;
+    line-height: 1.6;
+    font-family: 'HYWenhei', 'Inter', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 500;
+    border: 1px solid rgba(200,220,240,0.5); /* 卡片边框 */
+  }
+}
+
+@media (max-height: 287px) {
+  body {
+    background: linear-gradient(145deg, #f6fafd 0%, #edf2f7 100%); /* 保持原有渐变背景 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 16px;
+  }
+  body > * {
+    display: none !important; /* 隐藏所有原有内容（容器内的所有元素） */
+  }
+  body::before {
+    content: "您的屏幕高度小于287像素，低于本网站题目显示下限，请更换设备后再访问。";
+    display: block;
+    text-align: center;
+    font-size: 1.1rem;
+    color: #1e293b; /* 网站主文字色 */
+    background: white; /* 白色卡片 */
+    padding: 32px 24px;
+    border-radius: 28px; /* 与卡片圆角一致 */
+    box-shadow: 0 12px 30px -12px rgba(30,60,90,0.2); /* 卡片阴影 */
+    max-width: 280px;
+    width: 100%;
+    line-height: 1.6;
+    font-family: 'HYWenhei', 'Inter', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 500;
+    border: 1px solid rgba(200,220,240,0.5); /* 卡片边框 */
+  }
+}
+
+@media (max-height: 100px) {
+  body {
+    background: linear-gradient(145deg, #f6fafd 0%, #edf2f7 100%); /* 保持原有渐变背景 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 1px;
+  }
+  body > * {
+    display: none !important; /* 隐藏所有原有内容（容器内的所有元素） */
+  }
+  body::before {
+    content: "Error:屏高过小";
+    display: block;
+    text-align: center;
+    font-size: 1.1rem;
+    color: #1e293b; /* 网站主文字色 */
+    background: white; /* 白色卡片 */
+    padding: 0px 24px;
+    border-radius: 28px; /* 与卡片圆角一致 */
+    box-shadow: 0 12px 30px -12px rgba(30,60,90,0.2); /* 卡片阴影 */
+    max-width: 280px;
+    width: 100%;
+    line-height: 1.6;
+    font-family: 'HYWenhei', 'Inter', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 500;
+    border: 1px solid rgba(200,220,240,0.5); /* 卡片边框 */
+  }
 }
