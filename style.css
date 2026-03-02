@@ -1609,8 +1609,53 @@ footer {
     font-size: 0.95rem;
 }
 
-/* 字体超时回退 */
-html[data-font-timeout="true"] body,
-html[data-font-timeout="true"] body * {
-    font-family: 'Inter', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, sans-serif !important;
+/* IE 不兼容提示（通用样式） */
+.ie-warning {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 10000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+.ie-warning-content {
+    background: white;
+    border-radius: 28px;
+    padding: 32px 24px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+.ie-warning-content h3 {
+    font-size: 1.5rem;
+    color: #1f4662;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+.ie-warning-content p {
+    font-size: 1rem;
+    color: #2b4d6a;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+.ie-warning-close {
+    background: #1f4f73;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.15s;
+}
+.ie-warning-close:hover {
+    background: #123a57;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px -10px #2f86b3;
 }

@@ -5,8 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>业余无线电考试刷题模拟系统</title>
     <link rel="stylesheet" href="style.css">
+    <!--[if lte IE 6]>
+    <style>
+        .ie-warning {
+            position: absolute;
+            height: 100%;
+            background: #000;
+            filter: alpha(opacity=80);
+        }
+        .ie-warning-content {
+            border-radius: 0; /* IE6 不支持圆角 */
+            box-shadow: none;
+            width: 80%;
+            margin-top: -150px;
+        }
+        .ie-warning-close {
+            border-radius: 0;
+            padding: 8px 20px;
+        }
+    </style>
+    <![endif]-->
 </head>
 <body>
+    <noscript>
+        <div style="position:fixed; top:0; left:0; width:100%; padding:20px; background:#f8d7da; color:#721c24; text-align:center; z-index:10001;">
+            您的浏览器禁用了JavaScript或当前安全设置阻止了脚本运行，本系统无法正常工作。请启用JavaScript或使用现代浏览器（Chrome/Edge/Firefox）访问。
+        </div>
+    </noscript>
+
+    <!-- IE 不兼容提示 -->
+    <div id="ie-warning" class="ie-warning" style="display: none;">
+        <div class="ie-warning-content">
+            <h3>浏览器不兼容</h3>
+            <p>本网站不支持 Internet Explorer，请使用 Chrome、Firefox、Edge 等现代浏览器访问。</p>
+            <button class="ie-warning-close" onclick="this.parentElement.parentElement.style.display='none'">我知道了</button>
+        </div>
+    </div>
+
     <!-- 启动提示弹窗 -->
     <div id="startup-modal" class="modal-overlay">
         <div class="modal-content">
@@ -32,7 +67,7 @@
     <div class="container">
         <header>
             <h1>业余无线电考试刷题模拟系统</h1>
-            <p class="version">版本号：2.11.1</p>
+            <p class="version">版本号：2.12.1</p>
         </header>
 
         <!-- 加载提示浮层 -->
@@ -221,6 +256,32 @@
             <p>© 2025-2026 业余无线电考试刷题模拟系统 | By BH6RKW</p>
         </footer>
     </div>
+
+    <script>
+    (function() {
+        var isIE = false;
+        if (document.documentMode) {
+            isIE = true;
+        } else if (window.ActiveXObject || 'ActiveXObject' in window) {
+            isIE = true;
+        } else if (navigator.userAgent.indexOf('MSIE') !== -1) {
+            isIE = true;
+        }
+
+        if (isIE) {
+            var ieWarning = document.getElementById('ie-warning');
+            if (ieWarning) {
+                ieWarning.style.display = 'flex';
+            }
+            var container = document.querySelector('.container');
+            if (container) container.style.display = 'none';
+            var modal = document.getElementById('startup-modal');
+            if (modal) modal.style.display = 'none';
+
+            window.__IE_DETECTED = true; // 标记IE，用于script.js提前返回
+        }
+    })();
+    </script>
 
     <script src="script.js"></script>
 </body>

@@ -1,5 +1,10 @@
 // script.js
 (function() {
+    // 如果检测到IE，立即返回，不执行任何现代语法
+    if (window.__IE_DETECTED) {
+        return;
+    }
+    
     // ----- 全局变量 -----
     let currentQuestions = [];
     let currentExamType = '';
