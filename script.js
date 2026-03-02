@@ -314,6 +314,20 @@
         }
     }
 
+    // 更新正确答案提示
+    function updateCorrectAnswerHint(question, isCorrect) {
+        const hintEl = document.getElementById('correct-answer-hint');
+        if (!hintEl) return;
+        if (isCorrect) {
+            hintEl.style.display = 'none';
+            return;
+        }
+        const correctValues = question.answer.split('');
+        const correctLetters = correctValues.map(v => optionMappings[currentQuestionIndex][v] || v).join('、');
+        hintEl.textContent = `正确答案：${correctLetters}`;
+        hintEl.style.display = 'block';
+    }
+
     function updateAnswer(val, qIndex, isMulti) {
         if (!userAnswers[qIndex]) {
             userAnswers[qIndex] = isMulti ? [val] : val;
@@ -362,6 +376,8 @@
                     confirmBtn.style.display = 'inline-block';
                     nextBtn.style.display = 'none';
                     document.getElementById('practice-feedback').innerHTML = ''; // 清除之前的结果
+                    // 隐藏正确答案提示
+                    document.getElementById('correct-answer-hint').style.display = 'none';
                 }
                 // 不触发实时反馈和错题更新
             } else {
@@ -370,6 +386,7 @@
                 const isCorrect = checkAnswerSingle(question, userAns);
                 showPracticeFeedback(isCorrect);
                 updateWrongStorage(question.id, isCorrect, currentExamType);
+                updateCorrectAnswerHint(question, isCorrect);
             }
         }
     }
@@ -387,6 +404,13 @@
         currentQuestionIndex = index;
         const q = currentQuestions[index];
 
+        // 清空并重置反馈框
+        const fb = document.getElementById('practice-feedback');
+        if (fb) {
+            fb.innerHTML = '';
+            fb.classList.remove('correct', 'incorrect');
+        }
+
         document.getElementById('progress').textContent = index + 1;
         document.getElementById('progress-fill').style.width = `${((index + 1) / currentQuestions.length) * 100}%`;
         document.getElementById('q-number').textContent = index + 1;
@@ -402,6 +426,10 @@
 
         document.getElementById('prev-btn').disabled = index === 0;
         document.getElementById('next-btn').disabled = index === currentQuestions.length - 1;
+
+        // 隐藏正确答案提示
+        const hintEl = document.getElementById('correct-answer-hint');
+        if (hintEl) hintEl.style.display = 'none';
 
         // 根据题型和模式设置按钮状态
         const confirmBtn = document.getElementById('confirm-btn');
@@ -422,6 +450,7 @@
                 if (userAns !== undefined && userAns !== null) {
                     const isCorrect = checkAnswerSingle(q, userAns);
                     showPracticeFeedback(isCorrect);
+                    updateCorrectAnswerHint(q, isCorrect); 
                 } else {
                     document.getElementById('practice-feedback').innerHTML = '';
                 }
@@ -448,15 +477,18 @@
         if (!isMulti) return; // 单选题不应触发
 
         const userAns = userAnswers[currentQuestionIndex];
+        let isCorrect; // 定义变量
         if (userAns === null || (Array.isArray(userAns) && userAns.length === 0)) {
-            // 未选任何选项，可以提示或直接视为错误
+            // 未选任何选项，视为错误
+            isCorrect = false;
             showPracticeFeedback(false);
             updateWrongStorage(q.id, false, currentExamType);
         } else {
-            const isCorrect = checkAnswerSingle(q, userAns);
+            isCorrect = checkAnswerSingle(q, userAns);
             showPracticeFeedback(isCorrect);
             updateWrongStorage(q.id, isCorrect, currentExamType);
         }
+        updateCorrectAnswerHint(q, isCorrect);
 
         // 切换按钮：隐藏确认，显示下一题
         document.getElementById('confirm-btn').style.display = 'none';
@@ -1049,6 +1081,39 @@
 
         updateWrongStatsAll();
         updateFavoriteStatsAll();
+
+        // ----- 字体超时处理 -----
+        (function handleFontTimeout() {
+            if (!document.fonts || !document.fonts.load) return; // 不支持 Font Loading API 则忽略
+
+            const FONT_FAMILY = 'HYWenhei';         
+            const CHECK_STRING = `16px ${FONT_FAMILY}`;
+            const TIMEOUT_MS = 5000;
+
+            // 如果字体已经可用，直接返回
+            if (document.fonts.check(CHECK_STRING)) return;
+
+            let fontTimedOut = false;                 // 标记是否已超时
+            const timeoutId = setTimeout(() => {
+                fontTimedOut = true;
+                document.documentElement.setAttribute('data-font-timeout', 'true');
+            }, TIMEOUT_MS);
+
+            document.fonts.load(CHECK_STRING)
+                .then(() => {
+                    clearTimeout(timeoutId);
+                    // 只有未超时时才移除标记，让字体正常显示；若已超时则保持回退字体
+                    if (!fontTimedOut) {
+                        document.documentElement.removeAttribute('data-font-timeout');
+                    }
+                })
+                .catch(() => {
+                    // 加载失败（如 404），也视为超时，启用回退字体
+                    clearTimeout(timeoutId);
+                    fontTimedOut = true;
+                    document.documentElement.setAttribute('data-font-timeout', 'true');
+                });
+        })();
 
         // 弹窗关闭
         const modal = document.getElementById('startup-modal');

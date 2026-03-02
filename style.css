@@ -1596,3 +1596,21 @@ footer {
     border: 1px solid rgba(200,220,240,0.5); /* 卡片边框 */
   }
 }
+
+/* 正确答案提示 */
+.correct-answer-hint {
+    margin-top: 16px;
+    padding: 8px 12px;
+    background-color: #f0f9e8;
+    border-left: 4px solid #2e7d32;
+    color: #2e7d32;
+    font-weight: 500;
+    border-radius: 8px;
+    font-size: 0.95rem;
+}
+
+/* 字体超时回退 */
+html[data-font-timeout="true"] body,
+html[data-font-timeout="true"] body * {
+    font-family: 'Inter', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
