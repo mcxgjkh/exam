@@ -44,9 +44,18 @@ h1 {
     font-size: 2rem;
     font-weight: 500;
     background: linear-gradient(145deg, #1e4b6e, #2c6185);
-    -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     letter-spacing: -0.5px;
+}
+
+.version {
+    font-size: 1rem;
+    font-weight: 500;
+    background: black;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 1px;
 }
 
 .subhead {
@@ -901,10 +910,16 @@ footer {
     .option label {
         padding-left: 44px;
     }
+
+    .version {
+        font-size: 0.8rem;
+        margin-top: 2px;
+    }
+
     h1 {
         font-weight: 500;
         background: linear-gradient(145deg, #1e4b6e, #2c6185);
-        -webkit-background-clip: text;
+        background-clip: text;
         -webkit-text-fill-color: transparent;
         letter-spacing: -0.5px;
         white-space: nowrap;
@@ -994,6 +1009,11 @@ footer {
 @media (max-width: 435px) {
     .mode-card h2 {
     font-size: 1.2rem;
+    }
+
+    .version {
+        font-size: 0.7rem;
+        margin-top: 1px;
     }
 
     .mode-desc {
@@ -1165,6 +1185,12 @@ footer {
     .mode-card h2 {
     font-size: 1rem;
     }
+
+    .version {
+        font-size: 0.6rem;
+        margin-top: 0;
+    }
+
     .mode-desc {
         font-size: 0.7rem;
         margin-bottom: 8px;
@@ -1307,6 +1333,12 @@ footer {
     .mode-card h2 {
     font-size: 0.9rem;
     }
+
+    .version {
+        font-size: 0.55rem;
+        margin-top: 0;
+    }
+
     .mode-desc {
         font-size: 0.6rem;
         margin-bottom: 6px;
