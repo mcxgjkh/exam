@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://exam.bh6rkw.dpdns.org/sitemap.xml
