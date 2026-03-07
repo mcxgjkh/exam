@@ -534,7 +534,7 @@ h1 {
     justify-content: center !important;
     align-items: center !important;
     gap: 20px;                       
-    z-index: 999998 !important;
+    z-index: 999;
     margin: 0 !important;
     padding: 0 !important;
     box-sizing: border-box !important;
