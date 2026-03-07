@@ -534,7 +534,7 @@ h1 {
     justify-content: center !important;
     align-items: center !important;
     gap: 20px;                       
-    z-index: 999999 !important;
+    z-index: 999998 !important;
     margin: 0 !important;
     padding: 0 !important;
     box-sizing: border-box !important;
@@ -727,6 +727,7 @@ footer {
     width: 90%;
     padding: 20px;
     box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    z-index: 999999;
 }
 
 .modal-header {
