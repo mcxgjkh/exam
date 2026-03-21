@@ -53,7 +53,6 @@
             font-size: 0.95rem;
         }
         .agreement-content .data-badge {
-            font-family: monospace;
             background: #e9ecef;
             padding: 0.2rem 0.5rem;
             border-radius: 20px;
@@ -125,9 +124,8 @@
             <h1>用户协议与隐私许可</h1>
             <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 12px;">
                 <span class="version-tag">版本 2.13.1</span>
-                <span class="version-tag">最后修订：2026年3月20日</span>
+                <span class="version-tag">最后修订：2026年3月21日</span>
             </div>
-            <p class="subhead" style="margin-top: 12px;">业余无线电考试刷题模拟系统 尊重并保护您的数据隐私</p>
         </header>
 
         <!-- 主体卡片内容 -->
@@ -142,12 +140,12 @@
                 <h3>一、服务功能与数据存储说明</h3>
                 <p>本系统提供A/B/C类业余无线电题库的<strong>模拟考试、刷题练习、错题巩固、收藏题目、待做进度续练、题目查询</strong>等功能。为实现上述功能，系统会在您的设备本地存储以下数据：</p>
                 <ul>
-                    <li><span class="data-badge">错题本</span>：记录您答错的题目ID（按类别存储，键名 <code>ham_wrong_A</code>、<code>ham_wrong_B</code>、<code>ham_wrong_C</code>），以便提供错题专项练习。</li>
-                    <li><span class="data-badge">收藏夹</span>：您主动收藏的题目ID（键名 <code>ham_favorite_A</code>、<code>ham_favorite_B</code>、<code>ham_favorite_C</code>），便于集中复习。</li>
-                    <li><span class="data-badge">待做会话</span>：在“题目学习”模式下（顺序/倒序/乱序），系统自动保存您的答题进度（包含题目ID列表、已作答记录、当前索引、选项随机顺序），键名格式 <code>ham_pending_{类型}_{顺序}</code>。下次进入相同模式时可继续未完成的练习，实现无缝学习。</li>
+                    <li><span class="data-badge">错题本</span>：记录您答错的题目ID，以便提供错题专项练习。</li>
+                    <li><span class="data-badge">收藏夹</span>：您主动收藏的题目ID，便于集中复习。</li>
+                    <li><span class="data-badge">待做会话</span>：在“题目学习”模式下（顺序/倒序/乱序），系统自动保存您的答题进度（包含题目ID列表、已作答记录、当前索引、选项随机顺序）。下次进入相同模式时可继续未完成的练习，实现无缝学习。</li>
                     <li><span class="data-badge">选项随机顺序</span>：为确保练习多样性，每题选项顺序随机生成，该顺序随会话保存，不影响标准答案判断。</li>
                 </ul>
-                <p><strong>存储位置与期限</strong>：所有数据均保存在您当前使用的浏览器中（遵循浏览器同源策略），除非您主动清除浏览器缓存或使用浏览器“清除网站数据”功能，否则数据将长期保留。本系统不会以任何形式将数据发送至任何服务器或第三方。</p>
+                <p><strong>存储位置与期限</strong>：所有数据均保存在您当前使用的浏览器中（遵循浏览器同源策略，Cookies存储365天），除非您主动清除浏览器缓存或使用浏览器“清除网站数据”功能，否则数据将长期保留。本系统不会以任何形式将数据发送至任何服务器或第三方。</p>
 
                 <h3>二、信息收集与隐私保护</h3>
                 <p>本系统<strong>无后端服务器、无用户账户体系、无Cookie追踪、无任何分析脚本</strong>。具体包括：</p>
@@ -155,7 +153,7 @@
                     <li>不收集姓名、电话、地理位置、IP地址等任何个人身份信息。</li>
                     <li>不使用第三方统计工具（如Google Analytics、百度统计）。</li>
                     <li>不设置跨站追踪，无广告系统，不共享任何数据。</li>
-                    <li>题库文件（data_A.js, data_B.js, data_C.js）均为静态资源，仅包含题目内容，不包含任何追踪代码。</li>
+                    <li>题库文件均为静态资源，仅包含题目内容，不包含任何追踪代码。</li>
                 </ul>
                 <p>由于本系统运行完全依赖前端技术，您的任何练习记录、错题集、收藏列表均只属于您个人。请您妥善保管自己的设备，避免在公用设备上遗留个人学习数据。如您希望彻底清除所有学习记录，只需在浏览器设置中清除当前网站的“本地存储数据”即可。</p>
 
@@ -171,8 +169,8 @@
                 <h3>四、用户责任与使用规范</h3>
                 <p>作为业余无线电考试辅助工具，本系统尽力确保题目准确性和考试规则贴近官方标准，但用户需知晓：</p>
                 <ul>
-                    <li>本系统题库来源于公开资料及爱好者贡献，不保证与最新官方考试题目完全一致。正式考试请以中国无线电协会业余无线电工作委员会（CRAC）发布的最新题库及考试规定为准。</li>
-                    <li>用户不得利用本系统进行任何违法、破坏网络安全、侵犯他人权益的行为；不得通过爬虫、自动化脚本恶意高频请求资源（所有资源均为静态，恶意行为可能导致服务器带宽异常）。</li>
+                    <li>本系统题库来源于公开资料及爱好者贡献，不保证与最新官方考试题目完全一致。正式考试请以中国无线电协会业余无线电分会（CRAC）发布的最新题库及考试规定为准。</li>
+                    <li>用户不得利用本系统进行任何违法、破坏网络安全、侵犯他人权益的行为；不得通过爬虫、自动化脚本恶意高频请求资源。</li>
                     <li>用户自愿使用本系统进行练习，模拟考试结果仅供自我评估，不作为任何官方资质证明。</li>
                     <li>若用户发现题目错误、答案不符或有改进建议，欢迎前往 <a href="https://github.com/mcxgjkh/exam" target="_blank" rel="noopener noreferrer">GitHub项目主页</a> 提交 issue 或 Pull Request，贡献内容需遵守开源精神。开发者将酌情审核修正，但不承诺实时更新。</li>
                 </ul>
@@ -191,16 +189,15 @@
                 <p>本系统有权根据功能迭代或法律法规要求适时修订本协议条款。修订后的协议将在本页面公布，并更新协议版本号及“最后修订日期”。对于重大变更（例如数据收集方式改变），我们将在系统主页弹窗中予以提示。您继续使用本系统即视为接受修订后的协议。如您不同意修改后的条款，应立即停止使用本系统并清除本地存储数据。</p>
 
                 <div class="highlight-box" style="background: #eaf5e8; border-left-color: #2e7d32;">
-                    <strong>重要提示</strong>：您在主页勾选同意本协议后方可进入系统。如您未满18周岁，请在监护人指导下使用。本系统不针对未成年人设计特殊保护，但所有数据均本地存储，家长可随时监督孩子的练习情况。
+                    <strong>重要提示</strong>：您在主页勾选同意本协议后方可进入系统。如您未满18周岁，请在监护人指导下使用。本系统不针对未成年人设计特殊保护。
                 </div>
 
-                <p style="margin-top: 28px; text-align: right; font-style: italic;">—— 电波传千里，希望我们在空中相见 ——</p>
+                <p style="margin-top: 28px; text-align: right; font-style: italic;">—— 电波传千里，希望我们的信号在空中相见 ——</p>
             </div>
 
             <!-- 返回首页操作区 -->
             <div style="text-align: center; margin-top: 32px;">
                 <a href="index.html" class="back-home-btn">返回模拟考试系统</a>
-                <p style="font-size: 0.8rem; color: #5f7d9c; margin-top: 16px;">点击返回主页，继续您的业余无线电备考之旅</p>
             </div>
         </div>
 
