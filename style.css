@@ -959,6 +959,15 @@ footer {
     text-decoration: underline;
 }
 
+footer img {
+    display: inline-block;
+    vertical-align: middle;
+    height: 2em;
+    width: auto;
+    max-width: 100%;
+    transition: height 0.1s ease;
+}
+
 @media (max-width: 640px) {
     .exam-info {
         flex-direction: column;
@@ -1183,14 +1192,17 @@ footer {
 
     /* 查询区域 */
     .query-input-row {
-        gap: 6px;
+    flex-wrap: nowrap;
+    gap: 6px;
     }
     .query-input {
-        padding: 8px 12px;
-        font-size: 0.8rem;
+        flex: 1;
+        min-width: 0; /* 允许收缩 */
     }
     .query-btn {
-        padding: 8px 16px;
+        flex-shrink: 0;  /* 防止被压缩 */
+        white-space: nowrap;
+        padding: 8px 12px;
         font-size: 0.8rem;
     }
 
@@ -1332,6 +1344,18 @@ footer {
     .class-btn {
         min-width: 100px;
         padding: 6px 8px;
+        font-size: 0.7rem;
+    }
+
+    .query-input-row {
+    gap: 4px;
+    }
+    .query-input {
+        padding: 6px 8px;
+        font-size: 0.7rem;
+    }
+    .query-btn {
+        padding: 6px 10px;
         font-size: 0.7rem;
     }
 
