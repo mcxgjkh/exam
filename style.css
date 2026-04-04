@@ -723,7 +723,7 @@ footer {
 .modal-content {
     background: white;
     border-radius: 16px;
-    max-width: 500px;
+    max-width: 900px;
     width: 90%;
     padding: 20px;
     box-shadow: 0 20px 40px rgba(0,0,0,0.2);
