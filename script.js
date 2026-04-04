@@ -13,7 +13,7 @@
     }
 
     function getNoticeVersion() {
-        const match = document.cookie.match(/(?:^|;\\s*)notice_version=([^;]+)/);
+        const match = document.cookie.match(/(?:^|;\s*)notice_version=([^;]+)/);
         return match ? match[1] : null;
     }
 
