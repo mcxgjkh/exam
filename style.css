@@ -1742,3 +1742,13 @@ footer img {
     transform: translateY(-2px);
     box-shadow: 0 10px 20px -10px #2f86b3;
 }
+
+.loading-spinner-small {
+    display: inline-block;
+    animation: pulse 1.2s infinite;
+}
+@keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
