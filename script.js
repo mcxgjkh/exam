@@ -5,126 +5,141 @@
         return;
     }
 
+    // ========== 模糊匹配库（包含 Levenshtein 距离）==========
     const PINYIN_GROUPS = {
-    a: '啊阿呵吖嗄腌锕钶',
-    b: '八巴吧扒叭芭笆疤捌拔跋靶把坝霸罢爸白百佰柏摆败拜班般颁斑搬扳板版办半伴瓣帮绑榜膀傍傍苞胞包褒薄雹保堡宝饱抱暴爆豹鲍杯背卑碑北贝备背倍狈惫被奔本笨崩泵蹦逼鼻比彼笔鄙币必毕闭毙辟碧蔽壁避臂边编鞭贬扁便变辩辫标彪表别瘪宾彬斌濒鬓冰兵丙秉饼炳病并拨波玻剥菠播伯脖驳泊柏勃铂箔帛舶博搏渤卜不布步部',
-    c: '擦猜材才财裁采彩踩菜蔡参餐蚕残惭惨灿仓苍舱藏操草厕策侧测层蹭插叉查茶察岔差拆柴搀蝉馋缠产铲阐颤昌长场肠尝常偿厂场敞畅唱倡抄吵钞超朝潮嘲巢车扯彻撤尘臣辰陈晨衬趁撑成呈承诚城乘惩程秤吃痴池驰迟持匙尺齿耻斥赤翅充冲虫崇抽仇绸愁丑瞅臭出初除厨锄雏础储楚处触川穿传船喘串窗床闯创吹炊垂锤春纯唇淳醇戳绰词瓷辞慈磁雌此次刺从匆葱聪丛凑粗促猝窜催摧脆翠村存寸措错',
-    d: '搭达答瘩打大呆歹代带待怠袋戴丹单担耽胆旦但诞弹淡蛋氮当挡党荡档刀导岛倒蹈到盗道稻得德的地灯登等瞪邓堤滴敌笛抵底弟帝第递颠典点电垫店惦奠殿雕吊钓调掉爹跌叠蝶丁叮顶订定丢东冬懂动冻侗洞斗抖陡豆督毒读独堵赌杜度渡端短段断锻堆队对兑敦蹲顿多夺朵躲',
-    e: '俄峨鹅额恶厄饿恩儿而耳二',
-    f: '发罚法帆翻凡烦反返犯泛饭范方芳防妨房仿访放非飞废费分芬纷酚焚粉份奋愤粪丰风封疯峰烽锋蜂逢缝冯讽凤佛否夫敷扶服俘浮符幅福辐抚府辅腐父付妇负附复赴副傅富赋',
-    g: '该改钙盖溉干甘杆肝赶感赣冈刚纲缸钢岗港搞稿告戈哥胳鸽搁歌革格葛隔个各给根跟更耕工公功攻供宫恭拱共贡勾沟钩狗构购够咕菇孤姑鼓古谷股故顾固瓜刮挂乖拐怪关观官冠馆管贯惯灌罐光广归龟规轨鬼贵桂滚棍锅国果裹过',
-    h: '哈孩海骇害憨酣含函涵寒韩罕喊汉汗旱杭航毫豪好号浩耗呵喝合何和河核荷盒贺赫黑痕狠恨亨横衡轰哄红宏洪虹鸿侯喉厚候后呼乎忽狐胡湖葫糊蝴虎互户护花华哗滑化划画话怀徊淮槐坏欢环还缓换唤痪患涣焕荒慌皇黄煌晃恍谎灰恢挥辉回毁汇会绘惠慧昏婚浑魂混活火伙或货获祸惑',
-    i: '一壹医铱衣依伊揖壹猗漪',
-    j: '击机积基畸激及吉级即极急疾集籍几己挤脊计记纪技系季既济继寂寄加夹佳家嘉颊甲假价架嫁稼尖坚奸间肩艰兼监减荐剑健舰渐溅涧建将奖浆匠酱讲交浇骄胶教椒蕉角脚搅缴叫轿较接街阶皆结秸截节劫杰洁结捷竭姐解介戒届界借巾今斤金津筋仅紧锦尽进近劲晋禁浸京经茎惊晶睛精井颈景警净静境镜竞敬境迥纠究九久酒旧救就菊局举矩句巨拒具俱惧聚卷倦捐绢圈倦眷决角觉绝倔掘嚼军君均菌俊',
-    k: '卡开凯慨刊看坎砍康抗亢考拷烤靠科棵颗磕蝌可渴克刻客课肯啃垦恳坑空孔恐控抠口哭苦库酷夸跨块快宽款匡筐狂况旷矿亏愧昆捆困扩',
-    l: '拉啦喇蜡腊辣来莱赖兰拦栏蓝篮览揽缆懒烂滥郎狼廊朗浪捞劳牢老佬姥酪烙乐雷蕾累磊类泪棱冷离梨犁璃黎礼李里哩理鲤力历利丽励厉例隶粒俩连帘怜莲联廉脸练恋链凉梁粮两亮谅辆量辽疗聊僚了料列烈裂邻林临淋磷灵玲凌陵铃领令溜刘流留柳六龙聋笼隆垄拢楼搂漏露卢芦庐炉鲁陆录赂鹿路驴旅屡律率绿卵乱掠略轮伦论罗萝逻裸洛落',
-    m: '妈麻马码蚂骂嘛吗埋买迈麦卖脉蛮满曼慢漫忙芒盲茫猫毛矛茅茂冒帽貌么没玫眉梅媒煤霉每美妹门们闷蒙萌盟猛梦孟咪弥迷谜米密蜜眠绵棉免勉面苗描秒妙庙灭民敏名明鸣命摸模膜摩磨蘑魔抹末沫莫漠墨默谋某母亩木目牧慕',
-    n: '那拿哪呐纳娜乃奶耐男南难囊挠脑恼闹呢内嫩能尼泥你拟逆年念娘酿鸟尿捏您宁拧牛扭纽农弄怒女',
-    o: '哦噢欧偶',
-    p: '趴爬怕拍排牌派攀盘判叛盼乓旁胖抛炮跑泡培赔陪配佩喷盆朋碰批披劈皮啤脾匹屁篇偏片漂飘票撇拼贫频品聘乒平评凭苹屏坡泼婆破迫剖扑铺普谱',
-    q: '七妻凄期欺漆奇崎骑棋旗企启起气弃汽砌器掐洽牵谦签前钱钳乾潜浅遣欠嵌枪墙抢悄桥乔侨瞧巧切且窃亲侵芹琴禽勤青轻氢倾清情晴请庆穷秋丘求球区驱曲取去趣圈全权劝',
-    r: '然燃染嚷让饶扰绕热人仁忍认任日容荣熔溶融柔揉肉如儒乳入软锐瑞润若',
-    s: '撒洒萨塞赛三伞散桑嗓丧扫色森僧沙纱杀沙傻筛晒山衫删闪陕扇善伤商赏上尚烧稍少绍蛇舍设社射涉摄深申伸身神沈审婶肾甚渗升生声牲胜省圣师失诗尸虱十什石时识实拾食史使驶始士示世式事势是适室视试收手守首寿受瘦授兽书叔殊输舒疏舒术束树数刷耍摔甩帅双水睡顺说丝司私思斯死四松送诉速宿塑算虽随岁孙损笋缩所索锁',
-    t: '他它她塔塌踏胎台太态泰谈坦探叹汤唐堂糖躺趟涛掏逃桃淘陶讨套特疼腾藤梯踢提题蹄体替天田甜填挑条调贴铁听厅亭庭停挺通同铜童统桶筒痛头投透突图涂途土吐兔团推腿退吞屯脱拖托驼陀',
-    w: '挖哇蛙瓦歪外弯完玩顽挽晚碗万汪亡王网往忘旺危威微为围唯维伟伪尾委卫未位味畏胃喂温文闻纹蚊稳问嗡翁窝我卧握乌污屋无吴五午伍武侮舞务物西昔析息希牺溪悉惜熄习席袭媳洗喜系细下吓夏掀先闲弦贤咸显险县现线限相香箱乡详响想向象像项消销小孝校笑效些歇鞋协邪胁谢心辛欣新信兴星腥刑行形型姓幸性休秀绣须需虚许序叙蓄宣玄悬选穴学雪血寻巡训讯',
-    x: '希西析息惜稀溪熙嘻昔席袭媳洗喜系细瞎虾霞峡暇下吓夏仙先纤闲贤咸衔嫌显险现县限线相香箱乡详响项向象像橡削消销小晓孝校笑效些歇协邪胁写泄泻谢心辛欣新信兴星猩腥刑行形型幸性休修羞秀袖绣需虚许序叙絮续蓄宣玄悬旋选学雪血寻巡询训讯迅',
-    y: '压呀鸦鸭牙崖涯雅讶亚咽烟淹延严言岩沿炎研盐颜眼演厌宴艳验央殃秧扬羊阳洋仰养氧样要腰邀摇遥咬药耶爷也冶野业叶页夜液一依医衣伊揖壹猗漪铱医揖壹衣依伊医衣揖壹医衣伊揖壹衣医衣伊揖壹医衣展转衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医移疑已以矣亦亿义艺忆议异译易疫益谊逸意溢银引饮印应英婴鹰迎赢影映硬哟拥庸永泳勇涌用优忧幽悠尤由犹油游友有又右幼于予余鱼娱渔愉舆与予羽雨语玉遇愈喻育寓冤元原员圆援源远怨院愿约月乐阅跃云匀允孕运晕',
-    z: '杂灾栽宰载再在咱暂赞脏遭糟凿早枣澡藻造噪择则责怎增赠扎渣札轧眨炸摘宅窄债沾粘展斩盏崭站战绽张章涨掌丈帐仗账障招召照兆遮折这针真珍侦疹诊枕阵振镇震争征怔挣睁蒸整正政证之支汁只芝吱枝知织肢脂执直值职植殖止址纸指至志质制治致智置中忠钟终肿种仲众重州舟周洲轴骤逐主属煮嘱住助住抓转拽赚庄装壮状追准桌捉着仔资兹姿滋子紫字自宗踪总纵走奏租族足卒祖组钻嘴最罪醉昨左作',
+        a: '啊阿呵吖嗄腌锕钶',
+        b: '八巴吧扒叭芭笆疤捌拔跋靶把坝霸罢爸白百佰柏摆败拜班般颁斑搬扳板版办半伴瓣帮绑榜膀傍傍苞胞包褒薄雹保堡宝饱抱暴爆豹鲍杯背卑碑北贝备背倍狈惫被奔本笨崩泵蹦逼鼻比彼笔鄙币必毕闭毙辟碧蔽壁避臂边编鞭贬扁便变辩辫标彪表别瘪宾彬斌濒鬓冰兵丙秉饼炳病并拨波玻剥菠播伯脖驳泊柏勃铂箔帛舶博搏渤卜不布步部',
+        c: '擦猜材才财裁采彩踩菜蔡参餐蚕残惭惨灿仓苍舱藏操草厕策侧测层蹭插叉查茶察岔差拆柴搀蝉馋缠产铲阐颤昌长场肠尝常偿厂场敞畅唱倡抄吵钞超朝潮嘲巢车扯彻撤尘臣辰陈晨衬趁撑成呈承诚城乘惩程秤吃痴池驰迟持匙尺齿耻斥赤翅充冲虫崇抽仇绸愁丑瞅臭出初除厨锄雏础储楚处触川穿传船喘串窗床闯创吹炊垂锤春纯唇淳醇戳绰词瓷辞慈磁雌此次刺从匆葱聪丛凑粗促猝窜催摧脆翠村存寸措错',
+        d: '搭达答瘩打大呆歹代带待怠袋戴丹单担耽胆旦但诞弹淡蛋氮当挡党荡档刀导岛倒蹈到盗道稻得德的地灯登等瞪邓堤滴敌笛抵底弟帝第递颠典点电垫店惦奠殿雕吊钓调掉爹跌叠蝶丁叮顶订定丢东冬懂动冻侗洞斗抖陡豆督毒读独堵赌杜度渡端短段断锻堆队对兑敦蹲顿多夺朵躲',
+        e: '俄峨鹅额恶厄饿恩儿而耳二',
+        f: '发罚法帆翻凡烦反返犯泛饭范方芳防妨房仿访放非飞废费分芬纷酚焚粉份奋愤粪丰风封疯峰烽锋蜂逢缝冯讽凤佛否夫敷扶服俘浮符幅福辐抚府辅腐父付妇负附复赴副傅富赋',
+        g: '该改钙盖溉干甘杆肝赶感赣冈刚纲缸钢岗港搞稿告戈哥胳鸽搁歌革格葛隔个各给根跟更耕工公功攻供宫恭拱共贡勾沟钩狗构购够咕菇孤姑鼓古谷股故顾固瓜刮挂乖拐怪关观官冠馆管贯惯灌罐光广归龟规轨鬼贵桂滚棍锅国果裹过',
+        h: '哈孩海骇害憨酣含函涵寒韩罕喊汉汗旱杭航毫豪好号浩耗呵喝合何和河核荷盒贺赫黑痕狠恨亨横衡轰哄红宏洪虹鸿侯喉厚候后呼乎忽狐胡湖葫糊蝴虎互户护花华哗滑化划画话怀徊淮槐坏欢环还缓换唤痪患涣焕荒慌皇黄煌晃恍谎灰恢挥辉回毁汇会绘惠慧昏婚浑魂混活火伙或货获祸惑',
+        i: '一壹医铱衣依伊揖壹猗漪',
+        j: '击机积基畸激及吉级即极急疾集籍几己挤脊计记纪技系季既济继寂寄加夹佳家嘉颊甲假价架嫁稼尖坚奸间肩艰兼监减荐剑健舰渐溅涧建将奖浆匠酱讲交浇骄胶教椒蕉角脚搅缴叫轿较接街阶皆结秸截节劫杰洁结捷竭姐解介戒届界借巾今斤金津筋仅紧锦尽进近劲晋禁浸京经茎惊晶睛精井颈景警净静境镜竞敬境迥纠究九久酒旧救就菊局举矩句巨拒具俱惧聚卷倦捐绢圈倦眷决角觉绝倔掘嚼军君均菌俊',
+        k: '卡开凯慨刊看坎砍康抗亢考拷烤靠科棵颗磕蝌可渴克刻客课肯啃垦恳坑空孔恐控抠口哭苦库酷夸跨块快宽款匡筐狂况旷矿亏愧昆捆困扩',
+        l: '拉啦喇蜡腊辣来莱赖兰拦栏蓝篮览揽缆懒烂滥郎狼廊朗浪捞劳牢老佬姥酪烙乐雷蕾累磊类泪棱冷离梨犁璃黎礼李里哩理鲤力历利丽励厉例隶粒俩连帘怜莲联廉脸练恋链凉梁粮两亮谅辆量辽疗聊僚了料列烈裂邻林临淋磷灵玲凌陵铃领令溜刘流留柳六龙聋笼隆垄拢楼搂漏露卢芦庐炉鲁陆录赂鹿路驴旅屡律率绿卵乱掠略轮伦论罗萝逻裸洛落',
+        m: '妈麻马码蚂骂嘛吗埋买迈麦卖脉蛮满曼慢漫忙芒盲茫猫毛矛茅茂冒帽貌么没玫眉梅媒煤霉每美妹门们闷蒙萌盟猛梦孟咪弥迷谜米密蜜眠绵棉免勉面苗描秒妙庙灭民敏名明鸣命摸模膜摩磨蘑魔抹末沫莫漠墨默谋某母亩木目牧慕',
+        n: '那拿哪呐纳娜乃奶耐男南难囊挠脑恼闹呢内嫩能尼泥你拟逆年念娘酿鸟尿捏您宁拧牛扭纽农弄怒女',
+        o: '哦噢欧偶',
+        p: '趴爬怕拍排牌派攀盘判叛盼乓旁胖抛炮跑泡培赔陪配佩喷盆朋碰批披劈皮啤脾匹屁篇偏片漂飘票撇拼贫频品聘乒平评凭苹屏坡泼婆破迫剖扑铺普谱',
+        q: '七妻凄期欺漆奇崎骑棋旗企启起气弃汽砌器掐洽牵谦签前钱钳乾潜浅遣欠嵌枪墙抢悄桥乔侨瞧巧切且窃亲侵芹琴禽勤青轻氢倾清情晴请庆穷秋丘求球区驱曲取去趣圈全权劝',
+        r: '然燃染嚷让饶扰绕热人仁忍认任日容荣熔溶融柔揉肉如儒乳入软锐瑞润若',
+        s: '撒洒萨塞赛三伞散桑嗓丧扫色森僧沙纱杀沙傻筛晒山衫删闪陕扇善伤商赏上尚烧稍少绍蛇舍设社射涉摄深申伸身神沈审婶肾甚渗升生声牲胜省圣师失诗尸虱十什石时识实拾食史使驶始士示世式事势是适室视试收手守首寿受瘦授兽书叔殊输舒疏舒术束树数刷耍摔甩帅双水睡顺说丝司私思斯死四松送诉速宿塑算虽随岁孙损笋缩所索锁',
+        t: '他它她塔塌踏胎台太态泰谈坦探叹汤唐堂糖躺趟涛掏逃桃淘陶讨套特疼腾藤梯踢提题蹄体替天田甜填挑条调贴铁听厅亭庭停挺通同铜童统桶筒痛头投透突图涂途土吐兔团推腿退吞屯脱拖托驼陀',
+        w: '挖哇蛙瓦歪外弯完玩顽挽晚碗万汪亡王网往忘旺危威微为围唯维伟伪尾委卫未位味畏胃喂温文闻纹蚊稳问嗡翁窝我卧握乌污屋无吴五午伍武侮舞务物西昔析息希牺溪悉惜熄习席袭媳洗喜系细下吓夏掀先闲弦贤咸显险县现线限相香箱乡详响想向象像项消销小孝校笑效些歇鞋协邪胁谢心辛欣新信兴星腥刑行形型姓幸性休秀绣须需虚许序叙蓄宣玄悬选穴学雪血寻巡训讯',
+        x: '希西析息惜稀溪熙嘻昔席袭媳洗喜系细瞎虾霞峡暇下吓夏仙先纤闲贤咸衔嫌显险现县限线相香箱乡详响项向象像橡削消销小晓孝校笑效些歇协邪胁写泄泻谢心辛欣新信兴星猩腥刑行形型幸性休修羞秀袖绣需虚许序叙絮续蓄宣玄悬旋选学雪血寻巡询训讯迅',
+        y: '压呀鸦鸭牙崖涯雅讶亚咽烟淹延严言岩沿炎研盐颜眼演厌宴艳验央殃秧扬羊阳洋仰养氧样要腰邀摇遥咬药耶爷也冶野业叶页夜液一依医衣伊揖壹猗漪铱医揖壹衣依伊医衣揖壹医衣伊揖壹衣医衣伊揖壹医衣展转衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医衣伊揖壹医移疑已以矣亦亿义艺忆议异译易疫益谊逸意溢银引饮印应英婴鹰迎赢影映硬哟拥庸永泳勇涌用优忧幽悠尤由犹油游友有又右幼于予余鱼娱渔愉舆与予羽雨语玉遇愈喻育寓冤元原员圆援源远怨院愿约月乐阅跃云匀允孕运晕',
+        z: '杂灾栽宰载再在咱暂赞脏遭糟凿早枣澡藻造噪择则责怎增赠扎渣札轧眨炸摘宅窄债沾粘展斩盏崭站战绽张章涨掌丈帐仗账障招召照兆遮折这针真珍侦疹诊枕阵振镇震争征怔挣睁蒸整正政证之支汁只芝吱枝知织肢脂执直值职植殖止址纸指至志质制治致智置中忠钟终肿种仲众重州舟周洲轴骤逐主属煮嘱住助住抓转拽赚庄装壮状追准桌捉着仔资兹姿滋子紫字自宗踪总纵走奏租族足卒祖组钻嘴最罪醉昨左作',
     };
 
     // 分组构建反向映射
     const PINYIN_MAP = {};
     for (const [letter, chars] of Object.entries(PINYIN_GROUPS)) {
-    for (const ch of chars) {
-        PINYIN_MAP[ch] = letter;
-    }
+        for (const ch of chars) {
+            PINYIN_MAP[ch] = letter;
+        }
     }
 
     function getPinyinInitials(str, keepNonChinese = true) {
-    if (typeof str !== 'string') return '';
-    let result = '';
-    for (let ch of str) {
-        const isChinese = /[\u4e00-\u9fa5]/.test(ch);
-        if (isChinese) {
-        result += PINYIN_MAP[ch] || '?'; // 未映射的汉字返回 '?'
-        } else {
-        result += keepNonChinese ? ch.toLowerCase() : '';
+        if (typeof str !== 'string') return '';
+        let result = '';
+        for (let ch of str) {
+            const isChinese = /[\u4e00-\u9fa5]/.test(ch);
+            if (isChinese) {
+                result += PINYIN_MAP[ch] || '?';
+            } else {
+                result += keepNonChinese ? ch.toLowerCase() : '';
+            }
         }
-    }
-    return result;
+        return result;
     }
 
-    function extendPinyinMap(customMap) {
-    Object.assign(PINYIN_MAP, customMap);
+    // Levenshtein 编辑距离（必须定义）
+    function levenshteinDistance(a, b) {
+        if (a.length === 0) return b.length;
+        if (b.length === 0) return a.length;
+        if (a.length > b.length) [a, b] = [b, a];
+        let prev = Array(a.length + 1).fill(0).map((_, i) => i);
+        let curr = new Array(a.length + 1);
+        for (let i = 1; i <= b.length; i++) {
+            curr[0] = i;
+            for (let j = 1; j <= a.length; j++) {
+                const cost = a[j - 1] === b[i - 1] ? 0 : 1;
+                curr[j] = Math.min(
+                    prev[j] + 1,
+                    curr[j - 1] + 1,
+                    prev[j - 1] + cost
+                );
+            }
+            [prev, curr] = [curr, prev];
+        }
+        return prev[a.length];
     }
 
     function getSimilarity(a, b) {
-    const maxLen = Math.max(a.length, b.length);
-    if (maxLen === 0) return 1.0;
-    const distance = levenshteinDistance(a, b);
-    return 1 - distance / maxLen;
+        const maxLen = Math.max(a.length, b.length);
+        if (maxLen === 0) return 1.0;
+        const distance = levenshteinDistance(a, b);
+        return 1 - distance / maxLen;
     }
 
     function getPinyinSimilarity(a, b, keepNonChinese = true) {
-    const pinyinA = getPinyinInitials(a, keepNonChinese);
-    const pinyinB = getPinyinInitials(b, keepNonChinese);
-    return getSimilarity(pinyinA, pinyinB);
+        const pinyinA = getPinyinInitials(a, keepNonChinese);
+        const pinyinB = getPinyinInitials(b, keepNonChinese);
+        return getSimilarity(pinyinA, pinyinB);
     }
 
     function fuzzySearch(keyword, items, options = {}) {
-    const { threshold = 0.5, usePinyin = false, pinyinWeight = 0.4 } = options;
-    if (!keyword || !items.length) return [];
-
-    const results = [];
-    for (const item of items) {
-        let textScore = getSimilarity(keyword, item);
-        let finalScore = textScore;
-        
-        if (usePinyin) {
-        const pinyinScore = getPinyinSimilarity(keyword, item);
-        finalScore = textScore * (1 - pinyinWeight) + pinyinScore * pinyinWeight;
+        const { threshold = 0.5, usePinyin = false, pinyinWeight = 0.4 } = options;
+        if (!keyword || !items.length) return [];
+        const results = [];
+        for (const item of items) {
+            let textScore = getSimilarity(keyword, item);
+            let finalScore = textScore;
+            if (usePinyin) {
+                const pinyinScore = getPinyinSimilarity(keyword, item);
+                finalScore = textScore * (1 - pinyinWeight) + pinyinScore * pinyinWeight;
+            }
+            if (finalScore >= threshold) {
+                results.push({ item, score: finalScore });
+            }
         }
-        
-        if (finalScore >= threshold) {
-        results.push({ item, score: finalScore });
-        }
-    }
-    results.sort((a, b) => b.score - a.score);
-    return results;
+        results.sort((a, b) => b.score - a.score);
+        return results;
     }
 
     function filterBySimilarity(keyword, items, threshold = 0.5) {
-    return fuzzySearch(keyword, items, { threshold }).map(r => r.item);
+        return fuzzySearch(keyword, items, { threshold }).map(r => r.item);
     }
 
-    // =========================== 辅助工具 ===========================
     function rankBySimilarity(target, candidates, usePinyin = false) {
-    return fuzzySearch(target, candidates, { threshold: 0, usePinyin });
+        return fuzzySearch(target, candidates, { threshold: 0, usePinyin });
     }
 
-    // =========================== 导出模块 ===========================
+    // 导出（可选）
     if (typeof module !== 'undefined' && module.exports) {
-    module.exports = {
-        levenshteinDistance,
-        getPinyinInitials,
-        extendPinyinMap,
-        getSimilarity,
-        getPinyinSimilarity,
-        fuzzySearch,
-        filterBySimilarity,
-        rankBySimilarity,
-    };
+        module.exports = {
+            levenshteinDistance,
+            getPinyinInitials,
+            extendPinyinMap: (map) => Object.assign(PINYIN_MAP, map),
+            getSimilarity,
+            getPinyinSimilarity,
+            fuzzySearch,
+            filterBySimilarity,
+            rankBySimilarity,
+        };
     } else if (typeof window !== 'undefined') {
-    window.ChineseFuzzyLib = {
-        levenshteinDistance,
-        getPinyinInitials,
-        extendPinyinMap,
-        getSimilarity,
-        getPinyinSimilarity,
-        fuzzySearch,
-        filterBySimilarity,
-        rankBySimilarity,
-    };
+        window.ChineseFuzzyLib = {
+            levenshteinDistance,
+            getPinyinInitials,
+            extendPinyinMap: (map) => Object.assign(PINYIN_MAP, map),
+            getSimilarity,
+            getPinyinSimilarity,
+            fuzzySearch,
+            filterBySimilarity,
+            rankBySimilarity,
+        };
     }
 
     // ==================== Cookie 管理函数 ====================
@@ -154,10 +169,7 @@
         const match = rawText.match(/[\d.]+[_\w.]*/);
         const currentVersion = match ? match[0] : defaultVersion;
         const savedVersion = getNoticeVersion();
-
-        // 如果从未存储过版本号，必须显示弹窗
         if (savedVersion === null) return true;
-
         return !agreed || savedVersion !== currentVersion;
     }
     
@@ -173,28 +185,24 @@
     let optionMappings = [];
     let currentMode = 'exam';
     let isWrongPractice = false;
-    let isNormalPractice = false;      // 当前是否为普通刷题模式
-    let currentOrder = 'asc';          // 当前刷题的排序方式
+    let isNormalPractice = false;
+    let currentOrder = 'asc';
     let lastMergedResults = [];
     let lastKeyword = '';
     let currentPage = 1;
     const pageSize = 10;
 
-    // 待做练习专用变量
-    let pendingOriginalSession = null;  // 原始会话副本
+    let pendingOriginalSession = null;
     let pendingOriginalType = null;
     let pendingOriginalOrder = null;
-    let pendingIndexMap = [];           // 当前题目索引到原始会话索引的映射
+    let pendingIndexMap = [];
 
-    // 存储键常量
     const WRONG_KEYS = { A: 'ham_wrong_A', B: 'ham_wrong_B', C: 'ham_wrong_C' };
     const FAVORITE_KEYS = { A: 'ham_favorite_A', B: 'ham_favorite_B', C: 'ham_favorite_C' };
-    const PENDING_KEY_PREFIX = 'ham_pending_';  // 待做会话存储前缀，后跟类型_顺序
+    const PENDING_KEY_PREFIX = 'ham_pending_';
 
-    // 题库缓存
     const questionBanks = { A: null, B: null, C: null };
 
-    // 考试配置
     const examConfig = {
         'A': { total: 40, time: 40, pass: 30 },
         'B': { total: 60, time: 60, pass: 45 },
@@ -225,7 +233,6 @@
     }
 
     // ----- 本地存储管理 -----
-    // 错题
     function getWrongIds(type) {
         const key = WRONG_KEYS[type];
         const stored = localStorage.getItem(key);
@@ -269,7 +276,6 @@
         });
     }
 
-    // 收藏
     function getFavoriteIds(type) {
         const key = FAVORITE_KEYS[type];
         const stored = localStorage.getItem(key);
@@ -289,7 +295,6 @@
         });
     }
 
-    // 待做会话
     function getPendingSessionKey(type, order) {
         return `${PENDING_KEY_PREFIX}${type}_${order}`;
     }
@@ -320,14 +325,13 @@
             let unanswered = 0;
             let total = 0;
             if (session) {
-                // 统计未答题数
                 unanswered = session.userAnswers.filter(ans => ans === null || (Array.isArray(ans) && ans.length === 0)).length;
                 total = session.total;
             } else {
                 const bank = questionBanks[type];
                 if (bank) {
                     total = bank.length;
-                    unanswered = total; // 无会话时所有题都是未答
+                    unanswered = total;
                 } else {
                     btn.textContent = `${order === 'asc' ? '顺序' : order === 'desc' ? '倒序' : '乱序'}(?)`;
                     return;
@@ -347,13 +351,11 @@
             }
             showLoading(true, `加载${type}类题库...`);
             const script = document.createElement('script');
-            // 获取版本号（与页面底部 .version 保持一致）
             const versionElem = document.querySelector('.version');
             const defaultVersion = '3.6.1.20260430_beta.3';
             const rawText = versionElem ? versionElem.textContent : `版本号：${defaultVersion}`;
             const match = rawText.match(/[\d.]+[_\w.]*/);
             const version = match ? match[0] : defaultVersion;
-            // 添加版本参数，强制刷新缓存
             script.src = `data_${type}.js?v=${version}`;
             script.onload = () => {
                 try {
@@ -381,7 +383,6 @@
         else overlay.classList.add('hidden');
     }
 
-    // ----- 界面显示与隐藏 -----
     function hideAllScreens() {
         document.getElementById('start-screen').classList.add('screen-hidden');
         document.getElementById('exam-screen').classList.add('screen-hidden');
@@ -403,7 +404,6 @@
         document.getElementById('result-screen').classList.remove('screen-hidden');
     }
 
-    // ----- 题目准备与显示 -----
     function prepareQuestions() {
         currentQuestionIndex = 0;
         optionOrders = currentQuestions.map(q => generateOptionOrder(q.options.length));
@@ -444,7 +444,6 @@
         order.forEach((optIndex, displayIdx) => {
             const opt = question.options[optIndex];
             let text = opt.text;
-            // 图片支持
             text = text.replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1" class="option-image">');
 
             const optionDiv = document.createElement('div');
@@ -486,7 +485,6 @@
         }
     }
 
-    // 更新正确答案提示
     function updateCorrectAnswerHint(question, isCorrect) {
         const hintEl = document.getElementById('correct-answer-hint');
         if (!hintEl) return;
@@ -519,12 +517,10 @@
         }
         updateOptionSelection(qIndex);
 
-        // 如果是普通刷题，更新待做会话
         if (currentMode === 'practice' && isNormalPractice) {
             updatePendingSession();
         }
 
-        // 如果是待做练习（有原始会话），更新原始会话
         if (pendingIndexMap.length > 0 && pendingOriginalSession) {
             const originalIdx = pendingIndexMap[qIndex];
             let updatedSession = {
@@ -536,24 +532,18 @@
             pendingOriginalSession = updatedSession;
         }
 
-        // 练习模式下处理反馈（多选题不实时反馈）
         if (currentMode === 'practice') {
             const question = currentQuestions[qIndex];
             if (isMulti) {
-                // 如果是多选题，且当前下一题可见（即已经确认过），则切换回确认按钮
                 const nextBtn = document.getElementById('next-btn');
                 const confirmBtn = document.getElementById('confirm-btn');
                 if (nextBtn.style.display !== 'none') {
-                    // 已经确认过，现在用户修改了答案，需要重新确认
                     confirmBtn.style.display = 'inline-block';
                     nextBtn.style.display = 'none';
-                    document.getElementById('practice-feedback').innerHTML = ''; // 清除之前的结果
-                    // 隐藏正确答案提示
+                    document.getElementById('practice-feedback').innerHTML = '';
                     document.getElementById('correct-answer-hint').style.display = 'none';
                 }
-                // 不触发实时反馈和错题更新
             } else {
-                // 单选题实时反馈
                 const userAns = userAnswers[qIndex];
                 const isCorrect = checkAnswerSingle(question, userAns);
                 showPracticeFeedback(isCorrect);
@@ -576,7 +566,6 @@
         currentQuestionIndex = index;
         const q = currentQuestions[index];
 
-        // 清空并重置反馈框
         const fb = document.getElementById('practice-feedback');
         if (fb) {
             fb.innerHTML = '';
@@ -590,20 +579,16 @@
         const isMulti = q.answer.length > 1;
         document.getElementById('q-type').textContent = isMulti ? '多选题' : '单选题';
         document.getElementById('q-type').style.color = isMulti ? '#c44536' : '#2b6f9e';
-        // 处理题目中的图片标记 [image: 文件名]
-        let questionHtml = q.question;
-        questionHtml = questionHtml.replace(/\[image:\s*([^\]]+)\]/g, (match, filename) => {
-            // 返回一个占位 span，稍后用 JS 检测并替换
+        
+        let questionHtml = q.question.replace(/\[image:\s*([^\]]+)\]/g, (match, filename) => {
             return `<span class="image-placeholder" data-img-src="imageswebp/${filename}"></span>`;
         });
         document.getElementById('q-text').innerHTML = questionHtml;
 
-        // 异步检测每个占位符中的图片是否存在
         document.querySelectorAll('.image-placeholder').forEach(placeholder => {
             const imgSrc = placeholder.dataset.imgSrc;
             const img = new Image();
             img.onload = () => {
-                // 图片加载成功，将占位符替换为 img 标签
                 const imgTag = document.createElement('img');
                 imgTag.src = imgSrc;
                 imgTag.loading = 'lazy';
@@ -612,7 +597,6 @@
                 placeholder.parentNode.replaceChild(imgTag, placeholder);
             };
             img.onerror = () => {
-                // 图片不存在，移除占位符（不显示任何内容）
                 placeholder.remove();
             };
             img.src = imgSrc;
@@ -622,44 +606,34 @@
 
         document.getElementById('prev-btn').disabled = index === 0;
         document.getElementById('next-btn').disabled = index === currentQuestions.length - 1;
-
-        // 隐藏正确答案提示
         const hintEl = document.getElementById('correct-answer-hint');
         if (hintEl) hintEl.style.display = 'none';
 
-        // 根据题型和模式设置按钮状态
         const confirmBtn = document.getElementById('confirm-btn');
         const nextBtn = document.getElementById('next-btn');
         if (currentMode === 'practice') {
             if (isMulti) {
-                // 多选题：显示确认按钮，隐藏下一题
                 confirmBtn.style.display = 'inline-block';
                 nextBtn.style.display = 'none';
-                // 清除反馈（因为未确认）
                 document.getElementById('practice-feedback').innerHTML = '';
             } else {
-                // 单选题：隐藏确认，显示下一题
                 confirmBtn.style.display = 'none';
                 nextBtn.style.display = 'inline-block';
-                // 如果有已选答案，显示反馈
                 const userAns = userAnswers[index];
                 if (userAns !== undefined && userAns !== null) {
                     const isCorrect = checkAnswerSingle(q, userAns);
                     showPracticeFeedback(isCorrect);
-                    updateCorrectAnswerHint(q, isCorrect); 
+                    updateCorrectAnswerHint(q, isCorrect);
                 } else {
                     document.getElementById('practice-feedback').innerHTML = '';
                 }
             }
         } else {
-            // 模拟考试：隐藏确认，显示下一题
             confirmBtn.style.display = 'none';
             nextBtn.style.display = 'inline-block';
         }
 
         updateFavoriteButtonState();
-
-        // 如果是普通刷题，保存当前进度
         if (currentMode === 'practice' && isNormalPractice) {
             updatePendingSession();
         }
@@ -670,12 +644,11 @@
         if (currentMode !== 'practice') return;
         const q = currentQuestions[currentQuestionIndex];
         const isMulti = q.answer.length > 1;
-        if (!isMulti) return; // 单选题不应触发
+        if (!isMulti) return;
 
         const userAns = userAnswers[currentQuestionIndex];
-        let isCorrect; // 定义变量
+        let isCorrect;
         if (userAns === null || (Array.isArray(userAns) && userAns.length === 0)) {
-            // 未选任何选项，视为错误
             isCorrect = false;
             showPracticeFeedback(false);
             updateWrongStorage(q.id, false, currentExamType);
@@ -686,12 +659,10 @@
         }
         updateCorrectAnswerHint(q, isCorrect);
 
-        // 切换按钮：隐藏确认，显示下一题
         document.getElementById('confirm-btn').style.display = 'none';
         document.getElementById('next-btn').style.display = 'inline-block';
     }
 
-    // ----- 进度更新与保存 -----
     function updatePendingSession() {
         if (!isNormalPractice) return;
         const type = currentExamType;
@@ -706,11 +677,9 @@
         savePendingSession(type, order, session);
     }
 
-    // ----- 恢复会话 -----
     async function loadPracticeSession(type, order, bank) {
         const session = getPendingSession(type, order);
         if (!session) return false;
-
         const questionMap = {};
         bank.forEach(q => questionMap[q.id] = q);
         const questions = session.questions.map(id => questionMap[id]).filter(q => q);
@@ -718,18 +687,14 @@
             alert('题库已变化，无法恢复');
             return false;
         }
-
-        // 恢复全局变量
         currentQuestions = questions;
         currentExamType = type;
         currentMode = 'practice';
         isWrongPractice = false;
         isNormalPractice = true;
         currentOrder = order;
-        userAnswers = session.userAnswers.map(ans => ans); // 深拷贝
-        optionOrders = session.optionOrders.map(orderArr => [...orderArr]); // 深拷贝
-
-        // 重建 optionMappings
+        userAnswers = session.userAnswers.map(ans => ans);
+        optionOrders = session.optionOrders.map(orderArr => [...orderArr]);
         optionMappings = currentQuestions.map((q, idx) => {
             let map = {};
             optionOrders[idx].forEach((optIndex, displayIdx) => {
@@ -737,8 +702,6 @@
             });
             return map;
         });
-
-        // 根据答案状态自动跳转到第一个未答题
         let firstUnanswered = -1;
         for (let i = 0; i < userAnswers.length; i++) {
             const ans = userAnswers[i];
@@ -747,14 +710,7 @@
                 break;
             }
         }
-        if (firstUnanswered === -1) {
-            // 所有题都答完了，跳转到最后一题
-            currentQuestionIndex = userAnswers.length - 1;
-        } else {
-            currentQuestionIndex = firstUnanswered;
-        }
-
-        // 显示考试屏幕
+        currentQuestionIndex = firstUnanswered === -1 ? userAnswers.length - 1 : firstUnanswered;
         showExamScreen();
         document.getElementById('mode-badge').textContent = '刷题练习';
         document.getElementById('timer-container').style.display = 'none';
@@ -764,25 +720,19 @@
         document.getElementById('reset-wrong-btn').classList.add('hidden');
         document.getElementById('practice-feedback').classList.remove('hidden');
         document.getElementById('practice-feedback').innerHTML = '';
-
         document.getElementById('current-exam-type').textContent = type + '类';
         document.getElementById('total-questions').textContent = currentQuestions.length;
-
         showQuestion(currentQuestionIndex);
         return true;
     }
 
-    // ----- 练习启动函数 -----
     function startPractice(type, bank, order, wrongMode, customQuestions = null) {
         currentMode = 'practice';
         currentExamType = type;
         isWrongPractice = wrongMode;
-        isNormalPractice = !wrongMode && !customQuestions; // 普通刷题才保存进度
+        isNormalPractice = !wrongMode && !customQuestions;
         currentOrder = order;
-
         let baseQuestions = customQuestions ? [...customQuestions] : [...bank];
-
-        // 错题模式过滤
         if (!customQuestions && wrongMode) {
             const wrongIds = getWrongIds(type);
             baseQuestions = bank.filter(q => wrongIds.includes(q.id));
@@ -791,8 +741,6 @@
                 return;
             }
         }
-
-        // 排序
         if (order === 'asc') {
             currentQuestions = baseQuestions;
         } else if (order === 'desc') {
@@ -800,16 +748,9 @@
         } else {
             currentQuestions = shuffleArray([...baseQuestions]);
         }
-
         if (currentQuestions.length === 0) return;
-
-        // 准备选项随机顺序和映射
         prepareQuestions();
-
-        // 初始化用户答案数组
         userAnswers = new Array(currentQuestions.length).fill(null);
-
-        // 如果是普通刷题，立即保存待做会话（初始状态）
         if (isNormalPractice) {
             const session = {
                 questions: currentQuestions.map(q => q.id),
@@ -820,8 +761,6 @@
             };
             savePendingSession(type, order, session);
         }
-
-        // 显示界面
         showExamScreen();
         document.getElementById('mode-badge').textContent = wrongMode ? '错题练习' : '刷题练习';
         document.getElementById('timer-container').style.display = 'none';
@@ -835,10 +774,8 @@
         }
         document.getElementById('practice-feedback').classList.remove('hidden');
         document.getElementById('practice-feedback').innerHTML = '';
-
         document.getElementById('current-exam-type').textContent = type + '类';
         document.getElementById('total-questions').textContent = currentQuestions.length;
-
         showQuestion(0);
     }
 
@@ -858,7 +795,6 @@
         }
     }
 
-    // ----- 待做练习（只练未答） -----
     async function startPendingPractice(type, order) {
         try {
             const bank = await loadQuestionBank(type);
@@ -873,7 +809,7 @@
                 if (missing.length > 0) {
                     alert('题库已变化，待做会话已清除');
                     clearPendingSession(type, order);
-                    questions = bank; // 退化为全题库
+                    questions = bank;
                     originalSession = null;
                     indexMap = Array.from({length: bank.length}, (_, i) => i);
                 } else {
@@ -886,7 +822,7 @@
                     });
                     if (pendingIndices.length > 0) {
                         questions = pendingIndices.map(idx => validQuestions[idx]);
-                        indexMap = pendingIndices; // 当前题目列表的索引对应原始会话的索引
+                        indexMap = pendingIndices;
                     } else {
                         alert('当前没有未答题目');
                         return;
@@ -897,21 +833,16 @@
                 indexMap = Array.from({length: bank.length}, (_, i) => i);
                 originalSession = null;
             }
-
-            // 保存待做练习的原始会话信息
             pendingOriginalSession = originalSession ? { ...originalSession, userAnswers: [...originalSession.userAnswers] } : null;
             pendingOriginalType = type;
             pendingOriginalOrder = order;
             pendingIndexMap = indexMap;
-
-            // 启动练习（不保存新会话）
             startPractice(type, bank, order, false, questions);
         } catch (e) {
             alert('加载失败：' + e.message);
         }
     }
 
-    // ----- 收藏练习 -----
     async function startFavoritePractice(type) {
         try {
             const bank = await loadQuestionBank(type);
@@ -921,13 +852,12 @@
                 alert('当前没有收藏的题目，先去学习题目界面收藏吧！');
                 return;
             }
-            startPractice(type, bank, 'asc', false, questions); // 收藏题按原序练习，不保存进度
+            startPractice(type, bank, 'asc', false, questions);
         } catch (e) {
             alert('题库加载失败');
         }
     }
 
-    // ----- 模拟考试 -----
     function startExam(type, bank) {
         currentMode = 'exam';
         currentExamType = type;
@@ -943,17 +873,13 @@
         document.getElementById('practice-feedback').classList.add('hidden');
         document.getElementById('favorite-btn').classList.add('hidden');
         document.getElementById('goto-btn').classList.add('hidden');
-
         document.getElementById('current-exam-type').textContent = type + '类';
         document.getElementById('total-questions').textContent = currentQuestions.length;
-
         userAnswers = new Array(currentQuestions.length).fill(null);
         randomizeOptionsForAll();
-
         timeLeft = config.time * 60;
         startTime = new Date();
         startTimer();
-
         showQuestion(0);
     }
 
@@ -966,7 +892,6 @@
         }
     }
 
-    // ----- 导航与提交 -----
     function nextQuestion() {
         if (currentQuestionIndex < currentQuestions.length - 1) {
             showQuestion(currentQuestionIndex + 1);
@@ -995,12 +920,9 @@
         const used = Math.floor((end - startTime) / 1000);
         const minutes = Math.floor(used / 60);
         const seconds = used % 60;
-
         showResultScreen();
-
         displayExamWrongs(wrongs);
         wrongs.forEach(w => addWrongItem(w.question.id, currentExamType));
-
         const container = document.getElementById('wrong-questions-container');
         const toggleBtn = document.getElementById('toggle-wrong-btn');
         if (wrongs.length === 0) {
@@ -1011,13 +933,11 @@
             container.classList.add('hidden');
             toggleBtn.textContent = '查看错题';
         }
-
         document.getElementById('score').textContent = correctCount;
         document.getElementById('result-type').textContent = currentExamType + '类';
         document.getElementById('correct-answers').textContent = correctCount;
         document.getElementById('total-answers').textContent = currentQuestions.length;
         document.getElementById('time-used').textContent = `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
-
         const pass = examConfig[currentExamType].pass;
         const pf = document.getElementById('pass-fail');
         pf.textContent = correctCount >= pass ? '合格' : '不合格';
@@ -1057,7 +977,6 @@
         document.getElementById('time').textContent = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
     }
 
-    // ----- 收藏按钮 -----
     function toggleFavorite() {
         if (currentMode !== 'practice') return;
         const q = currentQuestions[currentQuestionIndex];
@@ -1088,7 +1007,6 @@
         }
     }
 
-    // ----- 移出错题 -----
     function removeCurrentFromWrong() {
         if (currentMode !== 'practice' || !currentQuestions.length) return;
         const q = currentQuestions[currentQuestionIndex];
@@ -1103,7 +1021,6 @@
         }
     }
 
-    // ----- 跳转 -----
     function showGotoModal() {
         let modal = document.getElementById('goto-modal');
         if (modal) modal.remove();
@@ -1121,13 +1038,10 @@
             </div>
         `;
         document.body.appendChild(modal);
-
         const input = modal.querySelector('#goto-input');
         const confirmBtn = modal.querySelector('.goto-confirm');
         const cancelBtn = modal.querySelector('.goto-cancel');
-
         const close = () => modal.remove();
-
         confirmBtn.addEventListener('click', () => {
             const num = parseInt(input.value, 10);
             if (isNaN(num) || num < 1 || num > currentQuestions.length) {
@@ -1137,14 +1051,12 @@
             showQuestion(num - 1);
             close();
         });
-
         cancelBtn.addEventListener('click', close);
         modal.addEventListener('click', (e) => {
             if (e.target === modal) close();
         });
     }
 
-    // 规范化文本
     function normalizeText(str) {
         return str.toLowerCase().replace(/\s+/g, '');
     }
@@ -1158,16 +1070,10 @@
         const normalizedKeyword = rawKeyword.trim().toLowerCase();
         if (!normalizedKeyword) return 0;
 
-        // 1. 精确匹配
-        if (id === rawKeyword) {
-            return 10000;  // 确保排在最前
-        }
+        if (id === rawKeyword) return 10000;
         const suffix = id.split('-')[1] || id;
-        if (suffix === rawKeyword) {
-            return 5000;
-        }
+        if (suffix === rawKeyword) return 5000;
 
-        // 2. 子串匹配得分
         let score = 0;
         const keywords = normalizedKeyword.split(/\s+/).filter(k => k.length > 0);
         if (keywords.length > 0) {
@@ -1176,7 +1082,6 @@
                 searchableText += ' ' + opt.text;
             });
             const normalizedSearchable = normalizeText(searchableText);
-
             let totalMatches = 0;
             keywords.forEach(kw => {
                 let count = 0;
@@ -1198,7 +1103,6 @@
             }
         }
 
-        // 3. 模糊匹配得分（编辑距离 + 拼音首字母）
         function preprocess(str) {
             return str.toLowerCase().replace(/[-\s]+/g, '');
         }
@@ -1208,57 +1112,42 @@
         question.options.forEach(opt => {
             altText += ' ' + preprocess(opt.text);
         });
-
         const textSimilarity = getSimilarity(cleanKeyword, altText);
         const pinyinSimilarity = getPinyinSimilarity(cleanKeyword, altText);
-        // 模糊得分：编辑距离最高 200 分，拼音最高 80 分
         const fuzzyScore = textSimilarity * 200 + pinyinSimilarity * 80;
-
-        // 4. 返回最终得分（子串得分 + 模糊得分）
         return score + fuzzyScore;
     }
 
     // ----- 查询功能 -----
-    let queryPending = false;         // 防止并发查询
-    let queryTimer = null;            // 用于延迟显示的定时器
+    let queryPending = false;
+    let queryTimer = null;
 
     async function performQuery() {
-        // 防重复点击
         if (queryPending) {
             alert('正在查询中，请稍候...');
             return;
         }
-
         const rawInput = document.getElementById('query-input').value.trim();
         if (!rawInput) {
             alert('请输入查询关键字');
             return;
         }
-
-        // 禁止输入包含 image 或 webp 的查询词（不区分大小写）
         const lowerInput = rawInput.toLowerCase();
         if (lowerInput.includes('image') || lowerInput.includes('webp')) {
             alert('查询内容不能包含 "image" 或 "webp"');
             return;
         }
-
         if (rawInput.length > 100) {
             alert('查询内容过长，请精简后重试');
             return;
         }
-
         const keyword = rawInput;
         const resultsContainer = document.getElementById('query-results');
-
-        // 显示加载中动画
         queryPending = true;
         const queryBtn = document.getElementById('query-btn');
         queryBtn.disabled = true;
         queryBtn.textContent = '查询中...';
-
-        // 清空旧结果，显示加载提示
         resultsContainer.innerHTML = '<div class="loading-spinner-small" style="text-align:center; padding:20px;">正在搜索题目，请稍候...</div>';
-
         const types = ['A', 'B', 'C'];
         try {
             for (let type of types) {
@@ -1275,10 +1164,7 @@
             resultsContainer.innerHTML = '<p style="text-align:center; color:#c44536;">加载失败，请重试</p>';
             return;
         }
-
         showLoading(false);
-
-        // 收集匹配结果
         const scoredResults = [];
         types.forEach(type => {
             const bank = questionBanks[type];
@@ -1290,25 +1176,18 @@
                 }
             });
         });
-
         scoredResults.sort((a, b) => {
             if (a.score !== b.score) return b.score - a.score;
             return a.question.id.localeCompare(b.question.id);
         });
-
-        // 清除之前的定时器（防止多个 setTimeout 堆积）
         if (queryTimer) clearTimeout(queryTimer);
-
-        // 确保加载动画至少显示 2 秒
         const startTime = Date.now();
         const showResults = () => {
             const elapsed = Date.now() - startTime;
             if (elapsed < 2000) {
-                // 还没到2秒，继续等待
                 queryTimer = setTimeout(showResults, 2000 - elapsed);
                 return;
             }
-            // 显示结果
             displayQueryResults(scoredResults, keyword);
             queryPending = false;
             queryBtn.disabled = false;
@@ -1318,7 +1197,6 @@
         queryTimer = setTimeout(showResults, 2000);
     }
 
-    // 构建合并后的数据
     function buildMergedResults(scoredResults) {
         const groups = new Map();
         scoredResults.forEach(item => {
@@ -1346,18 +1224,13 @@
 
     function generatePaginationHTML(totalPages) {
         if (totalPages <= 1) return '';
-        
         let paginationHtml = '<div class="pagination-controls">';
-        // 上一页
         paginationHtml += `<button class="page-btn" data-page="prev" ${currentPage === 1 ? 'disabled' : ''}>上一页</button>`;
-        
-        // 计算显示的页码（自适应）
-        const maxVisible = 5; // 最多显示几个页码按钮
+        const maxVisible = 5;
         let pages = [];
         if (totalPages <= maxVisible) {
             for (let i = 1; i <= totalPages; i++) pages.push(i);
         } else {
-            // 始终显示第一页和最后一页，当前页居中
             if (currentPage <= 3) {
                 pages = [1, 2, 3, 4, '...', totalPages];
             } else if (currentPage >= totalPages - 2) {
@@ -1366,7 +1239,6 @@
                 pages = [1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages];
             }
         }
-        
         pages.forEach(page => {
             if (page === '...') {
                 paginationHtml += `<span class="page-ellipsis">...</span>`;
@@ -1374,11 +1246,7 @@
                 paginationHtml += `<button class="page-btn" data-page="${page}" ${currentPage === page ? 'disabled' : ''}>${page}</button>`;
             }
         });
-        
-        // 下一页
         paginationHtml += `<button class="page-btn" data-page="next" ${currentPage === totalPages ? 'disabled' : ''}>下一页</button>`;
-        
-        // 跳转输入框
         paginationHtml += `
             <span class="goto-box">
                 跳至 <input type="number" id="page-goto-input" min="1" max="${totalPages}" value="${currentPage}" class="goto-input" style="width:60px;"> 页
@@ -1390,7 +1258,6 @@
     }
 
     function bindPaginationEvents(totalPages) {
-        // 上一页/下一页/数字按钮
         document.querySelectorAll('.page-btn[data-page]').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const page = btn.dataset.page;
@@ -1404,8 +1271,6 @@
                 renderCurrentPage();
             });
         });
-        
-        // 跳转按钮
         const gotoBtn = document.getElementById('page-goto-btn');
         const gotoInput = document.getElementById('page-goto-input');
         if (gotoBtn) {
@@ -1451,28 +1316,21 @@
         });
     }
 
-    // 渲染当前页内容及分页控件
     function renderCurrentPage() {
         const container = document.getElementById('query-results');
         if (!container) return;
-        
         const totalItems = lastMergedResults.length;
         const totalPages = Math.ceil(totalItems / pageSize);
         const start = (currentPage - 1) * pageSize;
         const end = start + pageSize;
         const pageItems = lastMergedResults.slice(start, end);
-        
         if (totalItems === 0) {
             container.innerHTML = '<p style="text-align:center; color:#7f8c8d;">未找到匹配的题目</p>';
             return;
         }
-        
-        // 生成页面内容
         let html = '';
         pageItems.forEach(({ question: q, types }) => {
             const typeLabel = types.join('/');
-            
-            // 处理题干图片占位符和高亮
             let questionHtml = q.question.replace(/\[image:\s*([^\]]+)\]/g, (match, filename) => {
                 return `<span class="image-placeholder-temp" data-img-src="imageswebp/${filename}"></span>`;
             });
@@ -1484,8 +1342,6 @@
             questionHtml = questionHtml.replace(/<span class="image-placeholder-temp" data-img-src="([^"]+)"><\/span>/g, (match, src) => {
                 return `<span class="image-placeholder" data-img-src="${src}"></span>`;
             });
-            
-            // 选项高亮
             let optionsHtml = '';
             q.options.forEach((opt, i) => {
                 const letter = String.fromCharCode(65 + i);
@@ -1497,7 +1353,6 @@
                 }
                 optionsHtml += `<div class="option" style="cursor:default;">${letter}. ${optText}</div>`;
             });
-            
             let correctDisplay = '';
             for (let char of q.answer) {
                 const optIndex = q.options.findIndex(opt => opt.value === char);
@@ -1505,7 +1360,6 @@
                     correctDisplay += String.fromCharCode(65 + optIndex);
                 }
             }
-            
             html += `
                 <div class="query-item">
                     <div class="badge">${typeLabel}类题库</div>
@@ -1516,152 +1370,32 @@
                 </div>
             `;
         });
-        
-        // 生成分页控件（放在内容和输入框之间，即插入到 container 之前）
         const paginationHtml = generatePaginationHTML(totalPages);
-        
-        // 先清除容器，再插入分页控件和结果列表
         container.innerHTML = '';
-        // 在 container 内先放分页栏，再放结果列表
         const paginationDiv = document.createElement('div');
         paginationDiv.className = 'query-pagination';
         paginationDiv.innerHTML = paginationHtml;
         container.appendChild(paginationDiv);
-        
         const resultsDiv = document.createElement('div');
         resultsDiv.className = 'query-results-list';
         resultsDiv.innerHTML = html;
         container.appendChild(resultsDiv);
-        
-        // 绑定分页事件
         bindPaginationEvents(totalPages);
-        // 绑定图片占位符检测
         attachImagePlaceholders(container);
     }
 
     function displayQueryResults(scoredResults, keyword) {
         const container = document.getElementById('query-results');
-        container.innerHTML = '';
-
-        // 保存当前数据供分页使用
         lastKeyword = keyword;
         lastMergedResults = buildMergedResults(scoredResults);
         currentPage = 1;
         renderCurrentPage();
-
-        if (scoredResults.length === 0) {
-            container.innerHTML = '<p style="text-align:center; color:#7f8c8d;">未找到匹配的题目</p>';
-            return;
-        }
-
-        // 准备高亮正则
-        let highlightRegex = null;
-        if (keyword && keyword.trim()) {
-            const escaped = escapeRegex(keyword.trim());
-            highlightRegex = new RegExp(`(${escaped})`, 'gi');
-        }
-
-        // 按题目ID分组合并
-        const groups = new Map();
-        scoredResults.forEach(item => {
-            const id = item.question.id;
-            if (!groups.has(id)) {
-                groups.set(id, {
-                    types: [item.type],
-                    question: item.question,
-                    score: item.score
-                });
-            } else {
-                const group = groups.get(id);
-                if (!group.types.includes(item.type)) group.types.push(item.type);
-                if (item.score > group.score) group.score = item.score;
-            }
-        });
-
-        const mergedResults = Array.from(groups.values())
-            .map(group => ({...group, types: group.types.sort()}))
-            .sort((a, b) => {
-                if (a.score !== b.score) return b.score - a.score;
-                return a.question.id.localeCompare(b.question.id);
-            });
-
-        // 高亮函数（用于纯文本）
-        function highlightText(text) {
-            if (!highlightRegex) return text;
-            return text.replace(highlightRegex, '<mark>$1</mark>');
-        }
-
-        mergedResults.forEach(({ question: q, types }) => {
-            const typeLabel = types.join('/');
-
-            // 处理题干：先转换图片标记为占位符，再对纯文本部分高亮
-            // 为了避免高亮破坏图片占位符的 data 属性，我们先将图片占位符临时替换为唯一标识符，高亮后再换回
-            let questionHtml = q.question.replace(/\[image:\s*([^\]]+)\]/g, (match, filename) => {
-                return `<span class="image-placeholder-temp" data-img-src="imageswebp/${filename}"></span>`;
-            });
-            // 对题干中的非 HTML 标签内容进行高亮（简单方式：全局高亮，不会影响标签属性，因为关键词不含 < > 且属性值少见）
-            if (highlightRegex) {
-                questionHtml = questionHtml.replace(highlightRegex, '<mark>$1</mark>');
-            }
-            // 将临时占位符恢复为正式占位符（后面会异步加载图片）
-            questionHtml = questionHtml.replace(/<span class="image-placeholder-temp" data-img-src="([^"]+)"><\/span>/g, (match, src) => {
-                return `<span class="image-placeholder" data-img-src="${src}"></span>`;
-            });
-
-            // 处理选项文本
-            let optionsHtml = '';
-            q.options.forEach((opt, i) => {
-                const letter = String.fromCharCode(65 + i);
-                let optText = opt.text;
-                if (highlightRegex) optText = highlightText(optText);
-                optionsHtml += `<div class="option" style="cursor:default;">${letter}. ${optText}</div>`;
-            });
-
-            // 正确答案（字母）不参与高亮，但显示时保持原样
-            let correctDisplay = '';
-            for (let char of q.answer) {
-                const optIndex = q.options.findIndex(opt => opt.value === char);
-                if (optIndex !== -1) {
-                    correctDisplay += String.fromCharCode(65 + optIndex);
-                }
-            }
-
-            const itemDiv = document.createElement('div');
-            itemDiv.className = 'query-item';
-            itemDiv.innerHTML = `
-                <div class="badge">${typeLabel}类题库</div>
-                <h4>${q.id}</h4>
-                <div class="question-text">${questionHtml}</div>
-                <div class="options">${optionsHtml}</div>
-                <div class="correct-answer">正确答案：${correctDisplay}</div>
-            `;
-            container.appendChild(itemDiv);
-
-            // 异步检测图片占位符（使用正式的占位符）
-            itemDiv.querySelectorAll('.image-placeholder').forEach(placeholder => {
-                const imgSrc = placeholder.dataset.imgSrc;
-                const img = new Image();
-                img.onload = () => {
-                    const imgTag = document.createElement('img');
-                    imgTag.src = imgSrc;
-                    imgTag.loading = 'lazy';
-                    imgTag.className = 'question-image';
-                    imgTag.alt = '题目配图';
-                    placeholder.parentNode.replaceChild(imgTag, placeholder);
-                };
-                img.onerror = () => placeholder.remove();
-                img.src = imgSrc;
-            });
-        });
     }
 
     // ----- DOM 初始化 -----
     document.addEventListener('DOMContentLoaded', function() {
-        // 确保启动界面显示
         showStartScreen();
         document.getElementById('loading-overlay').classList.add('hidden');
-
-        // 预加载题库，更新待做按钮显示
         Promise.allSettled([
             loadQuestionBank('A').catch(e => console.error('A题库加载失败', e)),
             loadQuestionBank('B').catch(e => console.error('B题库加载失败', e)),
@@ -1669,54 +1403,43 @@
         ]).then(() => {
             updatePendingStatusAll();
         });
-
         updateWrongStatsAll();
         updateFavoriteStatsAll();
 
-        // ----- 字体超时处理 -----
         (function handleFontTimeout() {
-            if (!document.fonts || !document.fonts.load) return; // 不支持 Font Loading API 则忽略
-
+            if (!document.fonts || !document.fonts.load) return;
             const FONT_FAMILY = 'HYWenhei';         
             const CHECK_STRING = `16px ${FONT_FAMILY}`;
             const TIMEOUT_MS = 5000;
-
-            // 如果字体已经可用，直接返回
             if (document.fonts.check(CHECK_STRING)) return;
-
-            let fontTimedOut = false;                 // 标记是否已超时
+            let fontTimedOut = false;
             const timeoutId = setTimeout(() => {
                 fontTimedOut = true;
                 document.documentElement.setAttribute('data-font-timeout', 'true');
             }, TIMEOUT_MS);
-
             document.fonts.load(CHECK_STRING)
                 .then(() => {
                     clearTimeout(timeoutId);
-                    // 只有未超时时才移除标记，让字体正常显示；若已超时则保持回退字体
                     if (!fontTimedOut) {
                         document.documentElement.removeAttribute('data-font-timeout');
                     }
                 })
                 .catch(() => {
-                    // 加载失败（如 404），也视为超时，启用回退字体
                     clearTimeout(timeoutId);
                     fontTimedOut = true;
                     document.documentElement.setAttribute('data-font-timeout', 'true');
                 });
         })();
 
-        // 处理启动弹窗
         const modal = document.getElementById('startup-modal');
         if (modal) {
             if (!shouldShowModal()) {
                 modal.style.display = 'none';
             } else {
-                // 填充版本信息
                 const lastVersionSpan = document.getElementById('last-version');
                 const currentVersionSpan = document.getElementById('current-version-modal');
                 if (lastVersionSpan && currentVersionSpan) {
-                    const savedVer = getNoticeVersion(); // 上次版本
+                    const savedVer = getNoticeVersion();
                     const versionElem = document.querySelector('.version');
                     const rawText = versionElem ? versionElem.textContent : '版本号：3.6.1.20260430_beta.3';
                     const match = rawText.match(/[\d.]+[_\w.]*/);
@@ -1724,7 +1447,6 @@
                     lastVersionSpan.textContent = savedVer ? savedVer : '（首次访问）';
                     currentVersionSpan.textContent = currentVer;
                 }
-
                 const confirmBtn = modal.querySelector('.modal-confirm');
                 const agreeCheckbox = document.getElementById('agree-checkbox');
                 const versionElem = document.querySelector('.version');
@@ -1732,8 +1454,6 @@
                 const versionMatch = rawText.match(/[\d.]+[_\w.]*/);
                 const currentVersion = versionMatch ? versionMatch[0] : '3.6.1.20260430_beta.3';
                 const agreed = document.cookie.split(';').some(c => c.trim().startsWith('agree_policy=true'));
-
-                // 如果协议已同意但版本不匹配
                 if (agreed && getNoticeVersion() !== currentVersion) {
                     if (agreeCheckbox) {
                         agreeCheckbox.checked = true;
@@ -1741,7 +1461,6 @@
                     }
                     if (confirmBtn) confirmBtn.disabled = false;
                 } else {
-                    // 协议未同意
                     if (confirmBtn) confirmBtn.disabled = true;
                     if (agreeCheckbox) {
                         agreeCheckbox.disabled = false;
@@ -1751,8 +1470,6 @@
                         });
                     }
                 }
-
-                // 关闭弹窗并保存（更新协议和版本）
                 const closeAndSave = () => {
                     if (!agreed) {
                         if (!agreeCheckbox || !agreeCheckbox.checked) {
@@ -1764,27 +1481,22 @@
                     setNoticeVersion(currentVersion);
                     modal.style.display = 'none';
                 };
-
                 if (confirmBtn) {
                     confirmBtn.removeEventListener('click', closeAndSave);
                     confirmBtn.addEventListener('click', closeAndSave);
                 }
-
-                // 点击遮罩层也可关闭（同样校验）
                 modal.addEventListener('click', function(e) {
                     if (e.target === modal) closeAndSave();
                 });
             }
         }
 
-        // 事件监听
         document.querySelectorAll('.exam-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const type = e.target.dataset.type;
                 startExamWithLoad(type);
             });
         });
-
         document.querySelectorAll('.practice-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const type = e.target.dataset.type;
@@ -1792,21 +1504,18 @@
                 startPracticeWithLoad(type, order, false);
             });
         });
-
         document.querySelectorAll('.wrong-practice-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const type = e.target.dataset.type;
                 startPracticeWithLoad(type, 'asc', true);
             });
         });
-
         document.querySelectorAll('.favorite-practice-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const type = e.target.dataset.type;
                 startFavoritePractice(type);
             });
         });
-
         document.querySelectorAll('.pending-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const type = e.target.dataset.type;
@@ -1814,17 +1523,14 @@
                 startPendingPractice(type, order);
             });
         });
-
         document.getElementById('exit-practice-btn').addEventListener('click', () => {
             clearInterval(timerInterval);
-            // 重置待做状态
             pendingOriginalSession = null;
             pendingOriginalType = null;
             pendingOriginalOrder = null;
             pendingIndexMap = [];
             showStartScreen();
         });
-
         document.getElementById('prev-btn').addEventListener('click', prevQuestion);
         document.getElementById('next-btn').addEventListener('click', nextQuestion);
         document.getElementById('confirm-btn').addEventListener('click', confirmAnswer);
@@ -1832,16 +1538,13 @@
             if (confirm('确定提交答案吗？')) submitExam();
         });
         document.getElementById('reset-wrong-btn').addEventListener('click', removeCurrentFromWrong);
-
         document.getElementById('toggle-wrong-btn').addEventListener('click', function() {
             const container = document.getElementById('wrong-questions-container');
             container.classList.toggle('hidden');
             this.textContent = container.classList.contains('hidden') ? '查看错题' : '隐藏错题';
         });
-
         document.getElementById('favorite-btn').addEventListener('click', toggleFavorite);
         document.getElementById('goto-btn').addEventListener('click', showGotoModal);
-
         document.getElementById('query-btn').addEventListener('click', performQuery);
         document.getElementById('query-input').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') performQuery();
