@@ -1752,3 +1752,70 @@ footer img {
     50% { opacity: 1; }
     100% { opacity: 0.6; }
 }
+
+/* 分页控件样式 */
+.query-pagination {
+    margin: 20px 0 15px;
+    text-align: center;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+.pagination-controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+.page-btn, .goto-btn {
+    padding: 6px 12px;
+    border: 1.5px solid #c7ddec;
+    background: white;
+    color: #2b4d6a;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: 0.15s;
+    min-width: 44px;
+}
+.page-btn:hover:not(:disabled), .goto-btn:hover {
+    background: #1f4f73;
+    color: white;
+    border-color: #1f4f73;
+}
+.page-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+.page-ellipsis {
+    padding: 6px 4px;
+    color: #5d7184;
+}
+.goto-box {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: 8px;
+}
+.goto-input {
+    width: 60px;
+    padding: 6px 8px;
+    border: 1.5px solid #c7ddec;
+    border-radius: 30px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+@media (max-width: 640px) {
+    .pagination-controls {
+        gap: 4px;
+    }
+    .page-btn, .goto-btn {
+        padding: 4px 8px;
+        font-size: 0.8rem;
+        min-width: 36px;
+    }
+    .goto-input {
+        width: 50px;
+        padding: 4px 6px;
+    }
+}
