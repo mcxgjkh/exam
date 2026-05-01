@@ -959,6 +959,14 @@ footer {
     text-decoration: underline;
 }
 
+/* 顶部固定分页栏容器 */
+.query-pagination-top {
+    margin: 20px 0 15px;
+    text-align: center;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
 footer img {
     display: inline-block;
     vertical-align: middle;
