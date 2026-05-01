@@ -972,6 +972,54 @@ footer {
     background: #e0e0e0;
 }
 
+/* 错题详情模态框 */
+.wrong-detail-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 10002;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.wrong-detail-content {
+    background: white;
+    border-radius: 28px;
+    max-width: 800px;
+    width: 90%;
+    max-height: 85vh;
+    overflow-y: auto;
+    position: relative;
+    padding: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+.wrong-detail-close {
+    position: absolute;
+    top: 12px;
+    right: 20px;
+    font-size: 32px;
+    cursor: pointer;
+    color: #888;
+    transition: 0.1s;
+}
+.wrong-detail-close:hover {
+    color: #333;
+}
+.wrong-detail-body {
+    margin-top: 20px;
+}
+.wrong-detail-body .modal-options {
+    margin-left: 20px;
+}
+
+#result-screen .toggle-wrong-btn {
+    min-width: 120px;
+    padding: 10px 24px;
+}
+
 /* 顶部固定分页栏容器 */
 .query-pagination-top {
     margin: 20px 0 15px;
