@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name='description' content='最新题库的业余无线电考试刷题模拟系统，提供刷题练习，模拟考试，错题重练，收藏题目，搜索题目的功能。'>
     <title>2026年业余无线电考试刷题模拟系统</title>
-    <link rel="stylesheet" href="style.css?v=3.8.2.20260501_beta.2">
+    <link rel="stylesheet" href="style.css?v=3.9.1.20260501_beta.1">
     <!--[if lte IE 6]>
     <style>
         .ie-warning {
@@ -70,7 +70,7 @@
             </div>
             <div class="modal-body">
                 <p>另外：</p>
-                <p>最近我迫于学业压力，不得不停止此网站的更新（2026年5月1日，3.8.2.20260501_beta.2版本为最后更新），已优化题库，补上了之前题库中的缺漏，下次最早更新时间：2026年6月22日。</p>
+                <p>最近我迫于学业压力，不得不停止此网站的更新（2026年5月1日，3.9.1.20260501_beta.1版本为最后更新），已优化题库，补上了之前题库中的缺漏，下次最早更新时间：2026年6月22日。</p>
             </div>
             <div class="modal-body version-info" id="version-info-modal" style="background: #f0f7fc; border-radius: 12px; margin-bottom: 16px;">
                 <p style="margin: 4px 0;">您上一次访问时版本号：<span id="last-version">--</span></p>
@@ -97,7 +97,7 @@
     <div class="container">
         <header>
             <h1>业余无线电考试刷题模拟系统</h1>
-            <p class="version">版本号：3.8.2.20260501_beta.2</p>
+            <p class="version">版本号：3.9.1.20260501_beta.1</p>
         </header>
 
         <!-- 主启动界面 (默认显示) -->
@@ -115,6 +115,21 @@
                     <button class="class-btn exam-btn" data-type="A">A类考试 (40题/40分钟)</button>
                     <button class="class-btn exam-btn" data-type="B">B类考试 (60题/60分钟)</button>
                     <button class="class-btn exam-btn" data-type="C">C类考试 (90题/90分钟)</button>
+                </div>
+                <!-- 历史记录区域 -->
+                <div class="history-section" style="margin-top: 20px; border-top: 1px solid #e2edf6; padding-top: 16px;">
+                    <div class="history-header" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" id="history-toggle">
+                        <h3 style="font-size: 1.2rem; margin:0;">历史记录</h3>
+                        <span id="history-toggle-icon">▼</span>
+                    </div>
+                    <div id="history-list-container" style="margin-top: 12px; max-height: 0; overflow: hidden; transition: max-height 0.3s ease;">
+                        <div class="history-controls" style="margin-bottom: 10px;">
+                            <label><input type="checkbox" id="history-select-all"> 全选</label>
+                            <button id="history-delete-selected" class="small-btn" style="margin-left: 10px;">删除选中</button>
+                            <button id="history-clear-all" class="small-btn" style="margin-left: 10px;">清空全部</button>
+                        </div>
+                        <div id="history-list" style="max-height: 300px; overflow-y: auto;"></div>
+                    </div>
                 </div>
             </div>
 
@@ -321,6 +336,6 @@
     })();
     </script>
 
-    <script src="script.js?v=3.8.2.20260501_beta.2"></script>
+    <script src="script.js?v=3.9.1.20260501_beta.1"></script>
 </body>
 </html>

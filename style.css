@@ -959,6 +959,19 @@ footer {
     text-decoration: underline;
 }
 
+.small-btn {
+    background: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: 0.15s;
+}
+.small-btn:hover {
+    background: #e0e0e0;
+}
+
 /* 顶部固定分页栏容器 */
 .query-pagination-top {
     margin: 20px 0 15px;
