@@ -1240,6 +1240,12 @@ footer img {
     border-radius: 3px;
 }
 
+#query-input,
+input,
+textarea {
+    font-family: 'Segoe UI Symbol', 'Apple Symbols', 'Noto Sans', 'Arial', sans-serif;
+}
+
 .fallback-char {
     font-family: 'Segoe UI Symbol', 'Apple Symbols', 'Noto Sans', 'Arial', sans-serif;
 }
