@@ -827,6 +827,13 @@ footer {
     color: #1e3f58;
 }
 
+.wrong-detail-body .your-answer {
+    color: #c44536;
+}
+.wrong-detail-body .correct-answer {
+    color: #2e7d32;
+}
+
 /* 收藏按钮样式 */
 .favorite-btn {
     background: white;
@@ -962,14 +969,20 @@ footer {
 .small-btn {
     background: #f0f0f0;
     border: 1px solid #ccc;
-    border-radius: 20px;
-    padding: 4px 12px;
+    border-radius: 30px;
+    padding: 6px 16px;
     font-size: 0.8rem;
     cursor: pointer;
     transition: 0.15s;
+    color: #1e293b;
 }
 .small-btn:hover {
     background: #e0e0e0;
+    border-color: #aaa;
+}
+
+.history-controls .small-btn {
+    margin-left: 10px;
 }
 
 /* 错题详情模态框 */
@@ -1010,9 +1023,17 @@ footer {
 }
 .wrong-detail-body {
     margin-top: 20px;
+    color: #1e293b;
 }
 .wrong-detail-body .modal-options {
     margin-left: 20px;
+    color: #1e293b;
+}
+.wrong-detail-body strong {
+    color: #1e293b;
+}
+.wrong-detail-body .question-image {
+    margin: 10px 0;
 }
 
 #result-screen .toggle-wrong-btn {
@@ -1142,6 +1163,22 @@ footer {
 .history-view-wrong:hover {
     background: #e3f2fd;
     text-decoration: underline;
+}
+
+/* 错题详情模态框滚动条美化 */
+.wrong-detail-content::-webkit-scrollbar {
+    width: 6px;
+}
+.wrong-detail-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+.wrong-detail-content::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+.wrong-detail-content::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
 }
 
 /* 顶部固定分页栏容器 */
