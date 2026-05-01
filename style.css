@@ -1004,15 +1004,17 @@ footer {
     max-width: 800px;
     width: 90%;
     max-height: 85vh;
-    overflow-y: auto;
     position: relative;
-    padding: 20px;
     box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;  /* 防止内容溢出圆角 */
 }
 .wrong-detail-close {
     position: absolute;
     top: 12px;
     right: 20px;
+    z-index: 1;
     font-size: 32px;
     cursor: pointer;
     color: #888;
@@ -1022,15 +1024,30 @@ footer {
     color: #333;
 }
 .wrong-detail-body {
-    margin-top: 20px;
-    color: #1e293b;
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    padding-top: 40px;
+    scrollbar-width: thin;
+    color: #1a4d6f;
+}
+.wrong-detail-body::-webkit-scrollbar {
+    width: 6px;
+}
+.wrong-detail-body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+.wrong-detail-body::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
 }
 .wrong-detail-body .modal-options {
     margin-left: 20px;
-    color: #1e293b;
+    color: #1a4d6f;
 }
 .wrong-detail-body strong {
-    color: #1e293b;
+    color: #1a4d6f;
 }
 .wrong-detail-body .question-image {
     margin: 10px 0;
