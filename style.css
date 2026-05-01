@@ -968,6 +968,20 @@ footer img {
     transition: height 0.1s ease;
 }
 
+.query-item .option {
+    display: block !important;
+    align-items: normal !important;
+    min-height: auto !important;
+    padding: 8px 12px !important;
+    margin: 5px 0;
+}
+.query-item .option mark {
+    display: inline-block;
+    background-color: #ffeb3b;
+    padding: 0 2px;
+    border-radius: 3px;
+}
+
 @media (max-width: 640px) {
     .exam-info {
         flex-direction: column;
