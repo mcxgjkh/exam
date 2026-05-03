@@ -1254,6 +1254,83 @@ textarea {
 }
 
 @media (max-width: 640px) {
+    .history-header h3 {
+        font-size: 0.95rem;
+    }
+    #history-toggle-icon {
+        font-size: 0.8rem;
+    }
+    .history-controls {
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+    .history-controls .small-btn {
+        font-size: 0.7rem;
+        padding: 4px 10px;
+        margin-left: 4px;
+    }
+    #history-list {
+        max-height: 280px;
+    }
+    .history-item {
+        padding: 10px 12px;
+    }
+    .history-item-header {
+        gap: 8px;
+    }
+    .history-title {
+        font-size: 0.85rem;
+        gap: 6px;
+    }
+    .history-score {
+        font-size: 0.85rem;
+    }
+    .history-pass,
+    .history-fail {
+        font-size: 0.7rem;
+        padding: 1px 6px;
+    }
+    .history-time {
+        font-size: 0.7rem;
+    }
+    .history-item-footer {
+        font-size: 0.7rem;
+        padding-left: 24px;
+    }
+    .history-view-wrong {
+        font-size: 0.7rem;
+        padding: 1px 4px;
+    }
+    .history-checkbox {
+        width: 16px;
+        height: 16px;
+    }
+
+    /* 错题详情弹窗 */
+    .wrong-detail-content {
+        max-width: 95%;
+        width: 95%;
+        max-height: 90vh;
+        border-radius: 20px;
+    }
+    .wrong-detail-close {
+        top: 8px;
+        right: 14px;
+        font-size: 28px;
+    }
+    .wrong-detail-body {
+        margin: 12px;
+        margin-top: 36px;
+        padding-right: 12px;
+        font-size: 0.9rem;
+    }
+    .wrong-detail-body .modal-options {
+        margin-left: 12px;
+    }
+    .wrong-detail-body .question-image {
+        max-height: 200px;
+    }
+
     .exam-info {
         flex-direction: column;
         gap: 8px;
@@ -1364,7 +1441,7 @@ textarea {
 
     /* 页脚 */
     footer {
-        font-size: 0.8rem;
+        font-size: 0.7rem;
         margin-top: 30px;
     }
 
@@ -1383,6 +1460,82 @@ textarea {
 }
 
 @media (max-width: 435px) {
+    /* 历史记录 */
+    .history-header h3 {
+        font-size: 0.85rem;
+    }
+    .history-controls {
+        gap: 4px;
+    }
+    .history-controls .small-btn {
+        font-size: 0.65rem;
+        padding: 3px 8px;
+        margin-left: 2px;
+    }
+    #history-list {
+        max-height: 240px;
+    }
+    .history-item {
+        padding: 8px 10px;
+    }
+    .history-item-header {
+        gap: 4px;
+        flex-wrap: wrap;
+    }
+    .history-title {
+        font-size: 0.75rem;
+        gap: 4px;
+    }
+    .history-score {
+        font-size: 0.75rem;
+    }
+    .history-pass,
+    .history-fail {
+        font-size: 0.6rem;
+        padding: 1px 4px;
+    }
+    .history-time {
+        font-size: 0.6rem;
+    }
+    .history-item-footer {
+        font-size: 0.6rem;
+        padding-left: 18px;
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+    .history-view-wrong {
+        font-size: 0.6rem;
+    }
+    .history-checkbox {
+        width: 14px;
+        height: 14px;
+    }
+
+    /* 错题详情弹窗 */
+    .wrong-detail-content {
+        max-width: 98%;
+        width: 98%;
+        max-height: 92vh;
+        border-radius: 16px;
+    }
+    .wrong-detail-close {
+        top: 6px;
+        right: 10px;
+        font-size: 24px;
+    }
+    .wrong-detail-body {
+        margin: 8px;
+        margin-top: 32px;
+        padding-right: 8px;
+        font-size: 0.8rem;
+    }
+    .wrong-detail-body .modal-options {
+        margin-left: 8px;
+    }
+    .wrong-detail-body .question-image {
+        max-height: 160px;
+    }
+
     .mode-card h2 {
     font-size: 1.2rem;
     }
@@ -1538,7 +1691,7 @@ textarea {
 
     /* 页脚 */
     footer {
-        font-size: 0.7rem;
+        font-size: 0.6rem;
         margin-top: 20px;
     }
 
@@ -1561,6 +1714,64 @@ textarea {
 }
 
 @media (max-width: 350px) {
+    /* 历史记录 */
+    .history-header h3 {
+        font-size: 0.75rem;
+    }
+    .history-controls .small-btn {
+        font-size: 0.6rem;
+        padding: 2px 6px;
+    }
+    #history-list {
+        max-height: 200px;
+    }
+    .history-item {
+        padding: 6px 8px;
+    }
+    .history-title {
+        font-size: 0.65rem;
+    }
+    .history-score {
+        font-size: 0.65rem;
+    }
+    .history-pass,
+    .history-fail {
+        font-size: 0.55rem;
+    }
+    .history-time {
+        font-size: 0.55rem;
+    }
+    .history-item-footer {
+        font-size: 0.55rem;
+        padding-left: 14px;
+    }
+    .history-view-wrong {
+        font-size: 0.55rem;
+    }
+    .history-checkbox {
+        width: 12px;
+        height: 12px;
+    }
+
+    /* 错题详情弹窗 */
+    .wrong-detail-close {
+        font-size: 20px;
+        top: 4px;
+        right: 8px;
+    }
+    .wrong-detail-body {
+        margin: 6px;
+        margin-top: 28px;
+        padding-right: 6px;
+        font-size: 0.7rem;
+    }
+    .wrong-detail-body .modal-options {
+        margin-left: 6px;
+    }
+    .wrong-detail-body .question-image {
+        max-height: 130px;
+    }
+
     .mode-card h2 {
     font-size: 1rem;
     }
@@ -1691,7 +1902,7 @@ textarea {
 
     /* 页脚 */
     footer {
-        font-size: 0.6rem;
+        font-size: 0.5rem;
         margin-top: 15px;
     }
 
@@ -1721,6 +1932,37 @@ textarea {
 }
 
 @media (max-width: 324px) {
+    /* 历史记录 */
+    #history-list {
+        max-height: 180px;
+    }
+    .history-item {
+        padding: 4px 6px;
+    }
+    .history-title {
+        font-size: 0.6rem;
+    }
+    .history-score {
+        font-size: 0.6rem;
+    }
+    .history-item-footer {
+        font-size: 0.5rem;
+        padding-left: 10px;
+    }
+    .history-view-wrong {
+        font-size: 0.5rem;
+    }
+
+    /* 错题详情弹窗 */
+    .wrong-detail-close {
+        font-size: 18px;
+    }
+    .wrong-detail-body {
+        font-size: 0.65rem;
+        margin: 4px;
+        margin-top: 24px;
+    }
+
     .mode-card h2 {
     font-size: 0.9rem;
     }
@@ -1831,7 +2073,7 @@ textarea {
 
     /* 页脚 */
     footer {
-        font-size: 0.5rem;
+        font-size: 0.4rem;
         margin-top: 10px;
     }
 
