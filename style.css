@@ -1282,7 +1282,7 @@ textarea {
     .history-item-header {
         gap: 8px !important;
     }
-    .history-controls label .history-title {
+    .history-title {
         font-size: 0.85rem !important;
         gap: 6px !important;
     }
@@ -1305,7 +1305,8 @@ textarea {
         font-size: 0.7rem !important;
         padding: 1px 4px !important;
     }
-    .history-checkbox {
+    .history-checkbox,
+    #history-select-all {
         width: 16px !important;
         height: 16px !important;
     }
@@ -1486,7 +1487,7 @@ textarea {
         gap: 4px !important;
         flex-wrap: wrap !important;
     }
-    .history-controls label .history-title {
+    .history-title {
         font-size: 0.75rem !important;
         gap: 4px !important;
     }
@@ -1510,7 +1511,8 @@ textarea {
     .history-view-wrong {
         font-size: 0.6rem !important;
     }
-    .history-checkbox {
+    .history-checkbox,
+    #history-select-all {
         width: 14px !important;
         height: 14px !important;
     }
@@ -1732,7 +1734,7 @@ textarea {
     .history-item {
         padding: 6px 8px !important;
     }
-    .history-controls label .history-title {
+    .history-title {
         font-size: 0.65rem !important;
     }
     .history-score {
@@ -1752,7 +1754,8 @@ textarea {
     .history-view-wrong {
         font-size: 0.55rem !important;
     }
-    .history-checkbox {
+    .history-checkbox,
+    #history-select-all {
         width: 12px !important;
         height: 12px !important;
     }
@@ -1943,7 +1946,7 @@ textarea {
     .history-item {
         padding: 4px 6px !important;
     }
-    .history-controls label .history-title {
+    .history-title {
         font-size: 0.6rem !important;
     }
     .history-score {
@@ -1955,6 +1958,11 @@ textarea {
     }
     .history-view-wrong {
         font-size: 0.5rem !important;
+    }
+    .history-checkbox,
+    #history-select-all {
+        width: 11px !important;
+        height: 11px !important;
     }
 
     /* 错题详情弹窗 */
