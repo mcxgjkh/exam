@@ -1282,7 +1282,7 @@ textarea {
     .history-item-header {
         gap: 8px !important;
     }
-    .history-title {
+    .history-controls label .history-title {
         font-size: 0.85rem !important;
         gap: 6px !important;
     }
@@ -1486,7 +1486,7 @@ textarea {
         gap: 4px !important;
         flex-wrap: wrap !important;
     }
-    .history-title {
+    .history-controls label .history-title {
         font-size: 0.75rem !important;
         gap: 4px !important;
     }
@@ -1732,7 +1732,7 @@ textarea {
     .history-item {
         padding: 6px 8px !important;
     }
-    .history-title {
+    .history-controls label .history-title {
         font-size: 0.65rem !important;
     }
     .history-score {
@@ -1943,7 +1943,7 @@ textarea {
     .history-item {
         padding: 4px 6px !important;
     }
-    .history-title {
+    .history-controls label .history-title {
         font-size: 0.6rem !important;
     }
     .history-score {
