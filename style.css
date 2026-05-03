@@ -1255,6 +1255,9 @@ textarea {
 
 @media (max-width: 640px) {
     /* 历史记录 */
+    .history-controls label {
+        font-size: 0.8rem !important;
+    }
     .history-header h3 {
         font-size: 0.95rem !important;
     }
@@ -1466,6 +1469,9 @@ textarea {
 
 @media (max-width: 435px) {
     /* 历史记录 */
+    .history-controls label {
+        font-size: 0.7rem !important;
+    }
     .history-header h3 {
         font-size: 0.85rem !important;
     }
@@ -1721,6 +1727,9 @@ textarea {
 
 @media (max-width: 350px) {
     /* 历史记录 */
+    .history-controls label {
+        font-size: 0.65rem !important;
+    }
     .history-header h3 {
         font-size: 0.75rem !important;
     }
@@ -1940,6 +1949,9 @@ textarea {
 
 @media (max-width: 324px) {
     /* 历史记录 */
+    .history-controls label {
+        font-size: 0.6rem !important;
+    }
     #history-list {
         max-height: 180px !important;
     }
