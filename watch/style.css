@@ -344,21 +344,13 @@ body {
     color: #1a1a2e;
     margin-bottom: 10px;
 }
-
-/* 全局超细滚动条（几乎无感） */
-::-webkit-scrollbar {
-    width: 1px;
-    height: 1px;
+/* 隐藏所有可滚动区域的滚动条 */
+#content,
+.query-results {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
-::-webkit-scrollbar-track {
-    background: transparent;
-}
-::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.08);
-    border-radius: 0.5px;
-}
-/* Firefox */
-* {
-    scrollbar-width: thin;
-    scrollbar-color: rgba(0, 0, 0, 0.1) transparent;
+#content::-webkit-scrollbar,
+.query-results::-webkit-scrollbar {
+    display: none;
 }
