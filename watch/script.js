@@ -108,6 +108,9 @@
                 </div>
                 <div id="query-results" class="query-results"></div>
             </div>
+            <!-- 页尾 -->
+            <div style="text-align:center;font-size:7px;color:#5d7184;padding:4px 0;">© BH6RKW</div>
+            <div style="text-align:center;font-size:7px;color:#5d7184;padding:1px 0;">萌ICP备20265973号</div>
         `;
         bindMainEvents();
     }
