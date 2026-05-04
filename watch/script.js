@@ -37,7 +37,7 @@
             if (questionBanks[type]) return resolve(questionBanks[type]);
             showLoading(true, '加载'+type+'类...');
             const script = document.createElement('script');
-            script.src = '../data_' + type + '.js?v=3.10.4'; // 路径按需修改
+            script.src = '../data_' + type + '.js';
             script.onload = () => {
                 try {
                     const bank = eval('questions_' + type);
@@ -68,7 +68,7 @@
 
     // 渲染主界面 (查询 + 历史 + 练习三类按钮)
     function renderMain() {
-        const history = getHistory().slice(0, 5); // 最多显示5条
+        const history = getHistory().slice(0, 5);
         let histHtml = history.length === 0 ? '<div style="font-size:7px;color:#999;">无记录</div>' :
             history.map((r, i) => {
                 const dateStr = new Date(r.timestamp).toLocaleDateString();
@@ -80,6 +80,26 @@
             }).join('');
 
         contentEl.innerHTML = `
+            <!-- 1. 刷题练习 -->
+            <div class="card">
+                <div class="card-title">刷题练习</div>
+                <button class="btn" id="practice-btn-A">A类</button>
+                <button class="btn" id="practice-btn-B">B类</button>
+                <button class="btn" id="practice-btn-C">C类</button>
+            </div>
+            <!-- 2. 模拟考试 -->
+            <div class="card">
+                <div class="card-title">模拟考试</div>
+                <button class="btn" id="exam-btn-A">A类考试</button>
+                <button class="btn" id="exam-btn-B">B类考试</button>
+                <button class="btn" id="exam-btn-C">C类考试</button>
+            </div>
+            <!-- 3. 历史记录 -->
+            <div class="card">
+                <div class="card-title">历史记录</div>
+                <div id="history-list">${histHtml}</div>
+            </div>
+            <!-- 4. 题目查询 -->
             <div class="card">
                 <div class="card-title">题目查询</div>
                 <div class="query-row">
@@ -87,22 +107,6 @@
                     <button class="query-btn" id="query-btn">查</button>
                 </div>
                 <div id="query-results" class="query-results"></div>
-            </div>
-            <div class="card">
-                <div class="card-title">历史记录</div>
-                <div id="history-list">${histHtml}</div>
-            </div>
-            <div class="card">
-                <div class="card-title">刷题练习</div>
-                <button class="btn" id="practice-btn-A">A类</button>
-                <button class="btn" id="practice-btn-B">B类</button>
-                <button class="btn" id="practice-btn-C">C类</button>
-            </div>
-            <div class="card" style="margin-top:4px;">
-                <div class="card-title">模拟考试</div>
-                <button class="btn" id="exam-btn-A">A类考试</button>
-                <button class="btn" id="exam-btn-B">B类考试</button>
-                <button class="btn" id="exam-btn-C">C类考试</button>
             </div>
         `;
         bindMainEvents();
