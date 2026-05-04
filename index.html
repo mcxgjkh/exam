@@ -29,11 +29,6 @@
         }
     </style>
     <![endif]-->
-    <script>
-        if (window.innerWidth < 300 || window.innerHeight < 287) {
-            window.location.replace('/watch/');
-        }
-    </script>
 </head>
 <body>
     <noscript>
@@ -323,6 +318,9 @@
     </div>
 
     <script>
+    if (window.innerWidth < 300 || window.innerHeight < 287) {
+        window.location.replace('/watch/');
+    };
     (function() {
         var isIE = false;
         if (document.documentMode) {
