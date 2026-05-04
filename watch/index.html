@@ -8,17 +8,22 @@
 </head>
 <body>
     <div id="app">
-        <div id="header">
-            <span id="title-text">业余无线电考试</span>
-        </div>
+        <div id="header"><span id="title-text">业余无线电考试</span></div>
         <div id="content"></div>
-        <div id="footer">
-            <span>BH6RKW</span>
-        </div>
+        <div id="footer">BH6RKW</div>
     </div>
     <div id="loading-overlay" class="loading-overlay hidden">
         <div class="loading-spinner"></div>
         <div id="loading-msg">加载中</div>
+    </div>
+    <div id="order-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-title">选择练习顺序</div>
+            <button class="btn" data-order="asc">顺序</button>
+            <button class="btn" data-order="desc">倒序</button>
+            <button class="btn" data-order="random">乱序</button>
+            <button class="btn danger" id="modal-cancel">取消</button>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
