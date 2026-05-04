@@ -1276,9 +1276,6 @@ textarea {
     #history-list {
         max-height: 280px !important;
     }
-    #history-list-container {
-        max-height: none !important;   /* 允许自然高度，避免被JS数值锁死 */
-    }
     .history-item {
         padding: 10px 12px !important;
     }
