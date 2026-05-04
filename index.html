@@ -3,6 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="robots" content="index,follow">
+    <script>
+    (function(){
+        // 防止在 /watch/ 页面再次跳转
+        var path = window.location.pathname;
+        if (path.indexOf('/watch/') === 0) return;
+
+        // 视口过小立即跳转
+        if (window.innerWidth < 300 || window.innerHeight < 287) {
+            window.location.replace('/watch/');
+            return; // 阻止后续脚本执行
+        }
+    })();
+    </script>
     <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
     <link rel="canonical" href="https://exam.bh6rkw.dpdns.org/">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -318,9 +331,6 @@
     </div>
 
     <script>
-    if (window.innerWidth < 300 || window.innerHeight < 287) {
-        window.location.replace('/watch/');
-    };
     (function() {
         var isIE = false;
         if (document.documentMode) {
