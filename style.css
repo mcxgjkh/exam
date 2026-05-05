@@ -2738,3 +2738,22 @@ body.dark-mode .history-header h3 {
 body.dark-mode .pending-type {
     color: #b0c0d0;
 }
+/* 将 .pending-btn 加入到已有的暗色按钮规则中 */
+body.dark-mode .pending-btn {
+    background: #2a2b42;
+    color: #d0d0e0;
+    border-color: #40455a;
+}
+body.dark-mode .pending-btn:hover {
+    background: #3a7eb8;
+    color: white;
+    border-color: #3a7eb8;
+}
+body.dark-mode #version-info-modal {
+    background: #1e2330 !important;
+    color: #c0d0e0;
+}
+/* 版本号部分的文字颜色微调 */
+body.dark-mode #version-info-modal p {
+    color: #c0d0e0;
+}
