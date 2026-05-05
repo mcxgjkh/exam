@@ -2757,27 +2757,50 @@ body.dark-mode #version-info-modal {
 body.dark-mode #version-info-modal p {
     color: #c0d0e0;
 }
-/* 暗色模式 - 查看错题弹窗补充 */
-body.dark-mode .wrong-detail-modal {
-    background-color: rgba(0, 0, 0, 0.7); /* 遮罩加深 */
+/* 暗色模式 - 查看错题弹窗深度适配 */
+body.dark-mode .wrong-detail-content {
+    background: #1e2235 !important;
+    border-radius: 24px;
 }
-body.dark-mode .wrong-detail-close {
-    color: #aaa;
-}
-body.dark-mode .wrong-detail-close:hover {
-    color: #fff;
-}
-body.dark-mode .wrong-detail-body .modal-options {
+body.dark-mode .wrong-detail-body > div > div {
+    background: #2a2d40 !important;
+    border-color: #40455a !important;
     color: #d0d0e0;
 }
-body.dark-mode .wrong-detail-body .your-answer {
-    color: #ff8a80;
+body.dark-mode .wrong-detail-body h3 {
+    color: #c0d0e0;
 }
-body.dark-mode .wrong-detail-body .correct-answer {
-    color: #69f0ae;
+body.dark-mode .wrong-detail-body .modal-options {
+    color: #b0b8c8;
 }
-/* 如果弹窗内有图片，可保持默认，也可适当增加边框 */
-body.dark-mode .wrong-detail-body .question-image {
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+body.dark-mode .wrong-detail-body strong {
+    color: #e0e0e0;
+}
+body.dark-mode .wrong-detail-close {
+    color: #aaa !important;
+}
+body.dark-mode .wrong-detail-close:hover {
+    color: #fff !important;
+}
+body.dark-mode #close-wrong-modal.small-btn {
+    background: #3a3f55;
+    color: #e0e0e0;
+    border-color: #555a70;
+}
+body.dark-mode #close-wrong-modal.small-btn:hover {
+    background: #4a4f68;
+}
+/* 弹窗内滚动条暗色 */
+body.dark-mode .wrong-detail-body::-webkit-scrollbar {
+    width: 4px;
+}
+body.dark-mode .wrong-detail-body::-webkit-scrollbar-track {
+    background: #1e2235;
+}
+body.dark-mode .wrong-detail-body::-webkit-scrollbar-thumb {
+    background: #40455a;
+    border-radius: 2px;
+}
+body.dark-mode .wrong-detail-body {
+    scrollbar-color: #40455a #1e2235;
 }
