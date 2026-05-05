@@ -2504,8 +2504,9 @@ body.dark-mode h1 {
     background-clip: text;
     -webkit-text-fill-color: transparent;
 }
+/* 版本号文字在暗色下改为白色 */
 body.dark-mode .version {
-    background: #e0e0e0;
+    background: #ffffff;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -2730,3 +2731,10 @@ body.dark-mode .agreement-body {
     border-top-color: rgba(255,255,255,0.15);
 }
 body.dark-mode .modal-body a { color: #80b8e0; }
+
+body.dark-mode .history-header h3 {
+    color: #c0d0e0;
+}
+body.dark-mode .pending-type {
+    color: #b0c0d0;
+}
