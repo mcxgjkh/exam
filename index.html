@@ -422,7 +422,7 @@
         function renderBtn(user) {
             if (user) {
                 var name = (user.user_metadata && user.user_metadata.username) || user.email.split('@')[0];
-                btn.innerHTML = '<span title="数据已同步">' + name + ' </span>';
+                btn.innerHTML = '<span title="数据已同步">' + name + '</span>';
                 btn.onclick = function() { sb.auth.signOut().then(function() { location.reload(); }); };
                 uploadLocalCache(user);
             } else {
