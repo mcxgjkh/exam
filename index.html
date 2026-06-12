@@ -27,7 +27,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name='description' content='最新题库的业余无线电考试刷题模拟系统，提供刷题练习，模拟考试，错题重练，收藏题目，搜索题目的功能。'>
     <title>2026年业余无线电考试刷题模拟系统</title>
-    <link rel="stylesheet" href="style.css?v=3.12.1.20260613_beta.1">
+    <link rel="stylesheet" href="style.css?v=3.12.2.20260613_beta.1">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <!--[if lte IE 6]>
     <style>
@@ -91,7 +91,7 @@
             </div>
             <div class="modal-body">
                 <p>另外：</p>
-                <p>最近我迫于学业压力，不得不停止此网站的更新（2026年5月4日，3.12.1.20260613_beta.1版本为最后更新），已优化题库，补上了之前题库中的缺漏，下次最早更新时间：2026年6月22日。</p>
+                <p>最近我迫于学业压力，不得不停止此网站的更新（2026年6月13日，3.12.2.20260613_beta.1版本为最后更新），已优化题库，补上了之前题库中的缺漏，下次最早更新时间：2026年6月22日。</p>
             </div>
             <div class="modal-body version-info" id="version-info-modal" style="background: #f0f7fc; border-radius: 12px; margin-bottom: 16px;">
                 <p style="margin: 4px 0;">您上一次访问时版本号：<span id="last-version">--</span></p>
@@ -118,7 +118,7 @@
     <div class="container">
         <header>
             <h1>业余无线电考试刷题模拟系统</h1>
-            <p class="version">版本号：3.12.1.20260613_beta.1　|　<span id="examAuthBtn" style="cursor:pointer;"></span></p>
+            <p class="version">版本号：3.12.2.20260613_beta.1　|　<span id="examAuthBtn" style="cursor:pointer;"></span>　|　<a href="https://bh6rkw.dpdns.org" style="text-decoration:none;color:#666;">首页</a></p>
         </header>
 
         <!-- 主启动界面 (默认显示) -->
@@ -369,7 +369,58 @@
     })();
     </script>
 
-    <script src="script.js?v=3.12.1.20260613_beta.1"></script>
+    <script src="script.js?v=3.12.2.20260613_beta.1"></script>
+    <script>
+    (function() {
+        var SUPABASE_URL = 'https://pxhiobmdzntnxwpwtgpx.supabase.co';
+        var SUPABASE_KEY = 'sb_publishable_06fy5uemh4fJnAQXIsIXdQ_79UMtlC_';
+        if (!window.supabase) return;
+        var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        var btn = document.getElementById('examAuthBtn');
+        if (!btn) return;
+
+        function getCookie(name) {
+            var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+            return match ? decodeURIComponent(match[2]) : null;
+        }
+
+        async function tryRestoreSession() {
+            var at = getCookie('sb-access-token');
+            var rt = getCookie('sb-refresh-token');
+            if (!at || !rt) return null;
+            var r = await sb.auth.setSession({ access_token: at, refresh_token: rt });
+            if (r.error) return null;
+            var s = await sb.auth.getSession();
+            return s.data.session ? s.data.session.user : null;
+        }
+
+        function renderBtn(user) {
+            if (user) {
+                var name = (user.user_metadata && user.user_metadata.username) || user.email.split('@')[0];
+                btn.innerHTML = '<span title="数据已同步">' + name + ' ✅</span>';
+                btn.onclick = function() { sb.auth.signOut().then(function() { location.reload(); }); };
+            } else {
+                btn.innerHTML = '<a href="#" id="examLoginLink" style="text-decoration:none;">登录同步数据</a>';
+                document.getElementById('examLoginLink').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    var pwd = prompt('请输入密码以验证身份（与主站登录密码相同）：');
+                    if (!pwd) return;
+                    var email = prompt('请输入邮箱：');
+                    if (!email) return;
+                    sb.auth.signInWithPassword({ email: email, password: pwd }).then(function(r) {
+                        if (r.error) { alert('登录失败：' + r.error.message); return; }
+                        location.reload();
+                    });
+                });
+            }
+        }
+
+        tryRestoreSession().then(function(user) {
+            renderBtn(user);
+            if (user) window.dispatchEvent(new CustomEvent('supabase-ready', { detail: { sb: sb, user: user } }));
+        });
+    })();
+    </script>
     <script>
 (function(){var M=3,k='cssRetry',r=parseInt(sessionStorage.getItem(k)||'0');if(r>=M){sessionStorage.removeItem(k);return}function c(){var e=document.getElementById('css-detect');if(!e)return;getComputedStyle(e).getPropertyValue('--css-loaded').trim()!=='1'?(sessionStorage.setItem(k,r+1),location.reload()):sessionStorage.removeItem(k)}document.readyState==='loading'?document.addEventListener('DOMContentLoaded',function(){setTimeout(c,300)}):setTimeout(c,100)})();
     </script>
