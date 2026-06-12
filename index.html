@@ -27,9 +27,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name='description' content='最新题库的业余无线电考试刷题模拟系统，提供刷题练习，模拟考试，错题重练，收藏题目，搜索题目的功能。'>
     <title>2026年业余无线电考试刷题模拟系统</title>
-    <link rel="stylesheet" href="style.css?v=3.12.3.20260613_beta.1">
+    <link rel="stylesheet" href="style.css?v=3.12.5.20260613_beta.1">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-    <script src="https://bh6rkw.dpdns.org/supabase-auth.js?v=1.4.2"></script>
+    <script src="https://bh6rkw.dpdns.org/supabase-auth.js?v=1.4.3"></script>
     <!--[if lte IE 6]>
     <style>
         .ie-warning {
@@ -119,7 +119,7 @@
     <div class="container">
         <header>
             <h1>业余无线电考试刷题模拟系统</h1>
-            <p class="version">版本号：3.12.3.20260613_beta.1　|　<span id="examAuthBtn" style="cursor:pointer;"></span>　|　<a href="https://bh6rkw.dpdns.org" style="text-decoration:none;color:#666;">首页</a></p>
+            <p class="version">版本号：3.12.5.20260613_beta.1　|　<span id="examAuthBtn" style="cursor:pointer;"></span>　|　<a href="https://bh6rkw.dpdns.org" style="text-decoration:none;color:#666;">首页</a></p>
         </header>
 
         <!-- 主启动界面 (默认显示) -->
@@ -370,7 +370,7 @@
     })();
     </script>
 
-    <script src="script.js?v=3.12.3.20260613_beta.1"></script>
+    <script src="script.js?v=3.12.5.20260613_beta.1"></script>
     <script>
     (function() {
         var SUPABASE_URL = 'https://pxhiobmdzntnxwpwtgpx.supabase.co';
@@ -395,11 +395,37 @@
             return s.data.session ? s.data.session.user : null;
         }
 
+        async function uploadLocalCache(user) {
+            if (!sb || !user) return;
+            var types = ['A','B','C'];
+            for (var i = 0; i < types.length; i++) {
+                var t = types[i];
+                var wrongs = JSON.parse(localStorage.getItem('ham_wrong_' + t) || '[]');
+                var favs = JSON.parse(localStorage.getItem('ham_favorite_' + t) || '[]');
+                for (var j = 0; j < wrongs.length; j++) {
+                    sb.from('exam_progress').upsert({
+                        user_id: user.id, exam_type: t, question_id: wrongs[j],
+                        is_correct: false, is_favorite: favs.includes(wrongs[j]),
+                        answered_at: new Date().toISOString()
+                    }, { onConflict: 'user_id,exam_type,question_id' }).then(function(){}).catch(function(){});
+                }
+                for (var k = 0; k < favs.length; k++) {
+                    if (!wrongs.includes(favs[k])) {
+                        sb.from('exam_progress').upsert({
+                            user_id: user.id, exam_type: t, question_id: favs[k],
+                            is_favorite: true, answered_at: new Date().toISOString()
+                        }, { onConflict: 'user_id,exam_type,question_id' }).then(function(){}).catch(function(){});
+                    }
+                }
+            }
+        }
+
         function renderBtn(user) {
             if (user) {
                 var name = (user.user_metadata && user.user_metadata.username) || user.email.split('@')[0];
                 btn.innerHTML = '<span title="数据已同步">' + name + ' ✅</span>';
                 btn.onclick = function() { sb.auth.signOut().then(function() { location.reload(); }); };
+                uploadLocalCache(user);
             } else {
                 btn.innerHTML = '<a href="#" id="examLoginLink" style="text-decoration:none;">登录同步数据</a>';
                 document.getElementById('examLoginLink').addEventListener('click', function(e) {
@@ -408,7 +434,11 @@
                         window.showAuthModal('login');
                         var checkInterval = setInterval(function() {
                             tryRestoreSession().then(function(u) {
-                                if (u) { clearInterval(checkInterval); renderBtn(u); }
+                                if (u) {
+                                    clearInterval(checkInterval);
+                                    renderBtn(u);
+                                    window.dispatchEvent(new CustomEvent('supabase-ready', { detail: { sb: sb, user: u } }));
+                                }
                             });
                         }, 2000);
                     }
@@ -418,7 +448,9 @@
 
         tryRestoreSession().then(function(user) {
             renderBtn(user);
-            if (user) window.dispatchEvent(new CustomEvent('supabase-ready', { detail: { sb: sb, user: user } }));
+            if (user) {
+                window.dispatchEvent(new CustomEvent('supabase-ready', { detail: { sb: sb, user: user } }));
+            }
         });
     })();
     </script>
