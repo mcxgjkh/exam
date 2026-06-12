@@ -50,6 +50,7 @@
     <![endif]-->
 </head>
 <body>
+    <div id="css-detect" aria-hidden="true"></div>
     <noscript>
         <div style="position:fixed; top:0; left:0; width:100%; padding:20px; background:#f8d7da; color:#721c24; text-align:center; z-index:10001;">
             您的浏览器禁用了JavaScript或当前安全设置阻止了脚本运行，本系统无法正常工作。请启用JavaScript或使用现代浏览器（Chrome/Edge/Firefox）访问。
@@ -368,5 +369,8 @@
     </script>
 
     <script src="script.js?v=3.11.5.20260505_beta.1"></script>
+    <script>
+(function(){var M=3,k='cssRetry',r=parseInt(sessionStorage.getItem(k)||'0');if(r>=M){sessionStorage.removeItem(k);return}function c(){var e=document.getElementById('css-detect');if(!e)return;getComputedStyle(e).getPropertyValue('--css-loaded').trim()!=='1'?(sessionStorage.setItem(k,r+1),location.reload()):sessionStorage.removeItem(k)}document.readyState==='loading'?document.addEventListener('DOMContentLoaded',function(){setTimeout(c,300)}):setTimeout(c,100)})();
+    </script>
 </body>
 </html>

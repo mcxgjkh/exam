@@ -1,3 +1,4 @@
+#css-detect { --css-loaded: 1; display: none; }
 /* style.css */
 @font-face {
     font-family: "HYWenhei";
