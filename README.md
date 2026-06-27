@@ -2,8 +2,9 @@
 
 <div align="center">
     <img src="https://img.shields.io/badge/vercel-000000?style=for-the-badge&logo=vercel&logoColor=white">
-	<img src="https://img.shields.io/badge/License-GPLv3-blue.svg">
+	<img src="https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge">
 </div>
+
 
 
 
