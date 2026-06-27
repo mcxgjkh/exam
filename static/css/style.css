@@ -2,7 +2,7 @@
 /* style.css */
 @font-face {
     font-family: "HYWenhei";
-    src:url("../font/汉仪文黑-85W.woff2") format("woff2");
+    src:url("https://cdn.jsdelivr.net/gh/mcxgjkh/exam@main/static/font/汉仪文黑-85W.woff2") format("woff2");
     font-weight: normal;
     font-style: normal;
 }
