@@ -2,7 +2,7 @@
 
 <div align="center">
     <img src="https://img.shields.io/badge/vercel-000000?style=for-the-badge&logo=vercel&logoColor=white">
-	<img src="https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge">
+	<img src="https://img.shields.io/badge/License-AGPLv3-cyan?style=for-the-badge">
 </div>
 
 
@@ -59,7 +59,7 @@
 
 ## 📄 许可证
 
-本项目采用 **GPL v3** 开源协议，可以自由使用、修改、分享，但请注意遵守开源协议。
+本项目采用 **AGPL v3** 开源协议，可以自由使用、修改、分享，但请注意遵守开源协议。
 
 完整协议见 [LICENSE](LICENSE) 文件。
 
