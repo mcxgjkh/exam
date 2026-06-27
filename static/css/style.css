@@ -1,9 +1,9 @@
 #css-detect { --css-loaded: 1; display: none; }
 /* style.css */
 @font-face {
-    font-family: "Microsoft YaHei";
+    font-family: "HYWenhei";
     src:url("../font/ZhuZiAWan-JetBrainsMono.woff2") format("woff2");
-    /*src:url("../font/Noto-Sans-SC-Bold-2.ttf");*/
+    /* src:url("../font/ZhuZiAWan-JetBrainsMono.ttf"); */
     font-weight: normal;
     font-style: normal;
 }
