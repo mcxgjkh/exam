@@ -1,5 +1,5 @@
 // config.js
-export const VERSION = '3.13.0.20260627_rc.1';
+export const VERSION = '4.0.0.20260627_rc.2';
 
 export const EXAM_STANDARDS = {
   A: { total: 40, time: 40, pass: 30 },
