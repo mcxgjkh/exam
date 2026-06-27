@@ -1,10 +1,10 @@
 #css-detect { --css-loaded: 1; display: none; }
 /* style.css */
 @font-face {
-    font-family: "ZhuZiAWan";
+    font-family: "Microsoft YaHei";
     src:url("../font/ZhuZiAWan-JetBrainsMono.woff2") format("woff2");
-    /*src:url("../font/ZhuZiAWan-JetBrainsMono.ttf");*/
-    font-weight: 900;
+    /*src:url("../font/Noto-Sans-SC-Bold-2.ttf");*/
+    font-weight: normal;
     font-style: normal;
 }
 
