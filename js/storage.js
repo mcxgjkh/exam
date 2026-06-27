@@ -119,3 +119,11 @@ export function getTheme() {
 export function saveTheme(theme) {
   localStorage.setItem(STORAGE_KEYS.THEME, theme);
 }
+
+export function getThemeMode() {
+  return localStorage.getItem(STORAGE_KEYS.THEME_MODE) || 'auto';
+}
+
+export function saveThemeMode(mode) {
+  localStorage.setItem(STORAGE_KEYS.THEME_MODE, mode);
+}
