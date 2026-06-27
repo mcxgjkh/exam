@@ -1,7 +1,10 @@
-<center><h1>业余无线电考试刷题模拟系统</h1></center>
+<h1 align="center">业余无线电考试刷题模拟系统</h1>
 
-<center><img src="https://img.shields.io/badge/vercel-000000?style=for-the-badge&logo=vercel&logoColor=white">
-<img src="https://img.shields.io/badge/License-GPLv3-blue.svg"></center>
+<div align="center">
+    <img src="https://img.shields.io/badge/vercel-000000?style=for-the-badge&logo=vercel&logoColor=white">
+	<img src="https://img.shields.io/badge/License-GPLv3-blue.svg">
+</div>
+
 
 
 > 专为业余无线电爱好者打造的在线刷题工具，支持 **A/B/C类** 操作证书考试，电脑和手表都能用。
