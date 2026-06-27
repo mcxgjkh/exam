@@ -1,4 +1,4 @@
-# 业余无线电考试刷题模拟系统
+<center><h1>业余无线电考试刷题模拟系统</h1></center>
 
 <center><img src="https://img.shields.io/badge/vercel-000000?style=for-the-badge&logo=vercel&logoColor=white">
 <img src="https://img.shields.io/badge/License-GPLv3-blue.svg"></center>
