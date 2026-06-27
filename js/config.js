@@ -1,9 +1,5 @@
 // config.js
-<<<<<<< Updated upstream
-export const VERSION = '3.13.0.20260627_rc.1';
-=======
 export const VERSION = '4.0.0.20260627_rc.2';
->>>>>>> Stashed changes
 
 export const EXAM_STANDARDS = {
   A: { total: 40, time: 40, pass: 30 },
@@ -27,8 +23,4 @@ export const STORAGE_KEYS = {
   THEME: 'theme'
 };
 
-<<<<<<< Updated upstream
 export const EXAM_TYPES = ['A', 'B', 'C'];
-=======
-export const EXAM_TYPES = ['A', 'B', 'C'];
->>>>>>> Stashed changes

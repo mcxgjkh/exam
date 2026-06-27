@@ -48,15 +48,9 @@ function initTheme() {
 function shouldShowStartupModal() {
   const hasAgreed = document.cookie.split(';').some(c => c.trim().startsWith('agree_policy=true'));
   const versionEl = document.querySelector('.version');
-<<<<<<< Updated upstream
-  const versionText = versionEl ? versionEl.textContent : '版本号：3.12.10.20260623_beta.1';
-  const versionMatch = versionText.match(/[\d.]+[_\w.]*/);
-  const currentVersion = versionMatch ? versionMatch[0] : '3.12.10.20260623_beta.1';
-=======
   const versionText = versionEl ? versionEl.textContent : '版本号：4.0.0.20260627_rc.2';
   const versionMatch = versionText.match(/[\d.]+[_\w.]*/);
   const currentVersion = versionMatch ? versionMatch[0] : '4.0.0.20260627_rc.2';
->>>>>>> Stashed changes
 
   const cookieMatch = document.cookie.match(/(?:^|;\s*)notice_version=([^;]+)/);
   const lastVersion = cookieMatch ? cookieMatch[1] : null;
@@ -80,15 +74,9 @@ function handleStartupModal() {
     const cookieMatch = document.cookie.match(/(?:^|;\s*)notice_version=([^;]+)/);
     lastVerEl.textContent = cookieMatch ? cookieMatch[1] : '（首次访问）';
     const versionEl = document.querySelector('.version');
-<<<<<<< Updated upstream
-    const versionText = versionEl ? versionEl.textContent : '版本号：3.12.10.20260623_beta.1';
-    const versionMatch = versionText.match(/[\d.]+[_\w.]*/);
-    currentVerEl.textContent = versionMatch ? versionMatch[0] : '3.12.10.20260623_beta.1';
-=======
     const versionText = versionEl ? versionEl.textContent : '版本号：4.0.0.20260627_rc.2';
     const versionMatch = versionText.match(/[\d.]+[_\w.]*/);
     currentVerEl.textContent = versionMatch ? versionMatch[0] : '4.0.0.20260627_rc.2';
->>>>>>> Stashed changes
   }
 
   const confirmBtn = modal.querySelector('.modal-confirm');
@@ -96,15 +84,9 @@ function handleStartupModal() {
   const hasAgreed = document.cookie.split(';').some(c => c.trim().startsWith('agree_policy=true'));
 
   const versionEl = document.querySelector('.version');
-<<<<<<< Updated upstream
-  const versionText = versionEl ? versionEl.textContent : '版本号：3.12.10.20260623_beta.1';
-  const versionMatch = versionText.match(/[\d.]+[_\w.]*/);
-  const currentVersion = versionMatch ? versionMatch[0] : '3.12.10.20260623_beta.1';
-=======
   const versionText = versionEl ? versionEl.textContent : '版本号：4.0.0.20260627_rc.2';
   const versionMatch = versionText.match(/[\d.]+[_\w.]*/);
   const currentVersion = versionMatch ? versionMatch[0] : '4.0.0.20260627_rc.2';
->>>>>>> Stashed changes
 
   if (hasAgreed && getNoticeVersion() !== currentVersion) {
     if (agreeCheckbox) {
