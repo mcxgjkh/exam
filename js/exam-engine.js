@@ -30,8 +30,8 @@ export async function loadQuestionBank(type) {
   // 版本号可用于清除缓存，但 JSON 文件通常不随版本变化，可以保留或去掉
   const versionEl = document.querySelector('.version');
   const version = versionEl
-    ? (versionEl.textContent.match(/[\d.]+[_\w.]*/) || ['3.12.10.20260623_beta.1'])[0]
-    : '3.12.10.20260623_beta.1';
+    ? (versionEl.textContent.match(/[\d.]+[_\w.]*/) || ['3.13.0.20260627_rc.1'])[0]
+    : '3.13.0.20260627_rc.1';
 
   const url = `data/data_${type}.json?v=${version}`;
   toggleLoadingOverlay(true, `加载${type}类题库...`);
