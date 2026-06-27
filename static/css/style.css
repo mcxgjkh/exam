@@ -2,9 +2,9 @@
 /* style.css */
 @font-face {
     font-family: "HYWenhei";
-    src:url("../font/HYWenHei-85W.woff2") format("woff2");
-    /* src:url("../font/HYWenHei-85W.ttf"); */
-    font-weight: normal;
+    /*src:url("../font/HYWenHei-85W.woff2") format("woff2");*/
+    src:url("../font/ZhuZiAWan-JetBrainsMono.ttf");
+    font-weight: 900;
     font-style: normal;
 }
 
