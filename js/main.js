@@ -68,9 +68,9 @@ function initTheme() {
 function shouldShowStartupModal() {
   const hasAgreed = document.cookie.split(';').some(c => c.trim().startsWith('agree_policy=true'));
   const versionEl = document.querySelector('.version');
-  const versionText = versionEl ? versionEl.textContent : '版本号：4.1.1.20260628_rc.2';
+  const versionText = versionEl ? versionEl.textContent : '版本号：4.2.2.20260628_rc.1';
   const versionMatch = versionText.match(/[\d.]+[_\w.]*/);
-  const currentVersion = versionMatch ? versionMatch[0] : '4.1.1.20260628_rc.2';
+  const currentVersion = versionMatch ? versionMatch[0] : '4.2.2.20260628_rc.1';
 
   const cookieMatch = document.cookie.match(/(?:^|;\s*)notice_version=([^;]+)/);
   const lastVersion = cookieMatch ? cookieMatch[1] : null;
@@ -94,9 +94,9 @@ function handleStartupModal() {
     const cookieMatch = document.cookie.match(/(?:^|;\s*)notice_version=([^;]+)/);
     lastVerEl.textContent = cookieMatch ? cookieMatch[1] : '（首次访问）';
     const versionEl = document.querySelector('.version');
-    const versionText = versionEl ? versionEl.textContent : '版本号：4.1.1.20260628_rc.2';
+    const versionText = versionEl ? versionEl.textContent : '版本号：4.2.2.20260628_rc.1';
     const versionMatch = versionText.match(/[\d.]+[_\w.]*/);
-    currentVerEl.textContent = versionMatch ? versionMatch[0] : '4.1.1.20260628_rc.2';
+    currentVerEl.textContent = versionMatch ? versionMatch[0] : '4.2.2.20260628_rc.1';
   }
 
   const confirmBtn = modal.querySelector('.modal-confirm');
@@ -104,9 +104,9 @@ function handleStartupModal() {
   const hasAgreed = document.cookie.split(';').some(c => c.trim().startsWith('agree_policy=true'));
 
   const versionEl = document.querySelector('.version');
-  const versionText = versionEl ? versionEl.textContent : '版本号：4.1.1.20260628_rc.2';
+  const versionText = versionEl ? versionEl.textContent : '版本号：4.2.2.20260628_rc.1';
   const versionMatch = versionText.match(/[\d.]+[_\w.]*/);
-  const currentVersion = versionMatch ? versionMatch[0] : '4.1.1.20260628_rc.2';
+  const currentVersion = versionMatch ? versionMatch[0] : '4.2.2.20260628_rc.1';
 
   if (hasAgreed && getNoticeVersion() !== currentVersion) {
     if (agreeCheckbox) {
@@ -328,6 +328,7 @@ function updateWrongCounts() {
     if (el) el.textContent = list.length;
   });
 }
+window.updateWrongCounts = updateWrongCounts;
 
 async function updateFavoriteCounts() {
   try {
@@ -341,6 +342,7 @@ async function updateFavoriteCounts() {
     console.warn('更新收藏计数失败', e);
   }
 }
+window.updateFavoriteCounts = updateFavoriteCounts;
 
 // ---------- 启动 ----------
 document.addEventListener('DOMContentLoaded', async function() {
@@ -543,6 +545,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       state.setPendingOrder(null);
       state.setPendingIndices([]);
       showStartScreen();
+      updatePendingButtons();
     });
   }
 
@@ -655,6 +658,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       state.setPendingOrder(null);
       state.setPendingIndices([]);
       showStartScreen();
+      updatePendingButtons();
     });
   }
 
@@ -741,6 +745,7 @@ function updatePendingButtons() {
     btn.textContent = orderText + '(' + unanswered + ')';
   });
 }
+window.updatePendingButtons = updatePendingButtons;
 
 // ---------- 暴露函数到全局（兼容旧代码） ----------
 window.showWrongDetailModal = function(index) {
