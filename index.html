@@ -117,7 +117,7 @@
     <div class="container">
         <header>
             <h1>业余无线电考试刷题模拟系统</h1>
-            <p class="version">版本号：4.1.1.20260628_rc.2　|　<span id="examAuthBtn" style="cursor:pointer;"></span>　|　<a href="https://bh6rkw.dpdns.org" style="text-decoration:none;color:#666;">首页</a></p>
+            <p class="version">版本号：4.1.1.20260628_rc.2　|　<span id="examAuthBtn" style="cursor:pointer;"></span>　|　<a href="#" id="examSyncBtn" style="text-decoration:none;color:#666;display:none;">↻ 同步</a>　|　<a href="https://bh6rkw.dpdns.org" style="text-decoration:none;color:#666;">首页</a></p>
         </header>
 
         <!-- 主启动界面 (默认显示) -->
@@ -434,17 +434,134 @@
         }
 
         function renderBtn(user) {
+            var syncBtn = document.getElementById('examSyncBtn');
             if (user) {
                 var name = (user.user_metadata && user.user_metadata.username) || user.email.split('@')[0];
                 btn.innerHTML = '<span title="数据已同步">' + name + '</span>';
                 btn.onclick = function() { sb.auth.signOut().then(function() { location.reload(); }); };
                 uploadLocalCache(user);
+                if (syncBtn) { syncBtn.style.display = ''; syncBtn.title = '点击同步云端数据'; }
             } else {
                 btn.innerHTML = '<a href="#" id="examLoginLink" style="text-decoration:none;">登录同步数据</a>';
                 document.getElementById('examLoginLink').addEventListener('click', function(e) {
                     e.preventDefault();
                     if (window.showExamAuthModal) window.showExamAuthModal('login');
                 });
+                if (syncBtn) syncBtn.style.display = 'none';
+            }
+        }
+
+        // ---- 云端同步（上传 + 查重 + 拉取） ----
+        async function syncAllData(user) {
+            var syncBtn = document.getElementById('examSyncBtn');
+            if (!sb || !user) return;
+            if (syncBtn) { syncBtn.textContent = '↻ 同步中…'; syncBtn.style.pointerEvents = 'none'; }
+
+            // 1. 上传本地错题和收藏（逐条 upsert，自动查重）
+            var types = ['A','B','C'];
+            for (var i = 0; i < types.length; i++) {
+                var t = types[i];
+                var wrongs = JSON.parse(localStorage.getItem('ham_wrong_' + t) || '[]');
+                var favs = JSON.parse(localStorage.getItem('ham_favorite_' + t) || '[]');
+                // 错题
+                for (var j = 0; j < wrongs.length; j++) {
+                    sb.from('exam_progress').upsert({
+                        user_id: user.id, exam_type: t, question_id: wrongs[j],
+                        is_correct: false, is_favorite: favs.includes(wrongs[j]),
+                        answered_at: new Date().toISOString()
+                    }, { onConflict: 'user_id,exam_type,question_id' }).then(function(){}).catch(function(){});
+                }
+                // 收藏
+                for (var k = 0; k < favs.length; k++) {
+                    if (!wrongs.includes(favs[k])) {
+                        sb.from('exam_progress').upsert({
+                            user_id: user.id, exam_type: t, question_id: favs[k],
+                            is_favorite: true, answered_at: new Date().toISOString()
+                        }, { onConflict: 'user_id,exam_type,question_id' }).then(function(){}).catch(function(){});
+                    }
+                }
+            }
+
+            // 2. 上传本地历史记录（逐条插入，按 timestamp 查重）
+            var localHistory = JSON.parse(localStorage.getItem('exam_history') || '[]');
+            for (var h = 0; h < localHistory.length; h++) {
+                var rec = localHistory[h];
+                sb.from('exam_sessions').upsert({
+                    user_id: user.id,
+                    exam_type: rec.type,
+                    score: rec.score,
+                    total: rec.total,
+                    passed: rec.passed,
+                    time_used_sec: rec.timeUsedSec,
+                    created_at: rec.timestamp ? new Date(rec.timestamp).toISOString() : new Date().toISOString()
+                }, { onConflict: 'user_id,created_at' }).then(function(){}).catch(function(){});
+            }
+
+            // 3. 从云端拉取最新数据
+            await syncFromCloud(user);
+
+            if (syncBtn) { syncBtn.textContent = '↻ 同步'; syncBtn.style.pointerEvents = ''; }
+        }
+
+        async function syncFromCloud(user) {
+            if (!sb || !user) return;
+            try {
+                // 拉取错题和收藏
+                var pr = await sb.from('exam_progress').select('*').eq('user_id', user.id);
+                if (!pr.error && pr.data) {
+                    var cloudWrong = { A: [], B: [], C: [] };
+                    var cloudFav = { A: [], B: [], C: [] };
+                    pr.data.forEach(function(r) {
+                        if (r.is_favorite) cloudFav[r.exam_type].push(r.question_id);
+                        if (r.is_correct === false) cloudWrong[r.exam_type].push(r.question_id);
+                    });
+                    ['A','B','C'].forEach(function(t) {
+                        if (cloudFav[t].length) {
+                            var localF = JSON.parse(localStorage.getItem('ham_favorite_' + t) || '[]');
+                            var mergedF = Array.from(new Set(localF.concat(cloudFav[t])));
+                            localStorage.setItem('ham_favorite_' + t, JSON.stringify(mergedF));
+                        }
+                        if (cloudWrong[t].length) {
+                            var localW = JSON.parse(localStorage.getItem('ham_wrong_' + t) || '[]');
+                            var mergedW = Array.from(new Set(localW.concat(cloudWrong[t])));
+                            localStorage.setItem('ham_wrong_' + t, JSON.stringify(mergedW));
+                        }
+                    });
+                }
+
+                // 拉取历史记录
+                var hr = await sb.from('exam_sessions').select('*').eq('user_id', user.id).order('created_at', { ascending: false }).limit(50);
+                if (!hr.error && hr.data && hr.data.length) {
+                    var localH = JSON.parse(localStorage.getItem('exam_history') || '[]');
+                    var localMap = {};
+                    localH.forEach(function(r) { localMap[r.timestamp] = true; });
+                    var mergedH = false;
+                    hr.data.forEach(function(r) {
+                        var ts = new Date(r.created_at).getTime();
+                        if (!localMap[ts]) {
+                            localH.push({
+                                type: r.exam_type,
+                                score: r.score,
+                                total: r.total,
+                                passed: r.passed,
+                                timeUsedSec: r.time_used_sec,
+                                timeUsedStr: r.time_used_sec ? Math.floor(r.time_used_sec/60) + ':' + String(r.time_used_sec%60).padStart(2,'0') : '00:00',
+                                wrongIds: [],
+                                wrongUserAnswers: [],
+                                timestamp: ts
+                            });
+                            localMap[ts] = true;
+                            mergedH = true;
+                        }
+                    });
+                    if (mergedH) {
+                        localH.sort(function(a,b) { return b.timestamp - a.timestamp; });
+                        localStorage.setItem('exam_history', JSON.stringify(localH));
+                    }
+                }
+                console.log('[Sync] 云端同步完成');
+            } catch(e) {
+                console.warn('[Sync] 云端同步异常:', e);
             }
         }
 
@@ -604,6 +721,7 @@
                             showError('邮箱尚未验证，请检查邮箱确认链接。', 'warning');
                         } else {
                             hideOverlay();
+                            currentSyncUser = user;
                             renderBtn(user);
                             uploadLocalCache(user);
                             window.dispatchEvent(new CustomEvent('supabase-ready', { detail: { sb: sb, user: user } }));
@@ -626,7 +744,16 @@
         }
 
         injectExamAuthModal();
+
+        // 同步按钮事件
+        document.getElementById('examSyncBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            if (currentSyncUser) syncAllData(currentSyncUser);
+        });
+
+        var currentSyncUser = null;
         tryRestoreSession().then(function(user) {
+            currentSyncUser = user;
             renderBtn(user);
             if (user) {
                 window.dispatchEvent(new CustomEvent('supabase-ready', { detail: { sb: sb, user: user } }));

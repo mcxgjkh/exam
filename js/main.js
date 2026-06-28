@@ -4,7 +4,8 @@ import {
   loadQuestionBank, startPractice, startExamByType,
   goToQuestion, nextQuestion, prevQuestion,
   confirmMultipleChoice, submitExam, resetWrongQuestion,
-  toggleFavorite, showGotoModal, restorePendingSession
+  toggleFavorite, showGotoModal, restorePendingSession,
+  handleOptionChange
 } from './exam-engine.js';
 import { performSearch } from './search-engine.js';
 import {
@@ -177,7 +178,14 @@ function viewHistoryWrongDetail(index) {
 }
 
 // ---------- 搜索事件 ----------
+let queryPending = false;
+
 async function handleSearch() {
+  if (queryPending) {
+    alert('正在查询中，请稍候...');
+    return;
+  }
+
   const input = document.getElementById('query-input');
   const keyword = input.value.trim();
   if (!keyword) {
@@ -197,20 +205,30 @@ async function handleSearch() {
 
   const btn = document.getElementById('query-btn');
   const container = document.getElementById('query-results');
+  queryPending = true;
   btn.disabled = true;
   btn.textContent = '查询中...';
   container.innerHTML = '<div class="loading-spinner-small" style="text-align:center; padding:20px;">正在搜索题目，请稍候...</div>';
+
+  const startTime = Date.now();
 
   try {
     const results = await performSearch(keyword);
     state.setSearchResults(results);
     state.setSearchKeyword(keyword);
     state.setCurrentPage(1);
+
+    // 最低显示 2 秒，避免加载动画一闪而过
+    const elapsed = Date.now() - startTime;
+    if (elapsed < 2000) {
+      await new Promise(resolve => setTimeout(resolve, 2000 - elapsed));
+    }
     renderSearchResultsWithPagination(results, keyword);
   } catch (e) {
     console.error(e);
     container.innerHTML = '<p style="text-align:center; color:#c44536;">搜索失败，请重试</p>';
   } finally {
+    queryPending = false;
     btn.disabled = false;
     btn.textContent = '查询';
   }
@@ -365,6 +383,12 @@ document.addEventListener('DOMContentLoaded', async function() {
 
   // 10. 图片预览
   setupImagePreview();
+
+  // 11. 选项变化监听（修复答案无法记录的问题）
+  document.addEventListener('option-change', (e) => {
+    const { index, value, isMulti, checked } = e.detail;
+    handleOptionChange(index, value, isMulti, checked);
+  });
 
   // ========== 事件绑定（统一使用 document.body 事件委托） ==========
   document.body.addEventListener('click', async (e) => {

@@ -4,7 +4,7 @@ import {
   getWrongQuestions, saveWrongQuestions, toggleWrongQuestion,
   getFavorites, saveFavorites,
   getPending, savePending, deletePending,
-  addHistoryRecord
+  addHistoryRecord, addWrongQuestion
 } from './storage.js';
 import {
   shuffleArray, generateShuffledIndices
@@ -91,6 +91,7 @@ export function startPractice(type, questions, order, isWrong = false, customQue
   state.setIsWrongPractice(isWrong);
   state.setIsPendingPractice(!isWrong && !customQuestions);
   state.setOrderMode(order);
+  state.setPendingData(null);  // 新练习，清除旧待做映射
 
   let qList = customQuestions ? [...customQuestions] : [...questions];
 
@@ -154,44 +155,62 @@ export async function restorePendingSession(type, order) {
   const questionMap = {};
   questions.forEach(q => questionMap[q.id] = q);
 
-  const restoredQuestions = pending.questions.map(id => questionMap[id]).filter(q => q);
-  if (restoredQuestions.length !== pending.questions.length) {
-    alert('题库已变化，无法恢复');
+  // 筛选未答题目（含多选已选但未确认的）
+  const unansweredIndices = [];
+  const unansweredQuestions = [];
+  pending.userAnswers.forEach((ans, i) => {
+    const isEmpty = ans === null || (Array.isArray(ans) && ans.length === 0);
+    if (isEmpty && pending.questions[i]) {
+      unansweredIndices.push(i);
+      const q = questionMap[pending.questions[i]];
+      if (q) unansweredQuestions.push(q);
+    }
+  });
+
+  if (unansweredQuestions.length === 0) {
+    alert('所有题目已完成！');
     deletePending(type, order);
     return false;
   }
 
-  state.setQuestions(restoredQuestions);
+  // 保存索引映射：未答题在筛选后列表中的位置 → 原始位置
+  state.setPendingData({
+    originalQuestions: pending.questions,
+    originalAnswers: pending.userAnswers,
+    indexMap: unansweredIndices,
+    originalType: type,
+    originalOrder: order
+  });
+
+  state.setQuestions(unansweredQuestions);
   state.setExamType(type);
   state.setExamMode('practice');
   state.setIsWrongPractice(false);
   state.setIsPendingPractice(true);
   state.setOrderMode(order);
 
-  state.setAnswers(pending.userAnswers.map(a => a));
-  state.setOptionOrders(pending.optionOrders.map(o => [...o]));
+  // 筛选对应的答案和选项顺序
+  const filteredAnswers = unansweredIndices.map(i => pending.userAnswers[i]);
+  const filteredOrders = unansweredIndices.map(i =>
+    pending.optionOrders ? (pending.optionOrders[i] || []) : []
+  );
+  state.setAnswers(filteredAnswers);
+  state.setOptionOrders(filteredOrders);
 
   // 重建 optionMaps
-  const maps = state.getQuestions().map((q, idx) => {
+  const maps = unansweredQuestions.map((q, idx) => {
     const map = {};
-    const orders = state.getOptionOrders()[idx] || [];
+    const orders = filteredOrders[idx] || [];
     orders.forEach((optIdx, pos) => {
-      map[q.options[optIdx].value] = String.fromCharCode(65 + pos);
+      if (q.options[optIdx]) {
+        map[q.options[optIdx].value] = String.fromCharCode(65 + pos);
+      }
     });
     return map;
   });
   state.setOptionMaps(maps);
 
-  let firstIncomplete = -1;
-  const answers = state.getAnswers();
-  for (let i = 0; i < answers.length; i++) {
-    const ans = answers[i];
-    if (ans === null || (Array.isArray(ans) && ans.length === 0)) {
-      firstIncomplete = i;
-      break;
-    }
-  }
-  state.setIndex(firstIncomplete === -1 ? answers.length - 1 : firstIncomplete);
+  state.setIndex(0);
 
   showExamScreen();
   document.getElementById('mode-badge').textContent = '刷题练习';
@@ -205,7 +224,7 @@ export async function restorePendingSession(type, order) {
   document.getElementById('current-exam-type').textContent = type + '类';
   document.getElementById('total-questions').textContent = state.getQuestions().length;
 
-  goToQuestion(state.getIndex());
+  goToQuestion(0);
   return true;
 }
 
@@ -336,7 +355,12 @@ export function handleOptionChange(index, value, isMulti, checked) {
       const ans = answers[index];
       const correct = isAnswerCorrect(q, ans);
       showPracticeFeedback(correct);
-      toggleWrongQuestion(q.id, correct, state.getExamType());
+      // 使用 sync 包装器（如有）否则直接用 storage
+      if (window.toggleWrongQuestion) {
+        window.toggleWrongQuestion(q.id, correct, state.getExamType());
+      } else {
+        toggleWrongQuestion(q.id, correct, state.getExamType());
+      }
       showCorrectAnswerHint(q, correct, state.getOptionMaps(), index);
     }
   }
@@ -356,11 +380,19 @@ export function confirmMultipleChoice() {
   if (ans === null || (Array.isArray(ans) && ans.length === 0)) {
     correct = false;
     showPracticeFeedback(false);
-    toggleWrongQuestion(q.id, false, state.getExamType());
+    if (window.toggleWrongQuestion) {
+      window.toggleWrongQuestion(q.id, false, state.getExamType());
+    } else {
+      toggleWrongQuestion(q.id, false, state.getExamType());
+    }
   } else {
     correct = isAnswerCorrect(q, ans);
     showPracticeFeedback(correct);
-    toggleWrongQuestion(q.id, correct, state.getExamType());
+    if (window.toggleWrongQuestion) {
+      window.toggleWrongQuestion(q.id, correct, state.getExamType());
+    } else {
+      toggleWrongQuestion(q.id, correct, state.getExamType());
+    }
   }
   showCorrectAnswerHint(q, correct, state.getOptionMaps(), index);
 
@@ -368,18 +400,44 @@ export function confirmMultipleChoice() {
   document.getElementById('next-btn').style.display = 'inline-block';
 }
 
-// ---------- 保存待做进度 ----------
+// ---------- 保存待做进度（回写到原会话） ----------
 function savePendingProgress() {
   if (!state.getIsPendingPractice()) return;
 
-  const data = {
-    questions: state.getQuestions().map(q => q.id),
-    userAnswers: state.getAnswers().map(a => a),
-    currentIndex: state.getIndex(),
-    total: state.getQuestions().length,
-    optionOrders: state.getOptionOrders()
-  };
-  savePending(state.getExamType(), state.getOrderMode(), data);
+  const pendingData = state.getPendingData();
+  if (pendingData && pendingData.originalQuestions) {
+    // 有原始会话：回写答案到原始位置
+    const originalAnswers = [...pendingData.originalAnswers];
+    const indexMap = pendingData.indexMap;
+    const currentAnswers = state.getAnswers();
+
+    indexMap.forEach((origIdx, filteredIdx) => {
+      originalAnswers[origIdx] = currentAnswers[filteredIdx] || null;
+    });
+
+    savePending(pendingData.originalType, pendingData.originalOrder, {
+      questions: pendingData.originalQuestions,
+      userAnswers: originalAnswers,
+      currentIndex: 0,
+      total: pendingData.originalQuestions.length,
+      optionOrders: pendingData.originalQuestions.map((_, i) => {
+        const origIdx = indexMap.indexOf(i);
+        return origIdx !== -1 && state.getOptionOrders()[origIdx]
+          ? state.getOptionOrders()[origIdx]
+          : [];
+      })
+    });
+  } else {
+    // 无原始会话：直接保存当前状态
+    const data = {
+      questions: state.getQuestions().map(q => q.id),
+      userAnswers: state.getAnswers().map(a => a),
+      currentIndex: state.getIndex(),
+      total: state.getQuestions().length,
+      optionOrders: state.getOptionOrders()
+    };
+    savePending(state.getExamType(), state.getOrderMode(), data);
+  }
 }
 
 // ---------- 切换收藏 ----------
@@ -393,10 +451,12 @@ export function toggleFavorite() {
 
   if (favorites.includes(q.id)) {
     const newList = favorites.filter(id => id !== q.id);
-    saveFavorites(type, newList);
+    if (window.saveFavorites) window.saveFavorites(type, newList);
+    else saveFavorites(type, newList);
   } else {
     favorites.push(q.id);
-    saveFavorites(type, favorites);
+    if (window.saveFavorites) window.saveFavorites(type, favorites);
+    else saveFavorites(type, favorites);
   }
   updateFavoriteButton();
 }
@@ -496,6 +556,8 @@ function startExam(type, bank) {
 
   state.setExamMode('exam');
   state.setExamType(type);
+  state.setIsPendingPractice(false);
+  state.setPendingData(null);
   state.setQuestions(questions);
   state.setAnswers(new Array(questions.length).fill(null));
 
@@ -590,7 +652,7 @@ export function submitExam() {
   const standard = EXAM_STANDARDS[state.getExamType()];
   const passed = score >= standard.pass;
 
-  addHistoryRecord({
+  const record = {
     type: state.getExamType(),
     score: score,
     total: questions.length,
@@ -600,7 +662,9 @@ export function submitExam() {
     wrongIds: wrongIds,
     wrongUserAnswers: wrongUserAnswers,
     timestamp: Date.now()
-  });
+  };
+  if (window.addHistoryRecord) window.addHistoryRecord(record);
+  else addHistoryRecord(record);
 
   // 自动加入错题本
   wrongs.forEach(w => {
@@ -676,10 +740,6 @@ export function prevQuestion() {
   }
 }
 
-// ---------- 暴露给外部的辅助 ----------
-export function addWrongQuestion(id, type) {
-  // 已导入，直接使用
-}
-
 // ---------- 重新导出一些函数供 main.js 使用 ----------
+export { addWrongQuestion };
 export { updateFavoriteButton, savePendingProgress };
