@@ -27,7 +27,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name='description' content='最新题库的业余无线电考试刷题模拟系统，提供刷题练习，模拟考试，错题重练，收藏题目，搜索题目的功能。'>
     <title>2026年业余无线电考试刷题模拟系统</title>
-    <link rel="stylesheet" href="static/css/style.css?v=4.0.0.20260627_rc.2">
+    <link rel="stylesheet" href="static/css/style.css?v=4.2.2.20260628_rc.1">
+    <!--GitHub图标-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <!--[if lte IE 6]>
     <style>
@@ -84,11 +86,10 @@
                 <p>请您在使用本系统前认真阅读《业余无线电模拟考试系统用户协议隐私许可》。</p>
             </div>
             <div class="modal-body">
-                <p>BUG提交贡献者：BH6SGE&emsp;河北236</p>
-                <p>重构提速BUG修复：BH6SCN</p>
+                <p>贡献者：BH6SCN（重构提速）&emsp;BH6SGE（捉虫）&emsp;河北236（捉虫）</p>
             </div>
             <div class="modal-body">
-                <p>&emsp;</p>
+                <p>目前，系统已进行两次重构，性能得到提升。但是，仍有bug尚待发现，如您发现bug，请及时提交issue。</p>
             </div>
             <div class="modal-body version-info" id="version-info-modal" style="background: #f0f7fc; border-radius: 12px; margin-bottom: 16px;">
                 <p style="margin: 4px 0;">您上一次访问时版本号：<span id="last-version">--</span></p>
@@ -115,7 +116,7 @@
     <div class="container">
         <header>
             <h1>业余无线电考试刷题模拟系统</h1>
-            <p class="version">版本号：4.0.0.20260627_rc.2　|　<span id="examAuthBtn" style="cursor:pointer;"></span>　|　<a href="https://bh6rkw.dpdns.org" style="text-decoration:none;color:#666;">首页</a></p>
+            <p class="version">版本号：4.2.2.20260628_rc.1　|　<span id="examAuthBtn" style="cursor:pointer;"></span>　|　<a href="#" id="examSyncBtn" style="text-decoration:none;color:#666;display:none;">↻ 同步</a>　|　<a href="https://bh6rkw.dpdns.org" style="text-decoration:none;color:#666;">首页</a></p>
         </header>
 
         <!-- 主启动界面 (默认显示) -->
@@ -331,6 +332,13 @@
                     <span style="color: #2e7d32;">SSL</span>
                     安全访问
                 </span>
+                 | 
+                <a href="https://github.com/mcxgjkh/exam" title="本站以AGPLv3协议开放源代码" style="color: inherit !important; text-decoration: none !important;" target='_blank'>
+                    <span style="display:inline-block;vertical-align:middle" title="本站以AGPLv3协议开放源代码" target='_blank'>
+                        本站以AGPLv3协议
+                        <span style="color: #2e7d32;"><i class="fab fa-github-alt" style="color: #505050;"></i>开放源代码</span>
+                    </span>
+                </a>
             </p>
         </footer>
     </div>
@@ -366,13 +374,21 @@
     })();
     </script>
 
-    <script type="module" src="js/main.js?v=4.0.0.20260627_rc.2"></script>
+    <script type="module" src="js/main.js?v=4.2.2.20260628_rc.1"></script>
     <script>
     (function() {
         var SUPABASE_URL = 'https://pxhiobmdzntnxwpwtgpx.supabase.co';
         var SUPABASE_KEY = 'sb_publishable_06fy5uemh4fJnAQXIsIXdQ_79UMtlC_';
+        var TURNSTILE_KEY = '0x4AAAAAADjdL8yyZdBwUnB1';
         if (!window.supabase) return;
         var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        var tsScript = document.createElement('script');
+        tsScript.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+        tsScript.async = true;
+        tsScript.defer = true;
+        document.head.appendChild(tsScript);
+
         var btn = document.getElementById('examAuthBtn');
         if (!btn) return;
 
@@ -417,21 +433,332 @@
         }
 
         function renderBtn(user) {
+            var syncBtn = document.getElementById('examSyncBtn');
             if (user) {
                 var name = (user.user_metadata && user.user_metadata.username) || user.email.split('@')[0];
                 btn.innerHTML = '<span title="数据已同步">' + name + '</span>';
                 btn.onclick = function() { sb.auth.signOut().then(function() { location.reload(); }); };
                 uploadLocalCache(user);
+                if (syncBtn) { syncBtn.style.display = ''; syncBtn.title = '点击同步云端数据'; }
             } else {
                 btn.innerHTML = '<a href="#" id="examLoginLink" style="text-decoration:none;">登录同步数据</a>';
                 document.getElementById('examLoginLink').addEventListener('click', function(e) {
                     e.preventDefault();
-                    window.open('https://bh6rkw.dpdns.org', '_blank');
+                    if (window.showExamAuthModal) window.showExamAuthModal('login');
                 });
+                if (syncBtn) syncBtn.style.display = 'none';
             }
         }
 
+        // ---- 云端同步（上传 + 查重 + 拉取） ----
+        async function syncAllData(user) {
+            var syncBtn = document.getElementById('examSyncBtn');
+            if (!sb || !user) return;
+            if (syncBtn) { syncBtn.textContent = '↻ 同步中…'; syncBtn.style.pointerEvents = 'none'; }
+
+            // 1. 上传本地错题和收藏（逐条 upsert，自动查重）
+            var types = ['A','B','C'];
+            for (var i = 0; i < types.length; i++) {
+                var t = types[i];
+                var wrongs = JSON.parse(localStorage.getItem('ham_wrong_' + t) || '[]');
+                var favs = JSON.parse(localStorage.getItem('ham_favorite_' + t) || '[]');
+                // 错题
+                for (var j = 0; j < wrongs.length; j++) {
+                    sb.from('exam_progress').upsert({
+                        user_id: user.id, exam_type: t, question_id: wrongs[j],
+                        is_correct: false, is_favorite: favs.includes(wrongs[j]),
+                        answered_at: new Date().toISOString()
+                    }, { onConflict: 'user_id,exam_type,question_id' }).then(function(){}).catch(function(){});
+                }
+                // 收藏
+                for (var k = 0; k < favs.length; k++) {
+                    if (!wrongs.includes(favs[k])) {
+                        sb.from('exam_progress').upsert({
+                            user_id: user.id, exam_type: t, question_id: favs[k],
+                            is_favorite: true, answered_at: new Date().toISOString()
+                        }, { onConflict: 'user_id,exam_type,question_id' }).then(function(){}).catch(function(){});
+                    }
+                }
+            }
+
+            // 2. 上传本地历史记录（逐条插入，按 timestamp 查重）
+            var localHistory = JSON.parse(localStorage.getItem('exam_history') || '[]');
+            for (var h = 0; h < localHistory.length; h++) {
+                var rec = localHistory[h];
+                sb.from('exam_sessions').upsert({
+                    user_id: user.id,
+                    exam_type: rec.type,
+                    score: rec.score,
+                    total: rec.total,
+                    passed: rec.passed,
+                    time_used_sec: rec.timeUsedSec,
+                    created_at: rec.timestamp ? new Date(rec.timestamp).toISOString() : new Date().toISOString()
+                }, { onConflict: 'user_id,created_at' }).then(function(){}).catch(function(){});
+            }
+
+            // 3. 从云端拉取最新数据
+            await syncFromCloud(user);
+
+            // 4. 刷新首页计数
+            if (window.updateWrongCounts) window.updateWrongCounts();
+            if (window.updateFavoriteCounts) window.updateFavoriteCounts();
+            if (window.updatePendingButtons) window.updatePendingButtons();
+
+            if (syncBtn) { syncBtn.textContent = '✓ 已同步'; syncBtn.style.pointerEvents = ''; }
+            setTimeout(function() { if (syncBtn) syncBtn.textContent = '↻ 同步'; }, 2000);
+        }
+
+        async function syncFromCloud(user) {
+            if (!sb || !user) return;
+            try {
+                // 拉取错题和收藏
+                var pr = await sb.from('exam_progress').select('*').eq('user_id', user.id);
+                if (!pr.error && pr.data) {
+                    var cloudWrong = { A: [], B: [], C: [] };
+                    var cloudFav = { A: [], B: [], C: [] };
+                    pr.data.forEach(function(r) {
+                        if (r.is_favorite) cloudFav[r.exam_type].push(r.question_id);
+                        if (r.is_correct === false) cloudWrong[r.exam_type].push(r.question_id);
+                    });
+                    ['A','B','C'].forEach(function(t) {
+                        if (cloudFav[t].length) {
+                            var localF = JSON.parse(localStorage.getItem('ham_favorite_' + t) || '[]');
+                            var mergedF = Array.from(new Set(localF.concat(cloudFav[t])));
+                            localStorage.setItem('ham_favorite_' + t, JSON.stringify(mergedF));
+                        }
+                        if (cloudWrong[t].length) {
+                            var localW = JSON.parse(localStorage.getItem('ham_wrong_' + t) || '[]');
+                            var mergedW = Array.from(new Set(localW.concat(cloudWrong[t])));
+                            localStorage.setItem('ham_wrong_' + t, JSON.stringify(mergedW));
+                        }
+                    });
+                }
+
+                // 拉取历史记录
+                var hr = await sb.from('exam_sessions').select('*').eq('user_id', user.id).order('created_at', { ascending: false }).limit(50);
+                if (!hr.error && hr.data && hr.data.length) {
+                    var localH = JSON.parse(localStorage.getItem('exam_history') || '[]');
+                    var localMap = {};
+                    localH.forEach(function(r) { localMap[r.timestamp] = true; });
+                    var mergedH = false;
+                    hr.data.forEach(function(r) {
+                        var ts = new Date(r.created_at).getTime();
+                        if (!localMap[ts]) {
+                            localH.push({
+                                type: r.exam_type,
+                                score: r.score,
+                                total: r.total,
+                                passed: r.passed,
+                                timeUsedSec: r.time_used_sec,
+                                timeUsedStr: r.time_used_sec ? Math.floor(r.time_used_sec/60) + ':' + String(r.time_used_sec%60).padStart(2,'0') : '00:00',
+                                wrongIds: [],
+                                wrongUserAnswers: [],
+                                timestamp: ts
+                            });
+                            localMap[ts] = true;
+                            mergedH = true;
+                        }
+                    });
+                    if (mergedH) {
+                        localH.sort(function(a,b) { return b.timestamp - a.timestamp; });
+                        localStorage.setItem('exam_history', JSON.stringify(localH));
+                    }
+                }
+                console.log('[Sync] 云端同步完成');
+            } catch(e) {
+                console.warn('[Sync] 云端同步异常:', e);
+            }
+        }
+
+        // ---- 登录弹窗（含 Turnstile 人机验证） ----
+        function injectExamAuthModal() {
+            var css = document.createElement('style');
+            css.textContent = [
+                '#examAuthOverlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:10001;align-items:center;justify-content:center}',
+                '#examAuthOverlay.show{display:flex}',
+                '#examAuthCard{background:#fff;border-radius:16px;max-width:420px;width:90%;padding:24px 20px 20px;box-shadow:0 20px 40px rgba(0,0,0,0.2)}',
+                '#examAuthCard h3{margin:0 0 18px;color:#1f4662;font-size:1.2rem;text-align:center}',
+                '#examAuthCard .auth-field{margin-bottom:14px}',
+                '#examAuthCard .auth-field label{display:block;margin-bottom:4px;font-size:0.85rem;color:#555}',
+                '#examAuthCard .auth-field input{width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:10px;font-size:0.95rem;box-sizing:border-box;transition:border .2s}',
+                '#examAuthCard .auth-field input:focus{border-color:#1f4f73;outline:none}',
+                '#examAuthCard .ts-container{display:flex;justify-content:center;margin-bottom:14px;min-height:65px}',
+                '#examAuthCard .auth-error{display:none;background:#f8d7da;color:#842029;padding:10px 14px;border-radius:10px;margin-bottom:14px;font-size:0.85rem}',
+                '#examAuthCard .auth-error.show{display:block}',
+                '#examAuthCard .auth-error.success{background:#d1e7dd;color:#0f5132}',
+                '#examAuthCard .auth-error.warning{background:#fff3cd;color:#664d03}',
+                '#examAuthCard .auth-btn{display:block;width:100%;padding:11px;border:none;border-radius:10px;font-size:0.95rem;cursor:pointer;background:#1f4f73;color:#fff;transition:opacity .2s;margin-bottom:10px}',
+                '#examAuthCard .auth-btn:hover{opacity:.85}',
+                '#examAuthCard .auth-btn:disabled{opacity:.6;cursor:not-allowed}',
+                '#examAuthCard .auth-links{display:flex;justify-content:space-between;font-size:0.83rem}',
+                '#examAuthCard .auth-links button{background:none;border:none;color:#2b7fc2;cursor:pointer;padding:0;font-size:0.83rem}',
+                '#examAuthCard .auth-links button:hover{text-decoration:underline}',
+                '#examAuthCard .auth-links button:disabled{opacity:.5}',
+                'body.dark-mode #examAuthOverlay{background:rgba(0,0,0,0.7)}',
+                'body.dark-mode #examAuthCard{background:#1e293b;box-shadow:0 20px 40px rgba(0,0,0,0.5)}',
+                'body.dark-mode #examAuthCard h3{color:#e0e0e0}',
+                'body.dark-mode #examAuthCard .auth-field label{color:#bbb}',
+                'body.dark-mode #examAuthCard .auth-field input{background:#2a2a2a;border-color:#444;color:#e0e0e0}',
+                'body.dark-mode #examAuthCard .auth-btn{background:#2563eb}',
+                'body.dark-mode #examAuthCard .auth-links button{color:#64b5f6}',
+                'body.dark-mode #examAuthCard .auth-error{background:#3b1c1c;color:#f5c6cb}',
+                'body.dark-mode #examAuthCard .auth-error.success{background:#1a3a2a;color:#a3e4bc}',
+                'body.dark-mode #examAuthCard .auth-error.warning{background:#3b2e1a;color:#f5d78b}'
+            ].join('');
+            document.head.appendChild(css);
+
+            var overlay = document.createElement('div');
+            overlay.id = 'examAuthOverlay';
+            overlay.innerHTML = [
+                '<div id="examAuthCard">',
+                '<h3 id="examAuthModalTitle">登录</h3>',
+                '<div id="examAuthError" class="auth-error"></div>',
+                '<div class="auth-field" id="examUsernameGroup" style="display:none"><label>用户名</label>',
+                '<input type="text" id="examAuthUsername" placeholder="10位以内，选填" maxlength="10"></div>',
+                '<div class="auth-field"><label>邮箱</label>',
+                '<input type="email" id="examAuthEmail" placeholder="your@email.com"></div>',
+                '<div class="auth-field"><label>密码</label>',
+                '<input type="password" id="examAuthPassword" placeholder="至少8位，需包含字母和数字"></div>',
+                '<div class="ts-container" id="examTsWidget"></div>',
+                '<button id="examAuthSubmitBtn" class="auth-btn">登录</button>',
+                '<div class="auth-links">',
+                '<button id="examAuthToggleBtn">没有账号？去注册</button>',
+                '<button id="examAuthForgotBtn">忘记密码？</button>',
+                '</div></div>'
+            ].join('');
+            document.body.appendChild(overlay);
+
+            var mode = 'login';
+            var titleEl = document.getElementById('examAuthModalTitle');
+            var submitBtn = document.getElementById('examAuthSubmitBtn');
+            var toggleBtn = document.getElementById('examAuthToggleBtn');
+            var forgotBtn = document.getElementById('examAuthForgotBtn');
+            var errorEl = document.getElementById('examAuthError');
+            var emailEl = document.getElementById('examAuthEmail');
+            var passwordEl = document.getElementById('examAuthPassword');
+            var usernameEl = document.getElementById('examAuthUsername');
+            var usernameGroup = document.getElementById('examUsernameGroup');
+            var tsWidget = document.getElementById('examTsWidget');
+            var tsId = null;
+
+            function renderTs() {
+                if (typeof turnstile === 'undefined') { setTimeout(renderTs, 200); return; }
+                if (tsId !== null) turnstile.remove(tsId);
+                tsId = turnstile.render('#examTsWidget', {
+                    sitekey: TURNSTILE_KEY,
+                    theme: document.body.classList.contains('dark-mode') ? 'dark' : 'light',
+                    size: 'flexible'
+                });
+            }
+
+            function getTsToken() {
+                return turnstile.getResponse(tsId);
+            }
+
+            function showOverlay() { overlay.classList.add('show'); if (!tsId) renderTs(); }
+            function hideOverlay() { overlay.classList.remove('show'); }
+            function clearError() { errorEl.classList.remove('show','success','warning'); }
+            function showError(msg, cls) { errorEl.textContent = msg; errorEl.classList.add('show'); if (cls) errorEl.classList.add(cls); }
+
+            function setMode(m) {
+                mode = m;
+                titleEl.textContent = m === 'login' ? '登录' : '注册';
+                submitBtn.textContent = m === 'login' ? '登录' : '注册';
+                toggleBtn.textContent = m === 'login' ? '没有账号？去注册' : '已有账号？去登录';
+                clearError();
+                usernameGroup.style.display = m === 'register' ? '' : 'none';
+            }
+
+            toggleBtn.addEventListener('click', function() {
+                setMode(mode === 'login' ? 'register' : 'login');
+            });
+
+            forgotBtn.addEventListener('click', async function() {
+                var email = emailEl.value.trim();
+                if (!email) { showError('请先输入邮箱地址'); return; }
+                var captchaToken = getTsToken();
+                if (!captchaToken) { showError('请完成人机验证'); return; }
+                forgotBtn.disabled = true;
+                var r = await sb.auth.resetPasswordForEmail(email, { redirectTo: 'https://exam.bh6rkw.dpdns.org', captchaToken: captchaToken });
+                forgotBtn.disabled = false;
+                if (r.error) showError(r.error.message);
+                else showError('密码重置链接已发送到 ' + email, 'success');
+            });
+
+            submitBtn.addEventListener('click', async function() {
+                var email = emailEl.value.trim();
+                var password = passwordEl.value;
+                var username = usernameEl.value.trim();
+                if (!email || !password) { showError('请填写邮箱和密码'); return; }
+                if (password.length < 8 || !/[a-zA-Z]/.test(password) || !/[0-9]/.test(password)) {
+                    showError('密码至少8位，需包含字母和数字'); return;
+                }
+                submitBtn.disabled = true;
+                submitBtn.textContent = '处理中…';
+                var captchaToken = getTsToken();
+                if (!captchaToken) {
+                    showError('请完成人机验证');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = mode === 'login' ? '登录' : '注册';
+                    return;
+                }
+                var opts = { email: email, password: password, options: { captchaToken: captchaToken } };
+                if (mode === 'register' && username) {
+                    opts.options.data = { username: username };
+                }
+                var result;
+                if (mode === 'login') {
+                    result = await sb.auth.signInWithPassword(opts);
+                } else {
+                    result = await sb.auth.signUp(opts);
+                }
+                submitBtn.disabled = false;
+                submitBtn.textContent = mode === 'login' ? '登录' : '注册';
+                if (result.error) {
+                    if (tsId !== null) turnstile.reset(tsId);
+                    showError(result.error.message);
+                } else {
+                    if (mode === 'register') {
+                        showError('注册成功！请检查邮箱确认链接。', 'success');
+                    } else {
+                        var user = result.data.user;
+                        if (user && !user.email_confirmed_at) {
+                            showError('邮箱尚未验证，请检查邮箱确认链接。', 'warning');
+                        } else {
+                            hideOverlay();
+                            currentSyncUser = user;
+                            renderBtn(user);
+                            uploadLocalCache(user);
+                            window.dispatchEvent(new CustomEvent('supabase-ready', { detail: { sb: sb, user: user } }));
+                        }
+                    }
+                }
+            });
+
+            overlay.addEventListener('click', function(e) { if (e.target === overlay) hideOverlay(); });
+
+            window.showExamAuthModal = function(initialMode) {
+                setMode(initialMode || 'login');
+                emailEl.value = '';
+                passwordEl.value = '';
+                if (usernameEl) usernameEl.value = '';
+                clearError();
+                if (tsId !== null) turnstile.reset(tsId);
+                showOverlay();
+            };
+        }
+
+        injectExamAuthModal();
+
+        // 同步按钮事件
+        document.getElementById('examSyncBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            if (currentSyncUser) syncAllData(currentSyncUser);
+        });
+
+        var currentSyncUser = null;
         tryRestoreSession().then(function(user) {
+            currentSyncUser = user;
             renderBtn(user);
             if (user) {
                 window.dispatchEvent(new CustomEvent('supabase-ready', { detail: { sb: sb, user: user } }));

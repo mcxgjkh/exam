@@ -2,7 +2,7 @@
 
 <div align="center">
     <img src="https://img.shields.io/badge/vercel-000000?style=for-the-badge&logo=vercel&logoColor=white">
-	<img src="https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge">
+	<img src="https://img.shields.io/badge/License-AGPLv3-cyan?style=for-the-badge">
 </div>
 
 
@@ -59,7 +59,7 @@
 
 ## 📄 许可证
 
-本项目采用 **GPL v3** 开源协议，可以自由使用、修改、分享，但请注意遵守开源协议。
+本项目采用 **AGPL v3** 开源协议，可以自由使用、修改、分享，但请注意遵守开源协议。
 
 完整协议见 [LICENSE](LICENSE) 文件。
 
@@ -70,6 +70,7 @@
 - **[BH6RKW](https://github.com/mcxgjkh/)** – 原始项目的作者，为火腿们做了这个工具
 - **[BH6SCN](https://github.com/LuccaWang404/)** – 维护者之一，给本项目捉虫和重构加速
 - **BH6SGE** - 给本项目捉虫
+- **河北236** - 给本项目捉虫
 - 所有提过建议的火腿朋友们
 
 ---

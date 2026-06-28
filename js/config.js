@@ -1,5 +1,5 @@
 // config.js
-export const VERSION = '4.0.0.20260627_rc.2';
+export const VERSION = '4.2.2.20260628_rc.1';
 
 export const EXAM_STANDARDS = {
   A: { total: 40, time: 40, pass: 30 },
@@ -20,7 +20,8 @@ export const STORAGE_KEYS = {
   },
   PENDING_PREFIX: 'ham_pending_',
   HISTORY: 'exam_history',
-  THEME: 'theme'
+  THEME: 'theme',
+  THEME_MODE: 'theme_mode'
 };
 
 export const EXAM_TYPES = ['A', 'B', 'C'];
