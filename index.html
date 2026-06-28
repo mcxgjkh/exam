@@ -26,8 +26,13 @@
     <link rel="canonical" href="https://exam.bh6rkw.dpdns.org/">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name='description' content='最新题库的业余无线电考试刷题模拟系统，提供刷题练习，模拟考试，错题重练，收藏题目，搜索题目的功能。'>
+    <meta name="version" content="4.2.2.20260628_rc.2">
     <title>2026年业余无线电考试刷题模拟系统</title>
-    <link rel="stylesheet" href="static/css/style.css?v=4.2.2.20260628_rc.1">
+    <script>
+    // 全局版本号
+    window.__VERSION__ = document.querySelector('meta[name="version"]').content;
+    document.write('<link rel="stylesheet" href="static/css/style.css?v=' + window.__VERSION__ + '">');
+    </script>
     <!--GitHub图标-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
@@ -116,7 +121,7 @@
     <div class="container">
         <header>
             <h1>业余无线电考试刷题模拟系统</h1>
-            <p class="version">版本号：4.2.2.20260628_rc.1　|　<span id="examAuthBtn" style="cursor:pointer;"></span>　|　<a href="#" id="examSyncBtn" style="text-decoration:none;color:#666;display:none;">↻ 同步</a>　|　<a href="https://bh6rkw.dpdns.org" style="text-decoration:none;color:#666;">首页</a></p>
+            <p class="version"><script>document.write('版本号：' + window.__VERSION__);</script>　|　<span id="examAuthBtn" style="cursor:pointer;"></span>　|　<span id="examSyncWrap" style="display:none;">　|　<a href="#" id="examSyncBtn" style="text-decoration:none;color:#666;">↻ 同步</a></span>　|　<a href="https://bh6rkw.dpdns.org" style="text-decoration:none;color:#666;">首页</a></p>
         </header>
 
         <!-- 主启动界面 (默认显示) -->
@@ -374,7 +379,9 @@
     })();
     </script>
 
-    <script type="module" src="js/main.js?v=4.2.2.20260628_rc.1"></script>
+    <script>
+    document.write('<script type="module" src="js/main.js?v=' + window.__VERSION__ + '"><\/script>');
+    </script>
     <script>
     (function() {
         var SUPABASE_URL = 'https://pxhiobmdzntnxwpwtgpx.supabase.co';
@@ -433,20 +440,20 @@
         }
 
         function renderBtn(user) {
-            var syncBtn = document.getElementById('examSyncBtn');
+            var syncWrap = document.getElementById('examSyncWrap');
             if (user) {
                 var name = (user.user_metadata && user.user_metadata.username) || user.email.split('@')[0];
                 btn.innerHTML = '<span title="数据已同步">' + name + '</span>';
                 btn.onclick = function() { sb.auth.signOut().then(function() { location.reload(); }); };
                 uploadLocalCache(user);
-                if (syncBtn) { syncBtn.style.display = ''; syncBtn.title = '点击同步云端数据'; }
+                if (syncWrap) { syncWrap.style.display = ''; document.getElementById('examSyncBtn').title = '点击同步云端数据'; }
             } else {
                 btn.innerHTML = '<a href="#" id="examLoginLink" style="text-decoration:none;">登录同步数据</a>';
                 document.getElementById('examLoginLink').addEventListener('click', function(e) {
                     e.preventDefault();
                     if (window.showExamAuthModal) window.showExamAuthModal('login');
                 });
-                if (syncBtn) syncBtn.style.display = 'none';
+                if (syncWrap) syncWrap.style.display = 'none';
             }
         }
 
@@ -499,7 +506,13 @@
             // 3. 从云端拉取最新数据
             await syncFromCloud(user);
 
-            if (syncBtn) { syncBtn.textContent = '↻ 同步'; syncBtn.style.pointerEvents = ''; }
+            // 4. 刷新首页计数
+            if (window.updateWrongCounts) window.updateWrongCounts();
+            if (window.updateFavoriteCounts) window.updateFavoriteCounts();
+            if (window.updatePendingButtons) window.updatePendingButtons();
+
+            if (syncBtn) { syncBtn.textContent = '✓ 已同步'; syncBtn.style.pointerEvents = ''; }
+            setTimeout(function() { if (syncBtn) syncBtn.textContent = '↻ 同步'; }, 2000);
         }
 
         async function syncFromCloud(user) {
