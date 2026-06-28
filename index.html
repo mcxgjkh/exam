@@ -121,8 +121,10 @@
     <div class="container">
         <header>
             <h1>业余无线电考试刷题模拟系统</h1>
-            <p class="version"><script>document.write('版本号：' + window.__VERSION__);</script>　|　<span id="examAuthBtn" style="cursor:pointer;"></span>　|　<span id="examSyncWrap" style="display:none;">　|　<a href="#" id="examSyncBtn" style="text-decoration:none;color:#666;">↻ 同步</a></span>　|　<a href="https://bh6rkw.dpdns.org" style="text-decoration:none;color:#666;">首页</a></p>
+            <p class="version">版本号：<span id="ver-text"></span>　|　<span id="examAuthBtn" style="cursor:pointer;"></span>　|　<span id="examSyncWrap" style="display:none;"><a href="#" id="examSyncBtn" style="text-decoration:none;color:#666;">↻ 同步</a>　|　</span><a href="https://bh6rkw.dpdns.org" style="text-decoration:none;color:#666;">首页</a></p>
         </header>
+
+        <script>document.getElementById('ver-text').textContent = window.__VERSION__;</script>
 
         <!-- 主启动界面 (默认显示) -->
         <div id="start-screen" class="start-screen">
