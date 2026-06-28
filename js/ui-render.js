@@ -387,7 +387,7 @@ export function renderSearchResults(results, keyword, currentPage, totalPages, o
     let match;
     while ((match = imageRegex.exec(questionHtml)) !== null) {
       parts.push(questionHtml.slice(lastIdx, match.index));
-      parts.push(`<span class="image-placeholder" data-img-src="imageswebp/${match[1]}"></span>`);
+      parts.push(`<span class="image-placeholder" data-img-src="static/img/${match[1]}"></span>`);
       lastIdx = match.index + match[0].length;
     }
     parts.push(questionHtml.slice(lastIdx));
