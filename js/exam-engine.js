@@ -15,7 +15,7 @@ import {
   toggleLoadingOverlay, updateSelectedOptions,
   applyFallbackFont
 } from './ui-render.js';
-import { EXAM_STANDARDS, EXAM_TYPES } from './config.js';
+import { EXAM_STANDARDS, EXAM_TYPES, VERSION } from './config.js';
 
 // ---------- 题库加载 ----------
 const loadedQuestions = { A: null, B: null, C: null };
@@ -27,13 +27,7 @@ export async function loadQuestionBank(type) {
     return loadedQuestions[type];
   }
 
-  // 版本号可用于清除缓存，但 JSON 文件通常不随版本变化，可以保留或去掉
-  const versionEl = document.querySelector('.version');
-  const version = versionEl
-    ? (versionEl.textContent.match(/[\d.]+[_\w.]*/) || ['4.0.0.20260627_rc.2'])[0]
-    : '4.0.0.20260627_rc.2';
-
-  const url = `data/data_${type}.json?v=${version}`;
+  const url = `data/data_${type}.json?v=${VERSION}`;
   toggleLoadingOverlay(true, `加载${type}类题库...`);
 
   try {

@@ -1,5 +1,7 @@
 // config.js
-export const VERSION = '4.2.2.20260628_rc.1';
+export const VERSION = (typeof document !== 'undefined'
+  && document.querySelector('meta[name="version"]')?.content)
+  || '0.0.0';
 
 export const EXAM_STANDARDS = {
   A: { total: 40, time: 40, pass: 30 },

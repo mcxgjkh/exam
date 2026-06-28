@@ -19,7 +19,7 @@ import {
 } from './storage.js';
 import { initSupabase, syncFromCloud, uploadWrongQuestion, uploadFavorites, uploadExamSession } from './sync-supabase.js';
 import { initTimeSync, disableAutoTheme, isAutoEnabled } from './time.js';
-import { EXAM_TYPES } from './config.js';
+import { EXAM_TYPES, VERSION } from './config.js';
 
 // ---------- 主题切换 ----------
 function initTheme() {
@@ -68,9 +68,9 @@ function initTheme() {
 function shouldShowStartupModal() {
   const hasAgreed = document.cookie.split(';').some(c => c.trim().startsWith('agree_policy=true'));
   const versionEl = document.querySelector('.version');
-  const versionText = versionEl ? versionEl.textContent : '版本号：4.2.2.20260628_rc.1';
+  const versionText = versionEl ? versionEl.textContent : `版本号：${VERSION}`;
   const versionMatch = versionText.match(/[\d.]+[_\w.]*/);
-  const currentVersion = versionMatch ? versionMatch[0] : '4.2.2.20260628_rc.1';
+  const currentVersion = versionMatch ? versionMatch[0] : VERSION;
 
   const cookieMatch = document.cookie.match(/(?:^|;\s*)notice_version=([^;]+)/);
   const lastVersion = cookieMatch ? cookieMatch[1] : null;
@@ -94,9 +94,9 @@ function handleStartupModal() {
     const cookieMatch = document.cookie.match(/(?:^|;\s*)notice_version=([^;]+)/);
     lastVerEl.textContent = cookieMatch ? cookieMatch[1] : '（首次访问）';
     const versionEl = document.querySelector('.version');
-    const versionText = versionEl ? versionEl.textContent : '版本号：4.2.2.20260628_rc.1';
+    const versionText = versionEl ? versionEl.textContent : `版本号：${VERSION}`;
     const versionMatch = versionText.match(/[\d.]+[_\w.]*/);
-    currentVerEl.textContent = versionMatch ? versionMatch[0] : '4.2.2.20260628_rc.1';
+    currentVerEl.textContent = versionMatch ? versionMatch[0] : VERSION;
   }
 
   const confirmBtn = modal.querySelector('.modal-confirm');
@@ -104,9 +104,9 @@ function handleStartupModal() {
   const hasAgreed = document.cookie.split(';').some(c => c.trim().startsWith('agree_policy=true'));
 
   const versionEl = document.querySelector('.version');
-  const versionText = versionEl ? versionEl.textContent : '版本号：4.2.2.20260628_rc.1';
+  const versionText = versionEl ? versionEl.textContent : `版本号：${VERSION}`;
   const versionMatch = versionText.match(/[\d.]+[_\w.]*/);
-  const currentVersion = versionMatch ? versionMatch[0] : '4.2.2.20260628_rc.1';
+  const currentVersion = versionMatch ? versionMatch[0] : VERSION;
 
   if (hasAgreed && getNoticeVersion() !== currentVersion) {
     if (agreeCheckbox) {

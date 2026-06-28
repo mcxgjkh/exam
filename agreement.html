@@ -8,6 +8,20 @@
     <meta name="description" content="业余无线电考试刷题模拟系统 - 用户协议与隐私许可。详细说明本地存储数据使用、用户权利及免责条款。">
     <title>用户协议与隐私许可 | 业余无线电考试刷题模拟系统</title>
     <link rel="stylesheet" href="style.css">
+    <script>
+    // 从 index.html 读取全局版本号，自动同步
+    fetch('index.html')
+        .then(function(r) { return r.text(); })
+        .then(function(html) {
+            var m = html.match(/<meta name="version" content="([^"]+)"/);
+            if (m) {
+                window.__VERSION__ = m[1];
+                document.querySelector('.version-tag').textContent = '总版本 ' + m[1];
+                document.querySelector('link[href="style.css"]').href = 'style.css?v=' + m[1];
+            }
+        })
+        .catch(function() {});
+    </script>
     <!--[if lte IE 6]>
     <style>
         .ie-warning { position: absolute; height: 100%; background: #000; filter: alpha(opacity=80); }
@@ -132,7 +146,7 @@
         <header style="margin-bottom: 28px; text-align: center;">
             <h1>用户协议与隐私许可</h1>
             <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 12px;">
-                <span class="version-tag">总版本 4.2.2.20260628_rc.1</span>
+                <span class="version-tag">总版本 --</span>
                 <span class="version-tag">协议版本 1.0.6</span>
                 <span class="version-tag">最后修订：2026年6月28日</span>
             </div>
