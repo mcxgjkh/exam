@@ -61,6 +61,7 @@ function initTheme() {
       saveTheme('light');
       disableAutoTheme();
     }
+    window.dispatchEvent(new CustomEvent('theme-changed'));
   });
 }
 
@@ -390,6 +391,21 @@ document.addEventListener('DOMContentLoaded', async function() {
   document.addEventListener('option-change', (e) => {
     const { index, value, isMulti, checked } = e.detail;
     handleOptionChange(index, value, isMulti, checked);
+  });
+
+  // 12. 同步完成事件：实时刷新历史记录和计数
+  window.addEventListener('sync-complete', () => {
+    const history = getHistory();
+    renderHistory(history, viewHistoryWrongDetail);
+    updateWrongCounts();
+    updatePendingButtons();
+    import('./storage.js').then(({ getFavorites }) => {
+      ['A', 'B', 'C'].forEach(type => {
+        const list = getFavorites(type);
+        const el = document.getElementById(`favorite-count-${type}`);
+        if (el) el.textContent = list.length;
+      });
+    });
   });
 
   // ========== 事件绑定（统一使用 document.body 事件委托） ==========

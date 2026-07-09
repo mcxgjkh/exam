@@ -6,6 +6,7 @@ import {
   getPending, savePending, deletePending,
   addHistoryRecord, addWrongQuestion
 } from './storage.js';
+import { uploadPending } from './sync-supabase.js';
 import {
   shuffleArray, generateShuffledIndices
 } from './utils.js';
@@ -123,6 +124,7 @@ export function startPractice(type, questions, order, isWrong = false, customQue
       optionOrders: state.getOptionOrders()
     };
     savePending(type, order, pendingData);
+    uploadPending(type, order);
   }
 
   showExamScreen();
@@ -421,6 +423,7 @@ function savePendingProgress() {
           : [];
       })
     });
+    uploadPending(pendingData.originalType, pendingData.originalOrder);
   } else {
     // 无原始会话：直接保存当前状态
     const data = {
@@ -431,6 +434,7 @@ function savePendingProgress() {
       optionOrders: state.getOptionOrders()
     };
     savePending(state.getExamType(), state.getOrderMode(), data);
+    uploadPending(state.getExamType(), state.getOrderMode());
   }
 }
 

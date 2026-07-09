@@ -1,5 +1,5 @@
 // sync-supabase.js
-import { getHistory, saveHistory, getFavorites, saveFavorites, getWrongQuestions, saveWrongQuestions } from './storage.js';
+import { getHistory, saveHistory, getFavorites, saveFavorites, getWrongQuestions, saveWrongQuestions, getPending, savePending } from './storage.js';
 import { EXAM_TYPES } from './config.js';
 
 let sbClient = null;
@@ -94,6 +94,25 @@ export async function syncFromCloud() {
         console.log('[Sync] 从云端合并了历史记录，共', local.length, '条');
       }
     }
+
+    // 同步待做练习
+    const pendingResult = await sbClient
+      .from('exam_pending')
+      .select('*')
+      .eq('user_id', currentUser.id);
+
+    if (!pendingResult.error && pendingResult.data) {
+      pendingResult.data.forEach(record => {
+        const key = 'ham_pending_' + record.exam_type + '_' + record.order_type;
+        const localRaw = localStorage.getItem(key);
+        const cloudTime = new Date(record.updated_at).getTime();
+        if (!localRaw || cloudTime > (JSON.parse(localRaw)._updatedAt || 0)) {
+          const d = typeof record.data === 'string' ? JSON.parse(record.data) : record.data;
+          d._updatedAt = cloudTime;
+          localStorage.setItem(key, JSON.stringify(d));
+        }
+      });
+    }
   } catch (e) {
     console.warn('[Sync] 云同步失败:', e);
   }
@@ -144,5 +163,23 @@ export function uploadExamSession(record) {
     passed: record.passed,
     time_used_sec: record.timeUsedSec,
     created_at: new Date(record.timestamp).toISOString()
+  }).catch(() => {});
+}
+
+// ---------- 上传待做练习 ----------
+export function uploadPending(type, order) {
+  if (!sbClient || !currentUser) return;
+
+  const data = getPending(type, order);
+  if (!data) return;
+
+  sbClient.from('exam_pending').upsert({
+    user_id: currentUser.id,
+    exam_type: type,
+    order_type: order,
+    data: data,
+    updated_at: new Date().toISOString()
+  }, {
+    onConflict: 'user_id,exam_type,order_type'
   }).catch(() => {});
 }
