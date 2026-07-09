@@ -26,7 +26,7 @@
     <link rel="canonical" href="https://exam.bh6rkw.dpdns.org/">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name='description' content='最新题库的业余无线电考试刷题模拟系统，提供刷题练习，模拟考试，错题重练，收藏题目，搜索题目的功能。'>
-    <meta name="version" content="4.2.2.20260628_rc.4">
+    <meta name="version" content="4.3.1.20260628_rc.1">
     <title>2026年业余无线电考试刷题模拟系统</title>
     <script>
     // 全局版本号
@@ -355,6 +355,19 @@
         <span class="slider"></span>
     </label>
 
+    <!-- 同步结果 Toast -->
+    <div id="sync-toast" style="display:none;position:fixed;top:20px;right:20px;z-index:10002;background:#fff;border-radius:12px;padding:16px 20px;box-shadow:0 8px 30px rgba(0,0,0,0.15);max-width:320px;font-size:0.9rem;line-height:1.6;animation:syncToastIn 0.35s ease;border-left:4px solid #2e7d32;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
+            <div id="sync-toast-msg" style="color:#333;"></div>
+            <button id="sync-toast-close" style="background:none;border:none;font-size:1.2rem;cursor:pointer;color:#999;padding:0;line-height:1;">&times;</button>
+        </div>
+    </div>
+    <style>
+        @keyframes syncToastIn { from{opacity:0;transform:translateY(-16px)} to{opacity:1;transform:translateY(0)} }
+        body.dark-mode #sync-toast { background:#1e293b; border-left-color:#4ade80; }
+        body.dark-mode #sync-toast-msg { color:#e0e0e0; }
+    </style>
+
     <script>
     (function() {
         var isIE = false;
@@ -459,19 +472,41 @@
             }
         }
 
+        // ---- Toast 提示 ----
+        var syncToastTimer = null;
+        function showSyncToast(msg) {
+            var toast = document.getElementById('sync-toast');
+            var msgEl = document.getElementById('sync-toast-msg');
+            if (!toast || !msgEl) return;
+            msgEl.innerHTML = msg;
+            toast.style.display = 'block';
+            if (syncToastTimer) clearTimeout(syncToastTimer);
+            syncToastTimer = setTimeout(function() { toast.style.display = 'none'; }, 5000);
+        }
+        document.getElementById('sync-toast-close').addEventListener('click', function() {
+            document.getElementById('sync-toast').style.display = 'none';
+            if (syncToastTimer) clearTimeout(syncToastTimer);
+        });
+
         // ---- 云端同步（上传 + 查重 + 拉取） ----
         async function syncAllData(user) {
             var syncBtn = document.getElementById('examSyncBtn');
             if (!sb || !user) return;
             if (syncBtn) { syncBtn.textContent = '↻ 同步中…'; syncBtn.style.pointerEvents = 'none'; }
 
-            // 1. 上传本地错题和收藏（逐条 upsert，自动查重）
             var types = ['A','B','C'];
+            var orders = ['asc','desc','random'];
+            var uploadCount = { wrong: 0, fav: 0, history: 0, pending: 0 };
+            var pullCount = { wrong: 0, fav: 0, history: 0, pending: 0 };
+
+            // === 上传阶段 ===
+            // 1. 上传错题和收藏
             for (var i = 0; i < types.length; i++) {
                 var t = types[i];
                 var wrongs = JSON.parse(localStorage.getItem('ham_wrong_' + t) || '[]');
                 var favs = JSON.parse(localStorage.getItem('ham_favorite_' + t) || '[]');
-                // 错题
+                uploadCount.wrong += wrongs.length;
+                uploadCount.fav += favs.length;
                 for (var j = 0; j < wrongs.length; j++) {
                     sb.from('exam_progress').upsert({
                         user_id: user.id, exam_type: t, question_id: wrongs[j],
@@ -479,7 +514,6 @@
                         answered_at: new Date().toISOString()
                     }, { onConflict: 'user_id,exam_type,question_id' }).then(function(){}).catch(function(){});
                 }
-                // 收藏
                 for (var k = 0; k < favs.length; k++) {
                     if (!wrongs.includes(favs[k])) {
                         sb.from('exam_progress').upsert({
@@ -490,28 +524,90 @@
                 }
             }
 
-            // 2. 上传本地历史记录（逐条插入，按 timestamp 查重）
+            // 2. 上传历史记录
             var localHistory = JSON.parse(localStorage.getItem('exam_history') || '[]');
+            uploadCount.history = localHistory.length;
             for (var h = 0; h < localHistory.length; h++) {
                 var rec = localHistory[h];
                 sb.from('exam_sessions').upsert({
                     user_id: user.id,
-                    exam_type: rec.type,
-                    score: rec.score,
-                    total: rec.total,
-                    passed: rec.passed,
-                    time_used_sec: rec.timeUsedSec,
+                    exam_type: rec.type, score: rec.score, total: rec.total,
+                    passed: rec.passed, time_used_sec: rec.timeUsedSec,
                     created_at: rec.timestamp ? new Date(rec.timestamp).toISOString() : new Date().toISOString()
                 }, { onConflict: 'user_id,created_at' }).then(function(){}).catch(function(){});
             }
 
-            // 3. 从云端拉取最新数据
-            await syncFromCloud(user);
+            // 3. 上传待做练习
+            for (var pi = 0; pi < types.length; pi++) {
+                for (var pj = 0; pj < orders.length; pj++) {
+                    var t = types[pi];
+                    var o = orders[pj];
+                    var key = 'ham_pending_' + t + '_' + o;
+                    var pendingData = localStorage.getItem(key);
+                    if (pendingData) {
+                        uploadCount.pending++;
+                        sb.from('exam_pending').upsert({
+                            user_id: user.id,
+                            exam_type: t,
+                            order_type: o,
+                            data: JSON.parse(pendingData),
+                            updated_at: new Date().toISOString()
+                        }, { onConflict: 'user_id,exam_type,order_type' }).then(function(){}).catch(function(){});
+                    }
+                }
+            }
 
-            // 4. 刷新首页计数
+            // === 拉取阶段：记录拉取前的数量 ===
+            var preWrong = {}, preFav = {}, preHistory = 0, prePending = 0;
+            types.forEach(function(t) {
+                preWrong[t] = JSON.parse(localStorage.getItem('ham_wrong_' + t) || '[]').length;
+                preFav[t] = JSON.parse(localStorage.getItem('ham_favorite_' + t) || '[]').length;
+            });
+            preHistory = JSON.parse(localStorage.getItem('exam_history') || '[]').length;
+            types.forEach(function(t) {
+                orders.forEach(function(o) {
+                    if (localStorage.getItem('ham_pending_' + t + '_' + o)) prePending++;
+                });
+            });
+
+            // 3. 从云端拉取
+            await syncFromCloud();
+
+            // 计算拉取数量
+            types.forEach(function(t) {
+                var wAfter = JSON.parse(localStorage.getItem('ham_wrong_' + t) || '[]').length;
+                var fAfter = JSON.parse(localStorage.getItem('ham_favorite_' + t) || '[]').length;
+                pullCount.wrong += Math.max(0, wAfter - preWrong[t]);
+                pullCount.fav += Math.max(0, fAfter - preFav[t]);
+            });
+            pullCount.history = Math.max(0, JSON.parse(localStorage.getItem('exam_history') || '[]').length - preHistory);
+            var postPending = 0;
+            types.forEach(function(t) {
+                orders.forEach(function(o) {
+                    if (localStorage.getItem('ham_pending_' + t + '_' + o)) postPending++;
+                });
+            });
+            pullCount.pending = Math.max(0, postPending - prePending);
+
+            // 4. 刷新首页 UI
             if (window.updateWrongCounts) window.updateWrongCounts();
             if (window.updateFavoriteCounts) window.updateFavoriteCounts();
             if (window.updatePendingButtons) window.updatePendingButtons();
+            window.dispatchEvent(new CustomEvent('sync-complete', { detail: pullCount }));
+
+            // 5. Toast 提示
+            var lines = [];
+            lines.push('<strong>✓ 同步完成</strong>');
+            if (uploadCount.wrong || uploadCount.fav || uploadCount.history || uploadCount.pending) {
+                lines.push('上传：' + uploadCount.wrong + '道错题、' + uploadCount.fav + '道收藏、' + uploadCount.history + '条历史、' + uploadCount.pending + '个待做');
+            }
+            if (pullCount.wrong || pullCount.fav || pullCount.history || pullCount.pending) {
+                lines.push('拉取：' + pullCount.wrong + '道错题、' + pullCount.fav + '道收藏、' + pullCount.history + '条历史、' + pullCount.pending + '个待做');
+            }
+            if (!uploadCount.wrong && !uploadCount.fav && !uploadCount.history && !uploadCount.pending && !pullCount.wrong && !pullCount.fav && !pullCount.history && !pullCount.pending) {
+                lines.push('数据已是最新，无需同步');
+            }
+            showSyncToast(lines.join('<br>'));
 
             if (syncBtn) { syncBtn.textContent = '✓ 已同步'; syncBtn.style.pointerEvents = ''; }
             setTimeout(function() { if (syncBtn) syncBtn.textContent = '↻ 同步'; }, 2000);
@@ -572,6 +668,20 @@
                         localH.sort(function(a,b) { return b.timestamp - a.timestamp; });
                         localStorage.setItem('exam_history', JSON.stringify(localH));
                     }
+                }
+                // 拉取待做练习
+                var pr2 = await sb.from('exam_pending').select('*').eq('user_id', user.id);
+                if (!pr2.error && pr2.data) {
+                    pr2.data.forEach(function(r) {
+                        var key = 'ham_pending_' + r.exam_type + '_' + r.order_type;
+                        // 云端数据较新才覆盖本地
+                        var localRaw = localStorage.getItem(key);
+                        if (!localRaw || new Date(r.updated_at).getTime() > (JSON.parse(localRaw)._updatedAt || 0)) {
+                            var d = typeof r.data === 'string' ? JSON.parse(r.data) : r.data;
+                            d._updatedAt = new Date(r.updated_at).getTime();
+                            localStorage.setItem(key, JSON.stringify(d));
+                        }
+                    });
                 }
                 console.log('[Sync] 云端同步完成');
             } catch(e) {
@@ -656,9 +766,14 @@
                 tsId = turnstile.render('#examTsWidget', {
                     sitekey: TURNSTILE_KEY,
                     theme: document.body.classList.contains('dark-mode') ? 'dark' : 'light',
-                    size: 'flexible'
+                    appearance: 'always'
                 });
             }
+
+            // 主题切换时重新渲染 Turnstile
+            window.addEventListener('theme-changed', function() {
+                if (overlay.classList.contains('show') && tsId !== null) renderTs();
+            });
 
             function getTsToken() {
                 return turnstile.getResponse(tsId);
@@ -738,6 +853,7 @@
                             currentSyncUser = user;
                             renderBtn(user);
                             uploadLocalCache(user);
+                            recordLogin(user);
                             window.dispatchEvent(new CustomEvent('supabase-ready', { detail: { sb: sb, user: user } }));
                         }
                     }
@@ -766,10 +882,21 @@
         });
 
         var currentSyncUser = null;
+
+        // 记录登录日志
+        function recordLogin(user) {
+            if (!sb || !user) return;
+            sb.from('login_logs').insert({
+                user_id: user.id,
+                logged_at: new Date().toISOString()
+            }).then(function(){}).catch(function(){});
+        }
+
         tryRestoreSession().then(function(user) {
             currentSyncUser = user;
             renderBtn(user);
             if (user) {
+                recordLogin(user);
                 window.dispatchEvent(new CustomEvent('supabase-ready', { detail: { sb: sb, user: user } }));
             }
         });
