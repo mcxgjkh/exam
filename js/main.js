@@ -408,6 +408,14 @@ document.addEventListener('DOMContentLoaded', async function() {
     });
   });
 
+  // 13. 考试提交后实时刷新历史记录
+  window.addEventListener('history-updated', () => {
+    const history = getHistory();
+    renderHistory(history, viewHistoryWrongDetail);
+    updateWrongCounts();
+    updatePendingButtons();
+  });
+
   // ========== 事件绑定（统一使用 document.body 事件委托） ==========
   document.body.addEventListener('click', async (e) => {
     // 模拟考试按钮
@@ -675,6 +683,16 @@ document.addEventListener('DOMContentLoaded', async function() {
       state.setPendingIndices([]);
       showStartScreen();
       updatePendingButtons();
+      const history = getHistory();
+      renderHistory(history, viewHistoryWrongDetail);
+      updateWrongCounts();
+      import('./storage.js').then(({ getFavorites }) => {
+        ['A', 'B', 'C'].forEach(type => {
+          const list = getFavorites(type);
+          const el = document.getElementById(`favorite-count-${type}`);
+          if (el) el.textContent = list.length;
+        });
+      });
     });
   }
 
@@ -718,9 +736,11 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     window.addHistoryRecord = function(record) {
         const result = storage.addHistoryRecord(record);
-        if (window.isSupabaseReady) {
-            uploadExamSession(record);
-        }
+        import('./sync-supabase.js').then(function(m) {
+            if (m.isSupabaseReady()) {
+                uploadExamSession(record);
+            }
+        });
         return result;
     };
   });

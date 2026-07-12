@@ -639,7 +639,8 @@ export function submitExam() {
 
   // 计算用时
   const endTime = new Date();
-  const totalSec = Math.floor((endTime - state.getExamStartTime()) / 1000);
+  const startTime = state.getExamStartTime() || new Date();
+  const totalSec = Math.floor((endTime - startTime) / 1000);
   const mins = Math.floor(totalSec / 60);
   const secs = totalSec % 60;
   const timeStr = mins.toString().padStart(2, '0') + ':' + secs.toString().padStart(2, '0');
@@ -661,16 +662,21 @@ export function submitExam() {
     wrongUserAnswers: wrongUserAnswers,
     timestamp: Date.now()
   };
-  if (window.addHistoryRecord) window.addHistoryRecord(record);
-  else addHistoryRecord(record);
+  try {
+    if (window.addHistoryRecord) window.addHistoryRecord(record);
+    else addHistoryRecord(record);
+  } catch(e) { console.warn('[submitExam] 保存历史失败', e); }
 
   // 自动加入错题本
-  wrongs.forEach(w => {
-    addWrongQuestion(w.question.id, state.getExamType());
-  });
+  try {
+    wrongs.forEach(w => {
+      addWrongQuestion(w.question.id, state.getExamType());
+    });
+  } catch(e) { console.warn('[submitExam] 加入错题本失败', e); }
 
-  // 显示结果
-  showResultScreen();
+  // 确保结果显示
+  try { showResultScreen(); } catch(e) { console.error('[submitExam] 显示结果失败', e); }
+
   document.getElementById('score').textContent = score;
   document.getElementById('result-type').textContent = state.getExamType() + '类';
   document.getElementById('correct-answers').textContent = score;
@@ -693,6 +699,9 @@ export function submitExam() {
     container.classList.add('hidden');
     toggleBtn.textContent = '查看错题';
   }
+
+  // 通知首页刷新历史记录和计数
+  window.dispatchEvent(new CustomEvent('history-updated'));
 }
 
 // ---------- 渲染错题 ----------
