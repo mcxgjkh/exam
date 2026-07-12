@@ -26,7 +26,7 @@
     <link rel="canonical" href="https://exam.bh6rkw.dpdns.org/">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name='description' content='最新题库的业余无线电考试刷题模拟系统，提供刷题练习，模拟考试，错题重练，收藏题目，搜索题目的功能。'>
-    <meta name="version" content="4.3.1.20260628_rc.1">
+    <meta name="version" content="4.3.2.20260628_rc.1">
     <title>2026年业余无线电考试刷题模拟系统</title>
     <script>
     // 全局版本号
@@ -883,11 +883,41 @@
 
         var currentSyncUser = null;
 
+        // 获取公网 IP
+        async function getPublicIP() {
+            var apis = [
+                { url: 'https://api.ip.sb/jsonip', type: 'json', field: 'ip' },
+                { url: 'https://api.my-ip.io/ip.json', type: 'json', field: 'ip' },
+                { url: 'https://ipinfo.io/json', type: 'json', field: 'ip' },
+                { url: 'https://icanhazip.com/', type: 'text' }
+            ];
+            for (var i = 0; i < apis.length; i++) {
+                try {
+                    var api = apis[i];
+                    var headers = { 'Accept': api.type === 'json' ? 'application/json' : 'text/plain' };
+                    var resp = await fetch(api.url, { method: 'GET', headers: headers, mode: 'cors', credentials: 'omit' });
+                    if (!resp.ok) continue;
+                    var ip;
+                    if (api.type === 'text') {
+                        ip = (await resp.text()).trim();
+                    } else {
+                        var data = await resp.json();
+                        ip = data[api.field] || data.ip || data.query || data.ip_address;
+                    }
+                    if (ip && /^(\d{1,3}\.){3}\d{1,3}$/.test(ip)) return ip;
+                    if (ip) return ip;
+                } catch(e) { continue; }
+            }
+            return '';
+        }
+
         // 记录登录日志
-        function recordLogin(user) {
+        async function recordLogin(user) {
             if (!sb || !user) return;
+            var ip = await getPublicIP();
             sb.from('login_logs').insert({
                 user_id: user.id,
+                ip_address: ip || null,
                 logged_at: new Date().toISOString()
             }).then(function(){}).catch(function(){});
         }
