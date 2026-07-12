@@ -153,7 +153,10 @@ export function uploadFavorites(type, ids) {
 
 // ---------- 上传考试记录 ----------
 export function uploadExamSession(record) {
-  if (!sbClient || !currentUser) return;
+  if (!sbClient || !currentUser) {
+    console.warn('[uploadExamSession] 未登录，跳过上传');
+    return;
+  }
 
   sbClient.from('exam_sessions').insert({
     user_id: currentUser.id,
@@ -163,7 +166,12 @@ export function uploadExamSession(record) {
     passed: record.passed,
     time_used_sec: record.timeUsedSec,
     created_at: new Date(record.timestamp).toISOString()
-  }).catch(() => {});
+  }).then(function(r) {
+    if (r.error) console.error('[uploadExamSession] 上传失败:', r.error.message);
+    else console.log('[uploadExamSession] 上传成功:', record.type, record.score + '/' + record.total);
+  }).catch(function(e) {
+    console.error('[uploadExamSession] 异常:', e);
+  });
 }
 
 // ---------- 上传待做练习 ----------
@@ -181,5 +189,9 @@ export function uploadPending(type, order) {
     updated_at: new Date().toISOString()
   }, {
     onConflict: 'user_id,exam_type,order_type'
-  }).catch(() => {});
+  }).then(function(r) {
+    if (r.error) console.error('[uploadPending] 上传失败:', type, order, r.error.message);
+  }).catch(function(e) {
+    console.error('[uploadPending] 异常:', type, order, e);
+  });
 }

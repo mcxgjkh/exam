@@ -6,7 +6,7 @@ import {
   getPending, savePending, deletePending,
   addHistoryRecord, addWrongQuestion
 } from './storage.js';
-import { uploadPending } from './sync-supabase.js';
+import { uploadPending, uploadExamSession } from './sync-supabase.js';
 import {
   shuffleArray, generateShuffledIndices
 } from './utils.js';
@@ -665,6 +665,7 @@ export function submitExam() {
   try {
     if (window.addHistoryRecord) window.addHistoryRecord(record);
     else addHistoryRecord(record);
+    uploadExamSession(record);
   } catch(e) { console.warn('[submitExam] 保存历史失败', e); }
 
   // 自动加入错题本
