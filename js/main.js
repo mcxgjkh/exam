@@ -21,6 +21,12 @@ import { initSupabase, syncFromCloud, uploadWrongQuestion, uploadFavorites, uplo
 import { initTimeSync, disableAutoTheme, isAutoEnabled } from './time.js';
 import { EXAM_TYPES, VERSION } from './config.js';
 
+// ---------- Supabase 云端同步（必须在 DOMContentLoaded 之前注册，确保能收到内联脚本的 supabase-ready 事件）----------
+window.addEventListener('supabase-ready', function(e) {
+  initSupabase(e.detail.sb, e.detail.user);
+  syncFromCloud();
+});
+
 // ---------- 主题切换 ----------
 function initTheme() {
   const mode = getThemeMode();
@@ -710,12 +716,6 @@ document.addEventListener('DOMContentLoaded', async function() {
   if (queryBtn) queryBtn.addEventListener('click', handleSearch);
   if (queryInput) queryInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') handleSearch();
-  });
-
-  // ---------- Supabase 云端同步 ----------
-  window.addEventListener('supabase-ready', function(e) {
-    initSupabase(e.detail.sb, e.detail.user);
-    syncFromCloud();
   });
 
   import('./storage.js').then((storage) => {
