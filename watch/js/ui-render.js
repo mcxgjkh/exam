@@ -17,15 +17,19 @@ export function renderHome(history) {
   container.innerHTML = `
     <div class="card">
       <div class="card-title">刷题练习</div>
-      <button class="btn" id="practice-btn-A">A类</button>
-      <button class="btn" id="practice-btn-B">B类</button>
-      <button class="btn" id="practice-btn-C">C类</button>
+      <div class="btn-group">
+        <button class="btn" id="practice-btn-A">A类</button>
+        <button class="btn" id="practice-btn-B">B类</button>
+        <button class="btn" id="practice-btn-C">C类</button>
+      </div>
     </div>
     <div class="card">
       <div class="card-title">模拟考试</div>
-      <button class="btn" id="exam-btn-A">A类考试</button>
-      <button class="btn" id="exam-btn-B">B类考试</button>
-      <button class="btn" id="exam-btn-C">C类考试</button>
+      <div class="btn-group">
+        <button class="btn" id="exam-btn-A">A类考试</button>
+        <button class="btn" id="exam-btn-B">B类考试</button>
+        <button class="btn" id="exam-btn-C">C类考试</button>
+      </div>
     </div>
     <div class="card">
       <div class="card-title">历史记录</div>
