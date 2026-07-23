@@ -4,20 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>业无考试</title>
-    <link rel="stylesheet" href="/watch/style.css?v=1.3.3">
+    <link rel="stylesheet" href="style.css?v=1.4.0">
 </head>
 <body>
     <div id="app">
         <div id="header">
             <span id="title-text">业余无线电考试</span>
-            <div style="font-size:6px; color:#8e9aaf; margin-top:1px;">Watch1.3.3</div>
+            <div style="font-size:7px; color:#8e9aaf; margin-top:1px; letter-spacing:0.5px;">Watch v1.4.0</div>
         </div>
         <div id="content"></div>
     </div>
+
+    <!-- 全局加载遮罩 -->
     <div id="loading-overlay" class="loading-overlay hidden">
         <div class="loading-spinner"></div>
         <div id="loading-msg">加载中</div>
     </div>
+
+    <!-- 顺序选择模态框 -->
     <div id="order-modal" class="modal hidden">
         <div class="modal-content">
             <div class="modal-title">选择练习顺序</div>
@@ -27,9 +31,22 @@
             <button class="btn danger" id="modal-cancel">取消</button>
         </div>
     </div>
-    <button id="theme-toggle" style="position:fixed; bottom:12px; right:12px; width:34px; height:34px; border:none; background:rgba(255,255,255,0.2); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:18px; line-height:1; z-index:9999; border:1px solid rgba(255,255,255,0.4); box-shadow:0 2px 8px rgba(0,0,0,0.12); color:#333; padding:0; outline:none;">
+
+    <!-- 详情模态框 (由 JS 动态填充) -->
+    <div id="detail-modal" class="modal hidden">
+        <div class="modal-content" style="max-width:90%; padding:10px;">
+            <div id="detail-body" style="font-size:11px; max-height:140px; overflow-y:auto; text-align:left; margin-bottom:6px;"></div>
+            <button class="btn danger" id="detail-close" style="font-size:12px; padding:4px 0;">关闭</button>
+        </div>
+    </div>
+
+    <!-- 自定义确认对话框 (由 JS 动态创建) -->
+    <!-- 主题切换按钮 -->
+    <button id="theme-toggle" style="position:fixed; bottom:10px; right:10px; width:32px; height:32px; border:none; background:rgba(255,255,255,0.25); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:16px; line-height:1; z-index:9999; border:1px solid rgba(255,255,255,0.5); box-shadow:0 2px 8px rgba(0,0,0,0.10); color:#333; padding:0; outline:none; transition:0.2s;">
         <span id="theme-icon">☀</span>
     </button>
+
+    <!-- 引入模块化 JS -->
     <script type="module" src="js/watch-main.js"></script>
 </body>
 </html>
