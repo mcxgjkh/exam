@@ -461,6 +461,37 @@ body.dark-mode #theme-toggle {
     border-color: rgba(255,255,255,0.35);
 }
 
+/* ===== 暗色模式 - 强制覆盖文字颜色 ===== */
+body.dark-mode .question-text {
+    color: #f0f0f0 !important;  /* 确保优先级，覆盖普通样式 */
+}
+
+body.dark-mode .option-btn {
+    color: #e0e0e0 !important;
+}
+
+body.dark-mode .option-btn.selected {
+    color: #e0e0e0 !important;
+}
+
+body.dark-mode .feedback.correct {
+    color: #8ff0a4 !important;
+}
+
+body.dark-mode .feedback.wrong {
+    color: #ff9e9a !important;
+}
+
+/* 其他可能遗漏的文本元素 */
+body.dark-mode .history-item,
+body.dark-mode .query-item,
+body.dark-mode .question-header,
+body.dark-mode .card-title,
+body.dark-mode .modal-title,
+body.dark-mode #detail-body {
+    color: #e0e0e0 !important;
+}
+
 /* ===== 隐藏辅助类 ===== */
 .hidden {
     display: none !important;
